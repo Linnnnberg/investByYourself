@@ -21,6 +21,27 @@ This repository contains comprehensive financial analysis tools and macro-econom
 ### 3. **Data Presentation Strategy**
 This toolkit shows only the most critical metrics in tables for quick reference, while comprehensive detailed data is presented through professional visualizations. The charts contain all historical trends, detailed comparisons, and granular financial metrics that would otherwise clutter the tables.
 
+## 📁 Project Structure
+
+```
+NewProject/
+├── README.md                 # Main project documentation
+├── requirements.txt          # Python dependencies
+├── .gitignore               # Git ignore rules (includes .env)
+├── .env                     # API keys (not in git - create manually)
+├── charts/                  # Generated visualizations
+│   ├── financial_comparison_charts.png
+│   ├── comprehensive_financial_analysis.png
+│   ├── inflation_analysis_charts.png
+│   └── inflation_comparison_chart.png
+├── scripts/                 # Python analysis scripts
+│   ├── Example financetoolkit.py
+│   ├── inflation_analysis.py
+│   └── create_financial_charts.py
+└── docs/                    # Documentation
+    └── macro_data_todo.md   # Economic data roadmap
+```
+
 ## 📈 Company Financial Analysis
 
 ### AAPL vs MSFT: Key Financial Metrics Summary
@@ -46,10 +67,10 @@ This toolkit shows only the most critical metrics in tables for quick reference,
 ## 📊 Visual Analysis
 
 ### Company Financial Charts
-![Financial Comparison Charts](financial_comparison_charts.png)
+![Financial Comparison Charts](charts/financial_comparison_charts.png)
 
 ### Comprehensive Financial Dashboard
-![Comprehensive Financial Analysis](comprehensive_financial_analysis.png)
+![Comprehensive Financial Analysis](charts/comprehensive_financial_analysis.png)
 
 ## 🌍 What's Going On: US Market Context
 
@@ -69,7 +90,7 @@ This toolkit shows only the most critical metrics in tables for quick reference,
 *This section will provide investors with real-time insights into the broader economic environment affecting investment decisions.*
 
 ### Economic Data Visualizations
-![CPI Analysis](cpi_analysis_charts.png)
+![CPI Analysis](charts/cpi_analysis_charts.png)
 *Consumer Price Index Analysis - 5 Year History*
 
 ### Chart Descriptions:
@@ -172,9 +193,9 @@ The visual charts help identify these key trends and make direct comparisons bet
 ## 🛠️ Tools & Scripts
 
 ### Available Scripts:
-- **`Example financetoolkit.py`**: Main financial analysis script for company comparisons
-- **`test_fred_api.py`**: FRED API integration for economic data (CPI analysis)
-- **`create_financial_charts.py`**: Standalone chart generation for financial metrics
+- **`scripts/Example financetoolkit.py`**: Main financial analysis script for company comparisons
+- **`scripts/inflation_analysis.py`**: FRED API integration for economic data (CPI, Core CPI, PPI analysis)
+- **`scripts/create_financial_charts.py`**: Standalone chart generation for financial metrics
 
 ### Data Sources:
 - **Company Data**: Yahoo Finance via FinanceToolkit
@@ -183,12 +204,32 @@ The visual charts help identify these key trends and make direct comparisons bet
 
 ### Setup Requirements:
 ```bash
-pip install financetoolkit pandas seaborn matplotlib fredapi
+# Install all dependencies
+pip install -r requirements.txt
+
+# Or install individually
+pip install financetoolkit pandas seaborn matplotlib fredapi numpy
 ```
 
-### Environment Variables:
+### Environment Variables & API Setup:
+
+#### FRED API Key Setup
+This project uses the Federal Reserve Economic Data (FRED) API for economic indicators. To use real data:
+
+1. **Get a free API key**: Visit https://fred.stlouisfed.org/docs/api/api_key.html
+2. **Create `.env` file**: Add your API key to a `.env` file in the project root:
+   ```
+   FRED_API_KEY=your_actual_api_key_here
+   ```
+3. **Install python-dotenv**: `pip install python-dotenv`
+4. **Run the analysis**: The script will automatically load your API key
+
+#### Environment Variables:
 - `FRED_API_KEY`: Your FRED API key for economic data access
-- Get free API key from: https://fred.stlouisfed.org/docs/api/api_key.html
+- The `.env` file is automatically ignored by git for security
+
+#### Fallback Mode:
+If no API key is found, the script will generate realistic sample data for demonstration purposes.
 
 ---
 *Data sources: Yahoo Finance via FinanceToolkit, Federal Reserve Economic Data (FRED)*
