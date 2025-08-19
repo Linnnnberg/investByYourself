@@ -234,10 +234,11 @@ The visual charts help identify these key trends and make direct comparisons bet
 - **`scripts/test_fmp_api.py`**: Financial Modeling Prep (FMP) API testing and evaluation
 
 ### Data Sources:
-- **Company Data**: Yahoo Finance (yfinance) + Financial Modeling Prep (FMP) - testing phase
+- **Analysis Tools (Priority 1)**: OpenBB Terminal (free) - advanced analysis platform
+- **Company Data (Priority 2)**: Yahoo Finance (yfinance) + Financial Modeling Prep (FMP) - testing phase
 - **Economic Data**: Federal Reserve Economic Data (FRED) API
 - **Alternative Data**: Alpha Vantage API (testing phase)
-- **Analysis Tools**: OpenBB Terminal (free) + Custom Python scripts
+- **Custom Scripts**: Python analysis scripts for specific needs
 - **Visualizations**: matplotlib and seaborn
 
 ### Setup Requirements:
