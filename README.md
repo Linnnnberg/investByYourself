@@ -70,7 +70,7 @@ This toolkit shows only the most critical metrics in tables for quick reference,
 
 ### Economic Data Visualizations
 ![CPI Analysis](cpi_analysis_charts.png)
-*Consumer Price Index Analysis - 1 Year History*
+*Consumer Price Index Analysis - 5 Year History*
 
 ### Chart Descriptions:
 
@@ -87,10 +87,10 @@ This toolkit shows only the most critical metrics in tables for quick reference,
 6. **2024 Key Performance Summary**: Comprehensive overview of critical financial ratios
 
 #### Economic Data Charts:
-1. **CPI Trend Analysis**: Consumer Price Index tracking with trend line
+1. **CPI Trend Analysis**: Consumer Price Index tracking with trend line (5-year view)
 2. **Month-over-Month Changes**: Inflation rate volatility analysis
-3. **Rolling Averages**: Smoothed trend analysis for better pattern recognition
-4. **Year-over-Year Comparison**: Long-term inflation perspective
+3. **Rolling Averages**: 6-month smoothed trend analysis for better pattern recognition
+4. **Year-over-Year Comparison**: Long-term inflation perspective with 5-year context
 
 **The charts contain all the detailed financial and economic data that was previously shown in tables, presented in a much more visual and insightful way. They clearly illustrate both company performance and broader economic trends.**
 

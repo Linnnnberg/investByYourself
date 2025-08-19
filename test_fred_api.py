@@ -9,7 +9,7 @@ import numpy as np
 sns.set_style("whitegrid")
 plt.rcParams['figure.figsize'] = (12, 8)
 
-print("Testing FRED API for CPI data...")
+print("Testing FRED API for CPI data (5-Year Analysis)...")
 print("=" * 50)
 
 # Initialize FRED API
@@ -27,11 +27,11 @@ try:
         
         # Create sample data for demonstration
         end_date = datetime.now()
-        start_date = end_date - timedelta(days=365)
+        start_date = end_date - timedelta(days=1825)  # 5 years of data
         
         # Generate sample CPI data (monthly)
         dates = pd.date_range(start=start_date, end=end_date, freq='ME')
-        sample_cpi = [300 + i*0.5 + np.random.normal(0, 0.1) for i in range(len(dates))]
+        sample_cpi = [280 + i*0.3 + np.random.normal(0, 0.1) for i in range(len(dates))]
         
         cpi_data = pd.DataFrame({
             'date': dates,
@@ -48,7 +48,7 @@ try:
         # Get CPI data (Consumer Price Index for All Urban Consumers: All Items)
         # CPIAUCSL is the most commonly used CPI series
         end_date = datetime.now()
-        start_date = end_date - timedelta(days=365)
+        start_date = end_date - timedelta(days=1825)  # 5 years of data
         
         cpi_data = fred.get_series('CPIAUCSL', start_date, end_date)
         print(f"✅ Successfully fetched {len(cpi_data)} CPI data points")
@@ -59,9 +59,9 @@ except Exception as e:
     
     # Create sample data as fallback
     end_date = datetime.now()
-    start_date = end_date - timedelta(days=365)
+    start_date = end_date - timedelta(days=1825)  # 5 years of data
     dates = pd.date_range(start=start_date, end=end_date, freq='ME')
-    sample_cpi = [300 + i*0.5 + np.random.normal(0, 0.1) for i in range(len(dates))]
+    sample_cpi = [280 + i*0.3 + np.random.normal(0, 0.1) for i in range(len(dates))]
     
     cpi_data = pd.DataFrame({
         'date': dates,
@@ -79,9 +79,16 @@ print(f"CPI change over period: {((cpi_data.iloc[-1]['CPIAUCSL'] / cpi_data.iloc
 # Calculate year-over-year inflation rate
 if len(cpi_data) >= 12:
     current_cpi = cpi_data.iloc[-1]['CPIAUCSL']
-    year_ago_cpi = cpi_data.iloc[0]['CPIAUCSL']  # First observation (1 year ago)
+    year_ago_cpi = cpi_data.iloc[-13]['CPIAUCSL']  # 12 months ago
     yoy_inflation = ((current_cpi / year_ago_cpi) - 1) * 100
     print(f"Year-over-year inflation rate: {yoy_inflation:.2f}%")
+    
+    # Calculate 5-year inflation rate
+    if len(cpi_data) >= 60:
+        five_year_ago_cpi = cpi_data.iloc[0]['CPIAUCSL']  # First observation (5 years ago)
+        five_year_inflation = ((current_cpi / five_year_ago_cpi) - 1) * 100
+        print(f"5-year inflation rate: {five_year_inflation:.2f}%")
+        print(f"Average annual inflation over 5 years: {five_year_inflation/5:.2f}%")
 
 # Display first few and last few data points
 print(f"\n📈 CPI Data Preview:")
@@ -95,11 +102,11 @@ print(f"\n🎨 Creating CPI visualizations...")
 
 # Create a comprehensive CPI analysis chart
 fig, axes = plt.subplots(2, 2, figsize=(16, 12))
-fig.suptitle('Consumer Price Index (CPI) Analysis - 1 Year History', fontsize=16, fontweight='bold')
+fig.suptitle('Consumer Price Index (CPI) Analysis - 5 Year History', fontsize=16, fontweight='bold')
 
 # Chart 1: CPI Trend Over Time
 axes[0,0].plot(cpi_data.index, cpi_data['CPIAUCSL'], 'b-', linewidth=2, marker='o', markersize=4)
-axes[0,0].set_title('CPI Trend (1 Year)', fontweight='bold')
+axes[0,0].set_title('CPI Trend (5 Years)', fontweight='bold')
 axes[0,0].set_xlabel('Date')
 axes[0,0].set_ylabel('CPI Value')
 axes[0,0].grid(True, alpha=0.3)
@@ -115,11 +122,11 @@ axes[0,1].grid(True, alpha=0.3)
 axes[0,1].tick_params(axis='x', rotation=45)
 axes[0,1].axhline(y=0, color='black', linestyle='-', alpha=0.5)
 
-# Chart 3: Rolling 3-Month Average
-cpi_data['Rolling_3M'] = cpi_data['CPIAUCSL'].rolling(window=3).mean()
+# Chart 3: Rolling 6-Month Average
+cpi_data['Rolling_6M'] = cpi_data['CPIAUCSL'].rolling(window=6).mean()
 axes[1,0].plot(cpi_data.index, cpi_data['CPIAUCSL'], 'b-', label='Actual CPI', alpha=0.7)
-axes[1,0].plot(cpi_data.index, cpi_data['Rolling_3M'], 'r-', label='3-Month Rolling Average', linewidth=2)
-axes[1,0].set_title('CPI with 3-Month Rolling Average', fontweight='bold')
+axes[1,0].plot(cpi_data.index, cpi_data['Rolling_6M'], 'r-', label='6-Month Rolling Average', linewidth=2)
+axes[1,0].set_title('CPI with 6-Month Rolling Average', fontweight='bold')
 axes[1,0].set_xlabel('Date')
 axes[1,0].set_ylabel('CPI Value')
 axes[1,0].legend()
@@ -151,7 +158,7 @@ print(f"✅ CPI analysis charts saved as: {chart_filename}")
 # Create a simple trend chart
 fig2, ax = plt.subplots(figsize=(12, 6))
 ax.plot(cpi_data.index, cpi_data['CPIAUCSL'], 'b-', linewidth=3, marker='o', markersize=6)
-ax.set_title('Consumer Price Index (CPI) - 1 Year Trend', fontsize=14, fontweight='bold')
+ax.set_title('Consumer Price Index (CPI) - 5 Year Trend', fontsize=14, fontweight='bold')
 ax.set_xlabel('Date')
 ax.set_ylabel('CPI Value')
 ax.grid(True, alpha=0.3)
@@ -178,11 +185,19 @@ print(f"Maximum CPI: {cpi_data['CPIAUCSL'].max():.2f}")
 # Calculate and display inflation metrics
 if len(cpi_data) >= 12:
     print(f"\n💰 Inflation Analysis:")
-    print(f"Starting CPI: {cpi_data.iloc[0]['CPIAUCSL']:.2f}")
-    print(f"Ending CPI: {cpi_data.iloc[-1]['CPIAUCSL']:.2f}")
-    print(f"Total Change: {((cpi_data.iloc[-1]['CPIAUCSL'] / cpi_data.iloc[0]['CPIAUCSL']) - 1) * 100:.2f}%")
+    print(f"Starting CPI (5 years ago): {cpi_data.iloc[0]['CPIAUCSL']:.2f}")
+    print(f"Ending CPI (current): {cpi_data.iloc[-1]['CPIAUCSL']:.2f}")
+    print(f"Total 5-Year Change: {((cpi_data.iloc[-1]['CPIAUCSL'] / cpi_data.iloc[0]['CPIAUCSL']) - 1) * 100:.2f}%")
     print(f"Average Monthly Change: {cpi_data['MoM_Change'].mean():.2f}%")
     print(f"Year-over-Year Inflation: {yoy_inflation:.2f}%")
+    
+    if len(cpi_data) >= 60:
+        print(f"5-Year Inflation Rate: {five_year_inflation:.2f}%")
+        print(f"Average Annual Inflation (5 years): {five_year_inflation/5:.2f}%")
+        
+        # Calculate volatility
+        print(f"CPI Volatility (Standard Deviation): {cpi_data['CPIAUCSL'].std():.2f}")
+        print(f"Monthly Change Volatility: {cpi_data['MoM_Change'].std():.2f}%")
 
 print(f"\n" + "=" * 50)
 print("CPI analysis complete!")
