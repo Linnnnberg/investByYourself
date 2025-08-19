@@ -230,10 +230,14 @@ The visual charts help identify these key trends and make direct comparisons bet
 - **`scripts/inflation_yoy_analysis.py`**: Focused Year-over-Year inflation changes analysis
 - **`scripts/company_profile_collector.py`**: Company profile and fundamental data collection using Yahoo Finance
 - **`scripts/create_financial_charts.py`**: Standalone chart generation for financial metrics
+- **`scripts/test_alpha_vantage.py`**: Alpha Vantage API testing and exploration script
+- **`scripts/test_fmp_api.py`**: Financial Modeling Prep (FMP) API testing and evaluation
 
 ### Data Sources:
-- **Company Data**: Yahoo Finance via FinanceToolkit
+- **Company Data**: Yahoo Finance (yfinance) + Financial Modeling Prep (FMP) - testing phase
 - **Economic Data**: Federal Reserve Economic Data (FRED) API
+- **Alternative Data**: Alpha Vantage API (testing phase)
+- **Analysis Tools**: OpenBB Terminal (free) + Custom Python scripts
 - **Visualizations**: matplotlib and seaborn
 
 ### Setup Requirements:
@@ -260,6 +264,8 @@ This project uses the Federal Reserve Economic Data (FRED) API for economic indi
 
 #### Environment Variables:
 - `FRED_API_KEY`: Your FRED API key for economic data access
+- `ALPHA_VANTAGE_API_KEY`: Your Alpha Vantage API key for alternative financial data (optional)
+- `FMP_API_KEY`: Your Financial Modeling Prep API key for enhanced company data (optional)
 - The `.env` file is automatically ignored by git for security
 
 #### Fallback Mode:

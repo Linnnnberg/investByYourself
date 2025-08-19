@@ -26,7 +26,8 @@ NewProject/
 │   ├── inflation_analysis.py
 │   ├── inflation_yoy_analysis.py
 │   ├── company_profile_collector.py
-│   └── create_financial_charts.py
+│   ├── create_financial_charts.py
+│   └── test_alpha_vantage.py
 └── docs/                              # Documentation and reports
     ├── project_organization.md        # This file
     ├── macro_data_todo.md            # Economic data roadmap
@@ -45,6 +46,9 @@ NewProject/
 - **`inflation_analysis.py`**: Comprehensive inflation analysis (CPI, Core CPI, PPI)
 - **`inflation_yoy_analysis.py`**: Focused Year-over-Year inflation changes analysis
 - **`create_financial_charts.py`**: Standalone chart generation for financial metrics
+
+### **API Testing Scripts**
+- **`test_alpha_vantage.py`**: Alpha Vantage API testing and exploration
 
 ## 📊 **Charts Organization**
 

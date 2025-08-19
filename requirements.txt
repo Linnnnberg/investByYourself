@@ -6,3 +6,4 @@ fredapi>=0.5.0
 numpy>=1.21.0
 python-dotenv>=1.0.0
 yfinance>=0.2.55
+requests>=2.31.0
