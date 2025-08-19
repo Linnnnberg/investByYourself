@@ -34,12 +34,14 @@ NewProject/
 │   ├── comprehensive_financial_analysis.png
 │   ├── inflation_analysis_charts.png
 │   └── inflation_comparison_chart.png
-├── scripts/                 # Python analysis scripts
-│   ├── Example financetoolkit.py
-│   ├── inflation_analysis.py
-│   └── create_financial_charts.py
+        ├── scripts/                 # Python analysis scripts
+        │   ├── Example financetoolkit.py
+        │   ├── inflation_analysis.py
+        │   ├── company_profile_collector.py
+        │   └── create_financial_charts.py
 └── docs/                    # Documentation
-    └── macro_data_todo.md   # Economic data roadmap
+    ├── macro_data_todo.md   # Economic data roadmap
+    └── company_fundamentals_todo.md  # Company profile & fundamentals roadmap
 ```
 
 ## 📈 Company Financial Analysis
@@ -76,6 +78,28 @@ NewProject/
 
 ### Economic Indicators Dashboard
 *Coming Soon: Real-time economic data integration*
+
+## 🚀 Future Development Roadmap
+
+### Company Profile & Fundamentals Expansion
+*Next Phase: Comprehensive company analysis beyond AAPL vs MSFT*
+
+We're expanding the toolkit to include:
+- **Company Profiles**: Business overview, distribution models, market presence
+- **Financial Statements**: Complete income statements, balance sheets, cash flow statements
+- **Advanced Metrics**: Valuation ratios (P/E, P/B, P/S), debt metrics, growth analysis
+- **Multi-Company Analysis**: Compare any companies across sectors and industries
+
+See [Company Fundamentals TODO](docs/company_fundamentals_todo.md) for detailed roadmap.
+
+#### **Phase 1 Complete: Company Profile Collection** ✅
+Our company profile collector successfully gathers comprehensive data for any publicly traded company, including:
+- Basic company information (name, symbol, sector, industry)
+- Financial metrics (market cap, P/E ratios, ROE, ROA)
+- Business descriptions and headquarters details
+- Real-time market data and valuation ratios
+
+**📊 [View Company Profiles Report](company_profiles_report.md)** - Detailed analysis of 5 major companies (AAPL, MSFT, GOOGL, AMZN, TSLA)
 
 #### Essential Macro Data We're Tracking:
 - **Inflation Metrics**: CPI, Core CPI, PCE, PCE Core
@@ -195,6 +219,7 @@ The visual charts help identify these key trends and make direct comparisons bet
 ### Available Scripts:
 - **`scripts/Example financetoolkit.py`**: Main financial analysis script for company comparisons
 - **`scripts/inflation_analysis.py`**: FRED API integration for economic data (CPI, Core CPI, PPI analysis)
+- **`scripts/company_profile_collector.py`**: Company profile and fundamental data collection using Yahoo Finance
 - **`scripts/create_financial_charts.py`**: Standalone chart generation for financial metrics
 
 ### Data Sources:
