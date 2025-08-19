@@ -33,12 +33,13 @@ NewProject/
 │   ├── financial_comparison_charts.png
 │   ├── comprehensive_financial_analysis.png
 │   ├── inflation_analysis_charts.png
-│   └── inflation_comparison_chart.png
+│   └── yoy_inflation_analysis.png
 ├── data/                    # Raw data and JSON outputs
 │   └── company_profiles_20250819_213912.json
 ├── scripts/                 # Python analysis scripts
-│   ├── Example financetoolkit.py
+│   ├── company_financial_analysis.py
 │   ├── inflation_analysis.py
+│   ├── inflation_yoy_analysis.py
 │   ├── company_profile_collector.py
 │   └── create_financial_charts.py
 └── docs/                    # Documentation and reports
@@ -118,8 +119,11 @@ Our company profile collector successfully gathers comprehensive data for any pu
 *This section will provide investors with real-time insights into the broader economic environment affecting investment decisions.*
 
 ### Economic Data Visualizations
-![CPI Analysis](charts/cpi_analysis_charts.png)
+![Inflation Analysis](charts/inflation_analysis_charts.png)
 *Consumer Price Index Analysis - 5 Year History*
+
+![YoY Inflation Changes](charts/yoy_inflation_analysis.png)
+*Year-over-Year Inflation Changes - CPI, Core CPI, PPI*
 
 ### Chart Descriptions:
 
@@ -136,10 +140,10 @@ Our company profile collector successfully gathers comprehensive data for any pu
 6. **2024 Key Performance Summary**: Comprehensive overview of critical financial ratios
 
 #### Economic Data Charts:
-1. **CPI Trend Analysis**: Consumer Price Index tracking with trend line (5-year view)
-2. **Month-over-Month Changes**: Inflation rate volatility analysis
-3. **Rolling Averages**: 6-month smoothed trend analysis for better pattern recognition
-4. **Year-over-Year Comparison**: Long-term inflation perspective with 5-year context
+1. **Inflation Analysis**: Consumer Price Index tracking with trend line (5-year view)
+2. **YoY Inflation Changes**: Year-over-Year changes for CPI, Core CPI, and PPI
+3. **Inflation Comparison**: CPI vs Core CPI vs PPI analysis
+4. **Trend Analysis**: Long-term inflation perspective with 5-year context
 
 **The charts contain all the detailed financial and economic data that was previously shown in tables, presented in a much more visual and insightful way. They clearly illustrate both company performance and broader economic trends.**
 
@@ -221,8 +225,9 @@ The visual charts help identify these key trends and make direct comparisons bet
 ## 🛠️ Tools & Scripts
 
 ### Available Scripts:
-- **`scripts/Example financetoolkit.py`**: Main financial analysis script for company comparisons
+- **`scripts/company_financial_analysis.py`**: Main financial analysis script for company comparisons
 - **`scripts/inflation_analysis.py`**: FRED API integration for economic data (CPI, Core CPI, PPI analysis)
+- **`scripts/inflation_yoy_analysis.py`**: Focused Year-over-Year inflation changes analysis
 - **`scripts/company_profile_collector.py`**: Company profile and fundamental data collection using Yahoo Finance
 - **`scripts/create_financial_charts.py`**: Standalone chart generation for financial metrics
 
