@@ -4,8 +4,8 @@
 This document shows the comparison of three key inflation indicators: Consumer Price Index (CPI), Core CPI (excluding food and energy), and Producer Price Index (PPI), with year-over-year change data and corresponding charts.
 
 ## Charts
-![Inflation Analysis Charts](inflation_analysis_charts.png)
-![Inflation Comparison Chart](inflation_comparison_chart.png)
+![Inflation Analysis Charts](../charts/inflation_analysis_charts.png)
+![Inflation Comparison Chart](../charts/inflation_comparison_chart.png)
 
 ## Year-over-Year Change Data Table
 

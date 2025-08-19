@@ -34,14 +34,18 @@ NewProject/
 │   ├── comprehensive_financial_analysis.png
 │   ├── inflation_analysis_charts.png
 │   └── inflation_comparison_chart.png
-        ├── scripts/                 # Python analysis scripts
-        │   ├── Example financetoolkit.py
-        │   ├── inflation_analysis.py
-        │   ├── company_profile_collector.py
-        │   └── create_financial_charts.py
-└── docs/                    # Documentation
+├── data/                    # Raw data and JSON outputs
+│   └── company_profiles_20250819_213912.json
+├── scripts/                 # Python analysis scripts
+│   ├── Example financetoolkit.py
+│   ├── inflation_analysis.py
+│   ├── company_profile_collector.py
+│   └── create_financial_charts.py
+└── docs/                    # Documentation and reports
     ├── macro_data_todo.md   # Economic data roadmap
-    └── company_fundamentals_todo.md  # Company profile & fundamentals roadmap
+    ├── company_fundamentals_todo.md  # Company profile & fundamentals roadmap
+    ├── company_profiles_report.md   # Comprehensive company analysis report
+    └── inflation_analysis_report.md # Inflation indicators analysis report
 ```
 
 ## 📈 Company Financial Analysis
@@ -99,7 +103,7 @@ Our company profile collector successfully gathers comprehensive data for any pu
 - Business descriptions and headquarters details
 - Real-time market data and valuation ratios
 
-**📊 [View Company Profiles Report](company_profiles_report.md)** - Detailed analysis of 5 major companies (AAPL, MSFT, GOOGL, AMZN, TSLA)
+**📊 [View Company Profiles Report](docs/company_profiles_report.md)** - Detailed analysis of 5 major companies (AAPL, MSFT, GOOGL, AMZN, TSLA)
 
 #### Essential Macro Data We're Tracking:
 - **Inflation Metrics**: CPI, Core CPI, PCE, PCE Core
