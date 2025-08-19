@@ -1,14 +1,31 @@
-# Financial Analysis Report: AAPL vs MSFT
-*Generated on: 2025-08-19 13:02:06*
+# Financial & Macro Economic Analysis Toolkit
+*Last Updated: 2025-08-19*
 
-## Executive Summary
-This comprehensive financial analysis compares Apple Inc. (AAPL) and Microsoft Corporation (MSFT), two of the world's largest technology companies. The analysis focuses on profitability ratios, operational efficiency, and financial performance trends from 2020-2024.
+## 🎯 Project Overview
+This repository contains comprehensive financial analysis tools and macro-economic data analysis for informed investment decision-making. The toolkit provides both company-specific financial analysis and broader market context through economic indicators.
 
-**📊 Data Presentation Strategy**: This report shows only the most critical metrics in tables for quick reference, while comprehensive detailed data is presented through professional visualizations. The charts contain all historical trends, detailed comparisons, and granular financial metrics that would otherwise clutter the tables.
+## 📊 What's Been Built
 
-## Key Financial Metrics Summary
+### 1. **Company Financial Analysis** 
+- **AAPL vs MSFT Comparison**: Comprehensive profitability and efficiency analysis
+- **Professional Visualizations**: Multi-panel dashboards with seaborn/matplotlib
+- **Streamlined Reporting**: Key metrics in tables, detailed data in charts
+- **Automated Analysis**: Python scripts for reproducible financial analysis
 
-### Most Recent Performance (2024)
+### 2. **Economic Data Integration**
+- **FRED API Integration**: Federal Reserve Economic Data access
+- **CPI Analysis**: Consumer Price Index tracking and inflation metrics
+- **Sample Data Generation**: Fallback data for testing and demonstration
+- **Economic Visualizations**: Professional charts for economic indicators
+
+### 3. **Data Presentation Strategy**
+This toolkit shows only the most critical metrics in tables for quick reference, while comprehensive detailed data is presented through professional visualizations. The charts contain all historical trends, detailed comparisons, and granular financial metrics that would otherwise clutter the tables.
+
+## 📈 Company Financial Analysis
+
+### AAPL vs MSFT: Key Financial Metrics Summary
+
+#### Most Recent Performance (2024)
 | Metric | AAPL | MSFT | Winner |
 |--------|------|------|---------|
 | **Gross Margin** | 46.2% | 69.8% | 🏆 MSFT |
@@ -17,7 +34,7 @@ This comprehensive financial analysis compares Apple Inc. (AAPL) and Microsoft C
 | **Return on Equity** | 157.4% | 37.1% | 🏆 AAPL |
 | **Return on Assets** | 26.1% | 19.1% | 🏆 AAPL |
 
-### Key Performance Trends
+#### Key Performance Trends
 - **Microsoft**: Consistently higher margins, stable performance
 - **Apple**: Superior capital efficiency, improving margins over time
 - **Both**: Strong financial health with different competitive advantages
@@ -26,21 +43,42 @@ This comprehensive financial analysis compares Apple Inc. (AAPL) and Microsoft C
 
 **📈 What the Charts Show**: The comprehensive dashboard contains all the detailed financial metrics (15+ ratios across 5 years) that were previously displayed in overwhelming tables. This includes interest coverage ratios, tax rates, cash flow ratios, and all other granular financial data presented in an easy-to-understand visual format.
 
-## Visual Analysis
+## 📊 Visual Analysis
 
-### Primary Financial Comparison Charts
+### Company Financial Charts
 ![Financial Comparison Charts](financial_comparison_charts.png)
 
-### Comprehensive Analysis Dashboard
+### Comprehensive Financial Dashboard
 ![Comprehensive Financial Analysis](comprehensive_financial_analysis.png)
+
+## 🌍 What's Going On: US Market Context
+
+### Economic Indicators Dashboard
+*Coming Soon: Real-time economic data integration*
+
+#### Essential Macro Data We're Tracking:
+- **Inflation Metrics**: CPI, Core CPI, PCE, PCE Core
+- **Employment Data**: Unemployment Rate, Non-Farm Payrolls, Labor Force Participation
+- **Interest Rates**: Fed Funds Rate, 10-Year Treasury, 2-Year Treasury
+- **Economic Growth**: GDP Growth, Industrial Production, Retail Sales
+- **Market Sentiment**: VIX, Consumer Confidence, Business Confidence
+- **Housing Market**: Housing Starts, Existing Home Sales, Case-Shiller Index
+- **Manufacturing**: PMI, ISM Manufacturing, Durable Goods Orders
+
+#### Current Market Context:
+*This section will provide investors with real-time insights into the broader economic environment affecting investment decisions.*
+
+### Economic Data Visualizations
+![CPI Analysis](cpi_analysis_charts.png)
+*Consumer Price Index Analysis - 1 Year History*
 
 ### Chart Descriptions:
 
-**Primary Charts:**
+#### Company Financial Charts:
 1. **2024 Profitability Margins**: Direct bar chart comparison showing MSFT's significant margin advantage
 2. **Margin Trends (2022-2024)**: Time series analysis showing both companies' margin evolution over three years
 
-**Comprehensive Dashboard:**
+#### Comprehensive Financial Dashboard:
 1. **Profitability Margins Trends**: Multi-line chart tracking gross, operating, and net profit margins over time
 2. **2024 Margins Comparison**: Grouped bar chart for direct performance comparison across all margin types
 3. **Return on Equity Trends**: ROE performance over time showing Apple's superior capital efficiency
@@ -48,7 +86,13 @@ This comprehensive financial analysis compares Apple Inc. (AAPL) and Microsoft C
 5. **Financial Metrics Heatmap**: Color-coded performance matrix showing detailed metrics across all years
 6. **2024 Key Performance Summary**: Comprehensive overview of critical financial ratios
 
-**The charts contain all the detailed financial data that was previously shown in tables, presented in a much more visual and insightful way. They clearly illustrate the complementary strengths of both companies:**
+#### Economic Data Charts:
+1. **CPI Trend Analysis**: Consumer Price Index tracking with trend line
+2. **Month-over-Month Changes**: Inflation rate volatility analysis
+3. **Rolling Averages**: Smoothed trend analysis for better pattern recognition
+4. **Year-over-Year Comparison**: Long-term inflation perspective
+
+**The charts contain all the detailed financial and economic data that was previously shown in tables, presented in a much more visual and insightful way. They clearly illustrate both company performance and broader economic trends.**
 
 ## Key Financial Insights
 
@@ -125,6 +169,27 @@ Both companies demonstrate strong financial health with robust profitability rat
 
 The visual charts help identify these key trends and make direct comparisons between these two technology giants, both of which represent excellent examples of financial excellence in their respective business models.
 
+## 🛠️ Tools & Scripts
+
+### Available Scripts:
+- **`Example financetoolkit.py`**: Main financial analysis script for company comparisons
+- **`test_fred_api.py`**: FRED API integration for economic data (CPI analysis)
+- **`create_financial_charts.py`**: Standalone chart generation for financial metrics
+
+### Data Sources:
+- **Company Data**: Yahoo Finance via FinanceToolkit
+- **Economic Data**: Federal Reserve Economic Data (FRED) API
+- **Visualizations**: matplotlib and seaborn
+
+### Setup Requirements:
+```bash
+pip install financetoolkit pandas seaborn matplotlib fredapi
+```
+
+### Environment Variables:
+- `FRED_API_KEY`: Your FRED API key for economic data access
+- Get free API key from: https://fred.stlouisfed.org/docs/api/api_key.html
+
 ---
-*Data source: Yahoo Finance via FinanceToolkit*
+*Data sources: Yahoo Finance via FinanceToolkit, Federal Reserve Economic Data (FRED)*
 *Charts generated using matplotlib and seaborn*
