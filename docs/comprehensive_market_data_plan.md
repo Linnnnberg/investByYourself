@@ -1,10 +1,10 @@
-# Comprehensive Market Data System - Implementation Plan
+# Invest By Yourself - Market Data System Implementation Plan
 
 *Created: 2025-08-19*
 
 ## 🎯 **Project Overview**
 
-This document outlines the comprehensive plan for building a robust market data system that integrates price data, security metrics, and multi-source comparison capabilities. The system will provide a unified view of financial market data across multiple sources while maintaining data quality, enabling real-time comparison, and providing comprehensive financial analysis capabilities.
+This document outlines the comprehensive plan for building **Invest By Yourself** - a robust market data system that empowers individual investors with professional-grade tools. The system integrates price data, security metrics, and multi-source comparison capabilities to provide a unified view of financial market data across multiple sources while maintaining data quality, enabling real-time comparison, and providing comprehensive financial analysis capabilities.
 
 ### **MVP Scope & Future Expansion**
 - **MVP Focus**: Stocks and ETFs only, with one ticker per company
