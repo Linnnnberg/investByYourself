@@ -20,23 +20,27 @@
 ### **🚧 IN PROGRESS (1/18)**
 - **Story-002**: Financial Calculation Testing Suite
 
-### **📋 PENDING (11/18)**
+### **📋 PENDING (15/21)**
 - **Story-003**: Financial Data Pipeline CI
 - **Story-004**: Earnings Data & Transcript Integration
-- **Story-005**: Advanced Financial Analysis Tools
-- **Story-006**: Market Data Collection System
-- **Story-007**: Portfolio Management System
+- **Story-005**: ETL & Database Architecture Design *(NEW)*
+- **Story-006**: Advanced Financial Analysis Tools
+- **Story-007**: Market Data Collection System
 - **Story-008**: Financial Analysis Dashboard
 - **Tech-006**: Performance Testing for Financial Data
 - **Tech-007**: Security for Financial Applications
-- **Tech-008**: Multi-Environment Deployment
-- **Tech-009**: Advanced Security Features
-- **Tech-010**: Code Quality Improvements
+- **Tech-008**: Database Infrastructure Setup *(NEW)*
+- **Tech-009**: ETL Pipeline Implementation *(NEW)*
+- **Tech-010**: Data Models & Schema Design *(NEW)*
+- **Tech-011**: Multi-Environment Deployment
+- **Tech-012**: Advanced Security Features
+- **Tech-013**: Code Quality Improvements
+- **Tech-014**: API Development & Integration
 
-### **📊 Progress: 33% Complete**
+### **📊 Progress: 29% Complete**
 - **Phase 1**: ✅ 100% Complete
 - **Phase 2**: 🚧 25% Complete
-- **Phase 3**: ⏳ 0% Complete
+- **Phase 3**: ⏳ 0% Complete (ETL & Database)
 - **Phase 4**: ⏳ 0% Complete
 
 ---
@@ -132,6 +136,116 @@
 - **Priority**: Critical
 - **Effort**: High
 - **Dependencies**: Tech-003
+
+### **<Story-005> ETL & Database Architecture Design**
+- [ ] **ETL Process Design**
+  - Design external data collection pipeline (Yahoo Finance, Alpha Vantage, FRED)
+  - Implement data extraction with rate limiting and error handling
+  - Create data transformation layer for standardization
+  - Add data quality validation and cleaning
+  - Implement incremental data loading strategies
+- [ ] **Data Parser & Internal Structure**
+  - Design internal data models for financial entities
+  - Create data transformation rules for each source
+  - Implement data normalization and standardization
+  - Add data validation and integrity checks
+  - Create data versioning and history tracking
+- [ ] **Database Architecture**
+  - Design database schema for financial data storage
+  - Implement data persistence layer with ORM
+  - Add indexing for performance optimization
+  - Create data backup and recovery systems
+  - Set up data archiving and retention policies
+- **Priority**: Critical
+- **Effort**: Very High
+- **Dependencies**: Story-001, Tech-006
+- **Timeline**: Weeks 4-6
+- **Success Criteria**:
+  - ETL pipeline handles 3+ data sources reliably
+  - Data transformation maintains 99%+ accuracy
+  - Database supports 1M+ financial records efficiently
+  - Full data lineage and audit trail
+
+### **<Tech-008> Database Infrastructure Setup**
+- [ ] **Database Design & Implementation**
+  - Design normalized database schema for financial data
+  - Implement database migrations and versioning
+  - Add connection pooling and performance optimization
+  - Create database monitoring and health checks
+  - Set up automated backup and recovery procedures
+- [ ] **Data Access Layer**
+  - Implement repository pattern for data access
+  - Create data access objects (DAOs) for each entity
+  - Add caching layer for frequently accessed data
+  - Implement data pagination and filtering
+  - Add data export and import capabilities
+- **Priority**: High
+- **Effort**: High
+- **Dependencies**: Story-005
+- **Timeline**: Weeks 5-7
+- **Success Criteria**:
+  - Database schema supports all financial data types
+  - Query performance <100ms for standard operations
+  - 99.9% uptime with automated failover
+  - Complete data backup and recovery procedures
+
+### **<Tech-009> ETL Pipeline Implementation**
+- [ ] **Data Collection Framework**
+  - Create abstract base classes for data collectors
+  - Implement source-specific collectors (Yahoo, Alpha Vantage, FRED)
+  - Add rate limiting and retry mechanisms
+  - Implement data quality monitoring and alerting
+  - Create data collection scheduling and orchestration
+- [ ] **Data Processing Engine**
+  - Implement data transformation pipeline with configurable rules
+  - Add data validation and cleaning processors
+  - Create data enrichment and augmentation capabilities
+  - Implement data deduplication and merging logic
+  - Add data lineage tracking and metadata management
+- [ ] **Data Loading & Storage**
+  - Implement incremental data loading strategies
+  - Add data versioning and change tracking
+  - Create data archiving and retention policies
+  - Implement data compression and optimization
+  - Add data export capabilities for analysis tools
+- **Priority**: High
+- **Effort**: Very High
+- **Dependencies**: Story-005, Tech-008
+- **Timeline**: Weeks 6-8
+- **Success Criteria**:
+  - ETL pipeline processes 10K+ records/hour
+  - Data transformation accuracy >99.5%
+  - Full data lineage and audit trail
+  - Automated error handling and recovery
+
+### **<Tech-010> Data Models & Schema Design**
+- [ ] **Core Financial Entities**
+  - Design Company entity (profile, fundamentals, ratios)
+  - Design Stock entity (prices, volumes, technical indicators)
+  - Design Economic entity (indicators, trends, forecasts)
+  - Design Portfolio entity (holdings, transactions, performance)
+  - Design User entity (preferences, watchlists, alerts)
+- [ ] **Data Relationships & Constraints**
+  - Implement referential integrity between entities
+  - Add business rules and validation constraints
+  - Create data normalization rules (1NF, 2NF, 3NF)
+  - Design efficient indexing strategies
+  - Implement data partitioning for large datasets
+- [ ] **Schema Evolution & Migration**
+  - Create database migration framework
+  - Implement schema versioning and rollback
+  - Add data migration scripts for schema changes
+  - Create schema validation and testing
+  - Implement backward compatibility handling
+- **Priority**: High
+- **Effort**: High
+- **Dependencies**: Story-005
+- **Timeline**: Weeks 5-6
+- **Success Criteria**:
+  - Normalized database schema (3NF compliance)
+  - Efficient query performance for all operations
+  - Flexible schema evolution without data loss
+  - Complete data integrity and constraint validation
 
 ---
 
@@ -422,15 +536,17 @@
 - [ ] Tech-007: Security for Financial Applications
 
 ### **Upcoming Sprints**
-- [ ] Weeks 5-6: Advanced CI/CD Features + API Integration
-- [ ] Weeks 7-8: Production-Ready Features
-- [ ] Future: Core Financial Platform Features
+- [ ] Weeks 5-6: ETL Architecture & Database Design
+- [ ] Weeks 7-8: ETL Implementation & Core Platform
+- [ ] Future: Advanced Features & Production Deployment
 
 ### **🎯 Current Status Summary**
 - **Phase 1**: ✅ COMPLETED (CI/CD Foundation & Core Infrastructure)
 - **Phase 2**: 🚧 IN PROGRESS (Financial Data Validation & Testing Framework)
-- **Completed Tasks**: 6 out of 18 planned tasks
+- **Phase 3**: ⏳ PLANNED (ETL Architecture & Database Design)
+- **Completed Tasks**: 6 out of 21 planned tasks
 - **Next Priority**: Story-002 (Financial Calculation Testing Suite)
+- **Major Milestone**: ETL & Database Architecture (Weeks 5-6)
 
 ---
 
