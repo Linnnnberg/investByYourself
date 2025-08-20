@@ -24,11 +24,14 @@
 - **Story-002**: Financial Calculation Testing Suite *(CONTINUING)*
 - **Tech-006**: Performance Testing for Financial Data *(PLANNED)*
 
-### **📋 PENDING (10/21)**
+### **📋 PENDING (13/24)**
 - **Story-005**: ETL & Database Architecture Design *(NEW)*
-- **Story-006**: Advanced Financial Analysis Tools
-- **Story-007**: Market Data Collection System
-- **Story-008**: Financial Analysis Dashboard
+- **Story-006**: Local vs Web App Architecture Decision *(NEW)*
+- **Story-007**: Portfolio Analysis & Risk Tools *(NEW)*
+- **Story-008**: Backtesting & Strategy Testing *(NEW)*
+- **Story-009**: Advanced Financial Analysis Tools
+- **Story-010**: Market Data Collection System
+- **Story-011**: Financial Analysis Dashboard
 - **Tech-007**: Security for Financial Applications
 - **Tech-008**: Database Infrastructure Setup *(NEW)*
 - **Tech-009**: ETL Pipeline Implementation *(NEW)*
@@ -36,7 +39,7 @@
 - **Tech-011**: Multi-Environment Deployment
 - **Tech-012**: Advanced Security Features
 
-### **📊 Progress: 43% Complete**
+### **📊 Progress: 38% Complete**
 - **Phase 1**: ✅ 100% Complete
 - **Phase 2**: 🚧 60% Complete
 - **Phase 3**: ⏳ 0% Complete (ETL & Database)
@@ -267,6 +270,69 @@
   - Efficient query performance for all operations
   - Flexible schema evolution without data loss
   - Complete data integrity and constraint validation
+
+### **<Story-006> Local vs Web App Architecture Decision**
+- [ ] **Architecture Analysis**
+  - Evaluate local app vs web app trade-offs
+  - Create technology stack comparison matrix
+  - Define MVP scope and future migration path
+  - Analyze deployment and maintenance implications
+- [ ] **Frontend Technology Selection**
+  - Choose between Streamlit, Dash, or Electron for local app
+  - Plan React/Next.js migration for web app
+  - Design responsive UI/UX framework
+  - Create technology migration roadmap
+- **Priority**: Critical
+- **Effort**: Medium
+- **Dependencies**: Story-005
+- **Timeline**: Weeks 4-5
+- **Success Criteria**:
+  - Clear architecture decision with justification
+  - Technology stack defined for MVP and future
+  - Migration path planned and documented
+  - Frontend framework selected and configured
+
+### **<Story-007> Portfolio Analysis & Risk Tools**
+- [ ] **Portfolio Management System**
+  - Portfolio holdings and valuation tracking
+  - Performance attribution and risk metrics
+  - Scenario testing and stress analysis
+  - Portfolio rebalancing and optimization
+- [ ] **Risk Analysis Engine**
+  - VaR, Sharpe ratio, drawdown calculations
+  - Beta, volatility, correlation analysis
+  - Risk alerts and monitoring
+  - Stress testing and scenario analysis
+- **Priority**: High
+- **Effort**: High
+- **Dependencies**: Story-006, Tech-008
+- **Timeline**: Weeks 5-7
+- **Success Criteria**:
+  - Portfolio tracking for 100+ holdings
+  - Real-time risk metrics calculation
+  - Performance attribution analysis
+  - Risk alerts with <10% false positives
+
+### **<Story-008> Backtesting & Strategy Testing**
+- [ ] **Backtesting Framework**
+  - Trading strategy rule engine
+  - Historical performance simulation
+  - Portfolio optimization algorithms
+  - Strategy performance metrics
+- [ ] **Strategy Testing Tools**
+  - Moving average strategies
+  - Mean reversion models
+  - Factor model testing
+  - Custom strategy builder
+- **Priority**: High
+- **Effort**: Very High
+- **Dependencies**: Story-007, Tech-009
+- **Timeline**: Weeks 6-8
+- **Success Criteria**:
+  - Backtesting engine handles 5+ strategy types
+  - Historical simulation for 10+ years of data
+  - Strategy performance comparison tools
+  - Custom strategy creation interface
 
 ---
 
@@ -565,9 +631,10 @@
 - **Phase 1**: ✅ COMPLETED (CI/CD Foundation & Core Infrastructure)
 - **Phase 2**: 🚧 60% COMPLETE (Financial Data Validation & Testing Framework)
 - **Phase 3**: ⏳ PLANNED (ETL Architecture & Database Design)
-- **Completed Tasks**: 9 out of 21 planned tasks
+- **Completed Tasks**: 9 out of 24 planned tasks
 - **Next Priority**: Complete Story-002 (Financial Calculation Testing Suite)
 - **Major Milestone**: ETL & Database Architecture (Weeks 5-6)
+- **New Focus**: Local vs Web App Architecture Decision (Week 4-5)
 
 ---
 
@@ -596,6 +663,44 @@
 - [ ] Performance optimizations implemented
 - [ ] Compliance features working
 - [ ] Production deployment successful
+
+---
+
+## 📈 **Business Success Metrics**
+
+### **Data Quality & Performance**
+- [ ] **Data Refresh Latency**
+  - Macro data: <24 hours
+  - Equity data: <15 minutes
+  - Real-time alerts: <5 minutes
+- [ ] **Alert Accuracy**
+  - False positive rate: <10%
+  - Alert response time: <30 minutes
+  - User engagement: >80% alert acknowledgment
+- [ ] **Portfolio Performance**
+  - Daily PnL tracking: 100% accuracy
+  - Risk attribution: Real-time calculation
+  - Performance reporting: Automated daily
+
+### **User Experience & Engagement**
+- [ ] **Dashboard Usage**
+  - Daily active users: >90% of registered users
+  - Session duration: >15 minutes average
+  - Feature adoption: >70% of core features used
+- [ ] **System Reliability**
+  - Uptime: >99.5%
+  - Data accuracy: >99.5%
+  - Response time: <2 seconds for all operations
+
+### **Business Value Metrics**
+- [ ] **Investment Decision Support**
+  - Portfolio optimization: >95% accuracy
+  - Risk assessment: Real-time monitoring
+  - Strategy backtesting: 10+ years historical data
+- [ ] **Cost Efficiency**
+  - API cost optimization: <$100/month
+  - Infrastructure costs: <$50/month for MVP
+  - Development velocity: 2-3 features per week
 
 ---
 
