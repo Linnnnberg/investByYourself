@@ -133,6 +133,68 @@ If you're interested in contributing or understanding the project better:
 
 Personal use and educational purposes.
 
+## 🙏 **Open Source Acknowledgments**
+
+**Invest By Yourself** is built on the shoulders of amazing open-source projects. We're grateful to the developers and communities that make these tools available.
+
+*Note: This project uses specific versions of these libraries as defined in `requirements.txt`. All licenses and acknowledgments apply to the versions specified there.*
+
+### **Core Python Libraries**
+- **[Pandas](https://pandas.pydata.org/)** - Data manipulation and analysis (BSD 3-Clause License)
+- **[NumPy](https://numpy.org/)** - Numerical computing foundation (BSD 3-Clause License)
+- **[Matplotlib](https://matplotlib.org/)** - Professional plotting and visualization (PSF License)
+- **[Seaborn](https://seaborn.pydata.org/)** - Statistical data visualization (BSD 3-Clause License)
+- **[yfinance](https://github.com/ranaroussi/yfinance)** - Yahoo Finance data access (Apache 2.0 License)
+- **[fredapi](https://github.com/mortada/fredapi)** - Federal Reserve Economic Data API (MIT License)
+- **[requests](https://requests.readthedocs.io/)** - HTTP library for API calls (Apache 2.0 License)
+- **[python-dotenv](https://github.com/theskumar/python-dotenv)** - Environment variable management (BSD 3-Clause License)
+
+### **Data Analysis & Financial Tools**
+- **[FinanceToolkit](https://github.com/JerBouma/FinanceToolkit)** - Financial analysis toolkit (MIT License)
+- **[OpenBB Terminal](https://github.com/OpenBB-finance/OpenBBTerminal)** - Investment research platform (MIT License)
+- **[Alpha Vantage](https://www.alphavantage.co/)** - Financial data APIs (Commercial API with free tier)
+
+### **Development & Infrastructure**
+- **[Python](https://www.python.org/)** - Programming language (PSF License)
+- **[Git](https://git-scm.com/)** - Version control (GPL v2)
+- **[GitHub](https://github.com/)** - Code hosting and collaboration (GitHub Terms of Service)
+
+### **License Compatibility**
+All open-source libraries used in this project are compatible with our personal use and educational purposes license. We respect and comply with all original licenses.
+
+### **Academic & Professional Citation**
+If you use this project in academic research, professional work, or publications, please cite the open-source libraries appropriately:
+
+```bibtex
+@software{pandas,
+  title={pandas: powerful Python data analysis toolkit},
+  author={McKinney, Wes},
+  year={2010},
+  url={https://pandas.pydata.org/}
+}
+
+@software{matplotlib,
+  title={Matplotlib: A 2D graphics environment},
+  author={Hunter, John D},
+  year={2007},
+  url={https://matplotlib.org/}
+}
+
+@software{yfinance,
+  title={yfinance: Yahoo Finance market data downloader},
+  author={Ran Aroussi},
+  year={2020},
+  url={https://github.com/ranaroussi/yfinance}
+}
+```
+
+### **Contributing to Open Source**
+Consider supporting these amazing projects by:
+- Starring their repositories on GitHub
+- Contributing code or documentation
+- Reporting bugs or requesting features
+- Supporting their development financially if possible
+
 ---
 
 **Built with ❤️ for self-directed investors who believe in taking control of their financial future.**
