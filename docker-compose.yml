@@ -1,0 +1,250 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: investbyyourself_postgres
+    environment:
+      POSTGRES_DB: investbyyourself
+      POSTGRES_USER: etl_user
+      POSTGRES_PASSWORD: secure_password_2025
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --lc-collate=C --lc-ctype=C"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./database/init:/docker-entrypoint-initdb.d/02-init
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U etl_user -d investbyyourself"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - investbyyourself_network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: investbyyourself_redis
+    command: redis-server --appendonly yes --requirepass secure_redis_2025
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - investbyyourself_network
+
+  # MinIO Object Storage (Data Lake)
+  minio:
+    image: minio/minio:latest
+    container_name: investbyyourself_minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio_admin
+      MINIO_ROOT_PASSWORD: secure_minio_2025
+      MINIO_DOMAIN: localhost
+    ports:
+      - "9000:9000"  # API
+      - "9001:9001"  # Console
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - investbyyourself_network
+
+  # pgAdmin (Database Management)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: investbyyourself_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@investbyyourself.com
+      PGADMIN_DEFAULT_PASSWORD: secure_pgadmin_2025
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./database/pgadmin_servers.json:/pgadmin4/servers.json
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - investbyyourself_network
+
+  # Redis Commander (Redis Management)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: investbyyourself_redis_commander
+    environment:
+      REDIS_HOSTS: local:redis:6379:0:secure_redis_2025
+    ports:
+      - "8081:8081"
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - investbyyourself_network
+
+  # ETL Worker Service
+  etl-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.etl
+    container_name: investbyyourself_etl_worker
+    environment:
+      # Database Configuration
+      DATABASE_URL: postgresql://etl_user:secure_password_2025@postgres:5432/investbyyourself
+      REDIS_URL: redis://:secure_redis_2025@redis:6379/0
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minio_admin
+      MINIO_SECRET_KEY: secure_minio_2025
+
+      # ETL Configuration
+      ETL_BATCH_SIZE: 1000
+      ETL_MAX_WORKERS: 4
+      ETL_RETRY_ATTEMPTS: 3
+      ETL_RETRY_DELAY: 5
+
+      # API Keys (set these in production)
+      YAHOO_FINANCE_API_KEY: ""
+      ALPHA_VANTAGE_API_KEY: ""
+      FRED_API_KEY: ""
+      API_NINJAS_API_KEY: ""
+
+      # Monitoring
+      LOG_LEVEL: INFO
+      METRICS_ENABLED: true
+      ALERT_EMAIL: alerts@investbyyourself.com
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - investbyyourself_network
+
+  # Monitoring Stack
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: investbyyourself_prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    restart: unless-stopped
+    networks:
+      - investbyyourself_network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: investbyyourself_grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: secure_grafana_2025
+      GF_USERS_ALLOW_SIGN_UP: false
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+    networks:
+      - investbyyourself_network
+
+  # Development Tools
+  adminer:
+    image: adminer:latest
+    container_name: investbyyourself_adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - investbyyourself_network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  minio_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  investbyyourself_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# Profiles for different environments
+profiles:
+  development:
+    - postgres
+    - redis
+    - pgadmin
+    - adminer
+
+  production:
+    - postgres
+    - redis
+    - minio
+    - etl-worker
+    - prometheus
+    - grafana
+
+  monitoring:
+    - prometheus
+    - grafana
+
+  full:
+    - postgres
+    - redis
+    - minio
+    - pgadmin
+    - redis-commander
+    - etl-worker
+    - prometheus
+    - grafana
+    - adminer
