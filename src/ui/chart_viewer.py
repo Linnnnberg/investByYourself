@@ -1,0 +1,329 @@
+"""
+Chart Viewer - investByYourself
+
+A Streamlit component that displays generated financial charts
+and demonstrates the visual output capabilities of our platform.
+
+Part of Story-002: Financial Calculation Testing Suite
+"""
+
+import glob
+import os
+
+import streamlit as st
+from PIL import Image
+
+
+def main():
+    """Main Streamlit application for chart viewing."""
+    st.set_page_config(
+        page_title="InvestByYourself - Chart Viewer", page_icon="📊", layout="wide"
+    )
+
+    st.title("📊 InvestByYourself Chart Viewer")
+    st.markdown("**Professional financial charts generated from our calculations**")
+
+    # Get all chart files
+    chart_files = glob.glob("charts/*.png")
+    chart_files.sort()
+
+    if not chart_files:
+        st.warning(
+            "No charts found in the charts folder. Run the chart generation script first!"
+        )
+        return
+
+    # Sidebar for chart selection
+    with st.sidebar:
+        st.header("📊 Available Charts")
+
+        # Group charts by category
+        portfolio_charts = [f for f in chart_files if "portfolio" in f.lower()]
+        analysis_charts = [f for f in chart_files if "analysis" in f.lower()]
+        comparison_charts = [f for f in chart_files if "comparison" in f.lower()]
+        other_charts = [
+            f
+            for f in chart_files
+            if f not in portfolio_charts + analysis_charts + comparison_charts
+        ]
+
+        st.subheader("📈 Portfolio Charts")
+        for chart in portfolio_charts:
+            chart_name = (
+                os.path.basename(chart)
+                .replace("_sample.png", "")
+                .replace("_", " ")
+                .title()
+            )
+            if st.button(f"📊 {chart_name}", key=f"btn_{chart}"):
+                st.session_state.selected_chart = chart
+
+        st.subheader("📊 Analysis Charts")
+        for chart in analysis_charts:
+            chart_name = (
+                os.path.basename(chart)
+                .replace("_sample.png", "")
+                .replace("_", " ")
+                .title()
+            )
+            if st.button(f"📊 {chart_name}", key=f"btn_{chart}"):
+                st.session_state.selected_chart = chart
+
+        st.subheader("🔍 Comparison Charts")
+        for chart in comparison_charts:
+            chart_name = (
+                os.path.basename(chart)
+                .replace("_sample.png", "")
+                .replace("_", " ")
+                .title()
+            )
+            if st.button(f"📊 {chart_name}", key=f"btn_{chart}"):
+                st.session_state.selected_chart = chart
+
+        st.subheader("📋 Other Charts")
+        for chart in other_charts:
+            chart_name = (
+                os.path.basename(chart)
+                .replace("_sample.png", "")
+                .replace("_", " ")
+                .title()
+            )
+            if st.button(f"📊 {chart_name}", key=f"btn_{chart}"):
+                st.session_state.selected_chart = chart
+
+        # Chart generation info
+        st.markdown("---")
+        st.subheader("🔧 Chart Generation")
+        st.info(
+            """
+        These charts were generated using our financial calculation engine.
+
+        **To generate new charts:**
+        ```bash
+        python scripts/generate_sample_charts.py
+        ```
+        """
+        )
+
+    # Main content area
+    if "selected_chart" not in st.session_state:
+        st.session_state.selected_chart = chart_files[0] if chart_files else None
+
+    if st.session_state.selected_chart:
+        display_chart(st.session_state.selected_chart)
+    else:
+        st.info("👈 Select a chart from the sidebar to view it!")
+
+    # Chart gallery view
+    st.header("📚 Chart Gallery")
+    st.markdown("**All available charts in our collection**")
+
+    # Display all charts in a grid
+    cols = st.columns(3)
+    for i, chart_file in enumerate(chart_files):
+        col_idx = i % 3
+        with cols[col_idx]:
+            display_chart_thumbnail(chart_file)
+
+
+def display_chart(chart_path):
+    """Display a selected chart with details."""
+    if not os.path.exists(chart_path):
+        st.error(f"Chart file not found: {chart_path}")
+        return
+
+    # Get chart information
+    chart_name = (
+        os.path.basename(chart_path)
+        .replace("_sample.png", "")
+        .replace("_", " ")
+        .title()
+    )
+    file_size = os.path.getsize(chart_path) / 1024  # KB
+
+    st.header(f"📊 {chart_name}")
+
+    # Chart metadata
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("File Size", f"{file_size:.1f} KB")
+    with col2:
+        st.metric("Chart Type", get_chart_type(chart_name))
+    with col3:
+        st.metric("Data Source", "Sample Data")
+
+    # Display the chart
+    try:
+        image = Image.open(chart_path)
+        st.image(
+            image,
+            use_column_width=True,
+            caption=f"{chart_name} - Generated by investByYourself",
+        )
+
+        # Chart description and insights
+        st.subheader("📋 Chart Description")
+        st.markdown(get_chart_description(chart_name))
+
+        # Interactive features
+        st.subheader("🔧 Interactive Features")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("📥 Download Chart", key=f"download_{chart_path}"):
+                with open(chart_path, "rb") as file:
+                    st.download_button(
+                        label="💾 Save Chart",
+                        data=file.read(),
+                        file_name=os.path.basename(chart_path),
+                        mime="image/png",
+                    )
+
+        with col2:
+            if st.button("🔄 Regenerate Chart", key=f"regenerate_{chart_path}"):
+                st.info("Chart regeneration would be implemented here with live data!")
+
+    except Exception as e:
+        st.error(f"Error displaying chart: {e}")
+
+
+def display_chart_thumbnail(chart_path):
+    """Display a chart thumbnail in the gallery."""
+    if not os.path.exists(chart_path):
+        return
+
+    chart_name = (
+        os.path.basename(chart_path)
+        .replace("_sample.png", "")
+        .replace("_", " ")
+        .title()
+    )
+
+    try:
+        image = Image.open(chart_path)
+
+        # Create thumbnail
+        st.subheader(f"📊 {chart_name}")
+        st.image(image, use_column_width=True)
+
+        # Quick actions
+        if st.button(f"View {chart_name}", key=f"view_{chart_path}"):
+            st.session_state.selected_chart = chart_path
+            st.rerun()
+
+    except Exception as e:
+        st.error(f"Error displaying thumbnail: {e}")
+
+
+def get_chart_type(chart_name):
+    """Get the chart type based on the filename."""
+    chart_name_lower = chart_name.lower()
+
+    if "allocation" in chart_name_lower:
+        return "Pie Chart"
+    elif "performance" in chart_name_lower:
+        return "Line Chart"
+    elif "comparison" in chart_name_lower:
+        return "Bar Chart"
+    elif "analysis" in chart_name_lower:
+        return "Multi-Chart"
+    elif "scatter" in chart_name_lower or "heatmap" in chart_name_lower:
+        return "Scatter/Heatmap"
+    else:
+        return "Chart"
+
+
+def get_chart_description(chart_name):
+    """Get a description for the chart."""
+    chart_name_lower = chart_name.lower()
+
+    descriptions = {
+        "portfolio allocation": """
+        **Portfolio Allocation Chart**
+
+        This pie chart shows the distribution of investments across different assets in a sample portfolio.
+        It demonstrates our ability to calculate and visualize portfolio weights and allocations.
+
+        **Key Features:**
+        - Asset allocation percentages
+        - Color-coded segments
+        - Total portfolio value display
+        - Professional styling and annotations
+        """,
+        "portfolio performance": """
+        **Portfolio Performance Chart**
+
+        This line chart tracks portfolio value over time, showing the growth trajectory and performance metrics.
+        It demonstrates our time-series analysis and performance calculation capabilities.
+
+        **Key Features:**
+        - Monthly performance tracking
+        - Total return calculation
+        - Performance annotations
+        - Professional chart styling
+        """,
+        "pe ratio comparison": """
+        **P/E Ratio Comparison Chart**
+
+        This bar chart compares Price-to-Earnings ratios across major technology stocks.
+        It demonstrates our financial ratio calculation and comparative analysis capabilities.
+
+        **Key Features:**
+        - PE ratio calculations
+        - Color-coded risk levels
+        - Average PE reference line
+        - Professional annotations
+        """,
+        "cagr analysis": """
+        **CAGR Analysis Chart**
+
+        This multi-chart display shows Compound Annual Growth Rate comparisons and growth projections.
+        It demonstrates our advanced financial calculation and projection capabilities.
+
+        **Key Features:**
+        - CAGR calculations
+        - Growth projections
+        - Investment strategy comparison
+        - Professional visualizations
+        """,
+        "risk return analysis": """
+        **Risk-Return Analysis Chart**
+
+        This scatter plot analyzes the relationship between risk and return across different asset classes.
+        It demonstrates our risk analysis and portfolio optimization capabilities.
+
+        **Key Features:**
+        - Risk-return scatter plot
+        - Efficient frontier line
+        - Asset class categorization
+        - Professional annotations
+        """,
+        "portfolio correlation": """
+        **Portfolio Correlation Matrix**
+
+        This heatmap shows the correlation coefficients between different portfolio assets.
+        It demonstrates our portfolio analysis and risk assessment capabilities.
+
+        **Key Features:**
+        - Correlation matrix
+        - Color-coded values
+        - Professional styling
+        - Risk assessment tools
+        """,
+    }
+
+    # Find matching description
+    for key, desc in descriptions.items():
+        if key in chart_name_lower:
+            return desc
+
+    return f"""
+    **{chart_name}**
+
+    This chart demonstrates our financial calculation and visualization capabilities.
+    It was generated using our tested financial engine and professional charting tools.
+    """
+
+
+if __name__ == "__main__":
+    main()

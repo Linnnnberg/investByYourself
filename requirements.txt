@@ -10,6 +10,11 @@ numpy>=1.21.0
 python-dotenv>=1.0.0
 yfinance>=0.2.55
 
+# UI Framework and Visualization
+streamlit>=1.28.0
+plotly>=5.17.0
+pillow>=10.0.0
+
 # HTTP and API Dependencies
 requests>=2.31.0
 httpx>=0.24.0
