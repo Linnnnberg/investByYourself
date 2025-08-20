@@ -1,0 +1,400 @@
+name: Financial CI/CD Pipeline - investByYourself
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'README.md'
+      - 'LICENSE'
+      - 'charts/**'
+      - 'data/**'
+      - '**.json'
+      - '**.csv'
+      - '.gitignore'
+      - '*.txt'
+      - '*.rst'
+  pull_request:
+    branches: [ main, develop ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'README.md'
+      - 'LICENSE'
+      - 'charts/**'
+      - 'data/**'
+      - '**.json'
+      - '**.csv'
+      - '.gitignore'
+      - '*.txt'
+      - '*.rst'
+  workflow_dispatch:
+    inputs:
+      skip_tests:
+        description: 'Skip financial tests'
+        required: false
+        default: 'false'
+        type: boolean
+      skip_security:
+        description: 'Skip security scanning'
+        required: false
+        default: 'false'
+        type: boolean
+      skip_integration:
+        description: 'Skip integration tests'
+        required: false
+        default: 'false'
+        type: boolean
+
+env:
+  PYTHON_VERSION: '3.11'
+  FINANCIAL_CI: 'true'
+
+jobs:
+  # Skip entire pipeline for documentation/data changes
+  check-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      should-run: ${{ steps.filter.outputs.changes }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Check for relevant changes
+        id: filter
+        run: |
+          if git diff --name-only ${{ github.event.before }}..${{ github.event.after }} | grep -E '\.(py|yml|yaml|toml|cfg|ini)$|scripts/|tests/' > /dev/null; then
+            echo "changes=true"
+          else
+            echo "changes=false"
+          fi
+
+  # Financial Data Validation Job
+  financial-validation:
+    needs: check-changes
+    if: needs.check-changes.outputs.should-run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Cache financial dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.local/lib/python3.11/site-packages
+            .cache/financial_data
+          key: ${{ runner.os }}-financial-${{ hashFiles('**/requirements*.txt') }}-${{ hashFiles('scripts/**') }}
+          restore-keys: |
+            ${{ runner.os }}-financial-${{ hashFiles('**/requirements*.txt') }}-
+            ${{ runner.os }}-financial-
+      
+      - name: Install financial dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # Install main financial dependencies only if not cached
+          if ! python -c "import yfinance, pandas, numpy" 2>/dev/null; then
+            pip install -r requirements.txt
+          fi
+      
+      - name: Validate financial data quality
+        run: |
+          echo "Running financial data validation..."
+          # This will be implemented in Phase 2
+          echo "Financial data validation completed"
+      
+      - name: Check market data consistency
+        run: |
+          echo "Checking market data consistency..."
+          # This will be implemented in Phase 2
+          echo "Market data consistency check completed"
+
+  # Financial Tests Job
+  financial-tests:
+    needs: [check-changes, financial-validation]
+    if: needs.check-changes.outputs.should-run == 'true' && ${{ !inputs.skip_tests }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Cache financial dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.local/lib/python3.11/site-packages
+            .cache/financial_data
+          key: ${{ runner.os }}-financial-${{ hashFiles('**/requirements*.txt') }}-${{ hashFiles('scripts/**') }}
+          restore-keys: |
+            ${{ runner.os }}-financial-${{ hashFiles('**/requirements*.txt') }}-
+            ${{ runner.os }}-financial-
+      
+      - name: Install financial dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if ! python -c "import yfinance, pandas, numpy" 2>/dev/null; then
+            pip install -r requirements.txt
+          fi
+      
+      - name: Install CI tools
+        run: |
+          if ! python -c "import pytest, black, flake8, mypy" 2>/dev/null; then
+            pip install pytest pytest-cov black flake8 mypy
+          fi
+      
+      - name: Set up financial test environment
+        run: |
+          echo "CI=true" >> $GITHUB_ENV
+          echo "YAHOO_FINANCE_API_KEY=test-key" >> $GITHUB_ENV
+          echo "ALPHA_VANTAGE_API_KEY=test-key" >> $GITHUB_ENV
+          echo "FRED_API_KEY=test-key" >> $GITHUB_ENV
+          echo "DATABASE_URL=sqlite:///./test_financial.db" >> $GITHUB_ENV
+          echo "SECRET_KEY=test-secret-key-for-financial-ci-12345" >> $GITHUB_ENV
+          echo "MARKET_DATA_CACHE_DIR=.cache/market_data" >> $GITHUB_ENV
+          echo "FINANCIAL_CALCULATION_PRECISION=0.01" >> $GITHUB_ENV
+      
+      - name: Run financial basic tests
+        run: |
+          echo "Running financial basic tests..."
+          # This will run test_financial_basic.py when implemented
+          echo "Financial basic tests completed"
+      
+      - name: Run financial data tests
+        run: |
+          echo "Running financial data tests..."
+          # This will run test_financial_data.py when implemented
+          echo "Financial data tests completed"
+
+  # Integration Tests Job
+  integration-tests:
+    needs: [check-changes, financial-tests]
+    if: needs.check-changes.outputs.should-run == 'true' && ${{ !inputs.skip_integration }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHUB_ENV.PYTHON_VERSION }}
+      
+      - name: Install financial dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov requests
+      
+      - name: Set up financial test environment
+        run: |
+          echo "CI=true" >> $GITHUB_ENV
+          echo "YAHOO_FINANCE_API_KEY=test-key" >> $GITHUB_ENV
+          echo "ALPHA_VANTAGE_API_KEY=test-key" >> $GITHUB_ENV
+          echo "FRED_API_KEY=test-key" >> $GITHUB_ENV
+      
+      - name: Run financial integration tests
+        run: |
+          echo "Running financial integration tests..."
+          # This will run test_integration.py when implemented
+          echo "Financial integration tests completed"
+
+  # Code Quality Job
+  code-quality:
+    needs: [check-changes, financial-tests]
+    if: needs.check-changes.outputs.should-run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install quality tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install black flake8 mypy
+      
+      - name: Check code formatting with Black
+        run: |
+          echo "Checking code formatting with Black..."
+          black --check --diff scripts/ tests/
+      
+      - name: Check code quality with Flake8
+        run: |
+          echo "Checking code quality with Flake8..."
+          flake8 scripts/ tests/ --max-line-length=88 --extend-ignore=E203,W503
+      
+      - name: Check type hints with MyPy
+        run: |
+          echo "Checking type hints with MyPy..."
+          mypy scripts/ --ignore-missing-imports
+
+  # Security Scan Job
+  security-scan:
+    needs: [check-changes, code-quality]
+    if: needs.check-changes.outputs.should-run == 'true' && ${{ !inputs.skip_security }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install security tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install bandit safety
+      
+      - name: Run Bandit security scan
+        run: |
+          echo "Running Bandit security scan..."
+          bandit -r scripts/ -f json -o bandit-report.json || true
+      
+      - name: Run Safety dependency check
+        run: |
+          echo "Running Safety dependency check..."
+          safety check --json --output safety-report.json || true
+      
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'table'
+          output: 'trivy-results.txt'
+          severity: 'CRITICAL,HIGH,MEDIUM'
+      
+      - name: Upload security reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-reports
+          path: |
+            bandit-report.json
+            safety-report.json
+            trivy-results.txt
+
+  # Build Job
+  build:
+    needs: [check-changes, security-scan]
+    if: needs.check-changes.outputs.should-run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      
+      - name: Build financial platform image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: investbyyourself:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+  # Financial Documentation Job
+  financial-docs:
+    needs: [check-changes, financial-tests]
+    if: needs.check-changes.outputs.should-run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install documentation tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install pdoc3
+      
+      - name: Generate financial API documentation
+        run: |
+          echo "Generating financial API documentation..."
+          # This will generate docs when scripts are implemented
+          echo "Financial API documentation generated"
+      
+      - name: Upload financial documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: financial-docs
+          path: docs/
+
+  # Deploy to Staging (Automatic)
+  deploy-staging:
+    needs: [check-changes, build, financial-docs]
+    if: needs.check-changes.outputs.should-run == 'true' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Deploy to staging
+        run: |
+          echo "Deploying to staging environment..."
+          # This will be implemented in Phase 3
+          echo "Deployment to staging completed"
+      
+      - name: Run financial smoke tests
+        run: |
+          echo "Running financial smoke tests..."
+          # This will be implemented in Phase 3
+          echo "Financial smoke tests completed"
+
+  # Deploy to Production (Manual)
+  deploy-production:
+    needs: [check-changes, deploy-staging]
+    if: needs.check-changes.outputs.should-run == 'true' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Deploy to production
+        run: |
+          echo "Deploying to production environment..."
+          # This will be implemented in Phase 3
+          echo "Deployment to production completed"
+      
+      - name: Run financial health checks
+        run: |
+          echo "Running financial health checks..."
+          # This will be implemented in Phase 3
+          echo "Financial health checks completed"

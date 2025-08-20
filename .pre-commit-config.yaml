@@ -1,0 +1,172 @@
+# Pre-commit configuration for investByYourself
+# Ensures code quality and financial code standards before commits
+
+repos:
+  # Python code formatting and quality
+  - repo: https://github.com/psf/black
+    rev: 23.7.0
+    hooks:
+      - id: black
+        language_version: python3
+        args: [--line-length=88, --target-version=py311]
+        types: [python]
+  
+  # Import sorting
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        args: [--profile=black, --line-length=88]
+        types: [python]
+  
+  # Code linting
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        args: [--max-line-length=88, --extend-ignore=E203,W503]
+        types: [python]
+  
+  # Type checking
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.5.0
+    hooks:
+      - id: mypy
+        args: [--ignore-missing-imports, --show-error-codes]
+        types: [python]
+        additional_dependencies: [types-requests, types-PyYAML]
+  
+  # Security scanning
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.5
+    hooks:
+      - id: bandit
+        args: [-r, scripts/, -f, json, -o, bandit-report.json]
+        types: [python]
+  
+  # General hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      # Check for merge conflicts
+      - id: check-merge-conflict
+      
+      # Check for large files
+      - id: check-added-large-files
+        args: [--maxkb=1000]
+      
+      # Check for debugger imports
+      - id: debug-statements
+      
+      # Check for private key files
+      - id: detect-private-key
+      
+      # Check for hardcoded passwords
+      - id: detect-password-in-url
+      
+      # Check file endings
+      - id: end-of-file-fixer
+      
+      # Check for trailing whitespace
+      - id: trailing-whitespace
+      
+      # Check YAML syntax
+      - id: check-yaml
+      
+      # Check JSON syntax
+      - id: check-json
+      
+      # Check for broken symlinks
+      - id: check-merge-conflict
+      
+      # Check for executable files
+      - id: check-executables-have-shebangs
+      
+      # Check for case conflicts
+      - id: check-case-conflict
+      
+      # Check for duplicate AST elements
+      - id: check-docstring-first
+      
+      # Check for proper line endings
+      - id: mixed-line-ending
+        args: [--fix=lf]
+  
+  # Financial code specific checks
+  - repo: local
+    hooks:
+      # Check for emoji usage in financial code
+      - id: check-no-emojis
+        name: Check for no emojis in financial code
+        entry: python -c "
+import sys
+from pathlib import Path
+emoji_patterns = ['✅', '❌', '🚀', '⚠️', '🎯', '📊', '🔧', '🌟', '🛠️', '🔍', '📚', '🧪', '🔄', '📝']
+violations = []
+for file_path in Path('.').rglob('*.py'):
+    if 'tests/' not in str(file_path):  # Skip test files
+        with open(file_path, 'r', encoding='utf-8') as f:
+            for i, line in enumerate(f, 1):
+                for emoji in emoji_patterns:
+                    if emoji in line:
+                        violations.append(f'{file_path}:{i}')
+if violations:
+    print('Found emoji violations in financial code:', violations)
+    sys.exit(1)
+print('No emoji violations found in financial code')
+"
+        language: system
+        types: [python]
+      
+      # Check for financial API key exposure
+      - id: check-no-api-keys
+        name: Check for no API keys in code
+        entry: python -c "
+import sys
+import re
+from pathlib import Path
+api_key_patterns = [
+    r'ALPHA_VANTAGE.*=.*[\"\'].*[\"\']',
+    r'YAHOO_FINANCE.*=.*[\"\'].*[\"\']',
+    r'FRED.*=.*[\"\'].*[\"\']',
+    r'API_KEY.*=.*[\"\'].*[\"\']',
+    r'api_key.*=.*[\"\'].*[\"\']'
+]
+violations = []
+for file_path in Path('.').rglob('*.py'):
+    if 'tests/' not in str(file_path):  # Skip test files
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+            for pattern in api_key_patterns:
+                if re.search(pattern, content, re.IGNORECASE):
+                    violations.append(str(file_path))
+                    break
+if violations:
+    print('Found potential API key exposures:', violations)
+    sys.exit(1)
+print('No API key exposures found')
+"
+        language: system
+        types: [python]
+      
+      # Check for proper financial error handling
+      - id: check-financial-error-handling
+        name: Check for proper financial error handling
+        entry: python -c "
+import sys
+from pathlib import Path
+required_error_handling = ['try:', 'except:', 'raise']
+violations = []
+for file_path in Path('.').rglob('*.py'):
+    if 'scripts/' in str(file_path) and file_path.name.endswith('.py'):
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+            if 'def ' in content and not any(pattern in content for pattern in required_error_handling):
+                violations.append(str(file_path))
+if violations:
+    print('Files missing error handling:', violations)
+    sys.exit(1)
+print('All financial scripts have proper error handling')
+"
+        language: system
+        types: [python]
