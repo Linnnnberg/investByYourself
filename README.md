@@ -47,15 +47,111 @@
 
 ### **Installation**
 ```bash
-git clone <your-repo-url>
-cd Invest-By-Yourself
+git clone https://github.com/Linnnnberg/investByYourself.git
+cd investByYourself
+
+# Complete installation (recommended)
 pip install -r requirements.txt
+
+# Or core dependencies only
+pip install pandas numpy matplotlib seaborn streamlit plotly pillow
+```
+
+### **Running the Application**
+```bash
+# Main app
+python run_ui.py
+
+# Or specific components
+python run_ui.py portfolio      # Portfolio dashboard
+python run_ui.py calculator     # Financial calculator
+python run_ui.py charts         # Chart viewer
+```
+
+### **📦 Dependencies**
+
+#### **Core Dependencies (Required)**
+```bash
+# Financial & Data Analysis
+pandas>=1.5.0          # Data manipulation and analysis
+numpy>=1.21.0          # Numerical computing foundation
+matplotlib>=3.6.0      # Professional chart generation
+seaborn>=0.12.0        # Statistical data visualization
+yfinance>=0.2.55       # Yahoo Finance data integration
+fredapi>=0.5.0         # Federal Reserve Economic Data
+financetoolkit>=1.0.0  # Financial analysis toolkit
+
+# UI Framework
+streamlit>=1.28.0      # Web application framework
+plotly>=5.17.0         # Interactive charts
+pillow>=10.0.0         # Image processing
+
+# HTTP & API
+requests>=2.31.0       # HTTP library for API calls
+httpx>=0.24.0          # Modern HTTP client with async support
+python-dotenv>=1.0.0   # Environment variable management
+```
+
+#### **Development Dependencies (Optional)**
+```bash
+# Testing & Quality
+pytest>=7.4.0          # Testing framework
+black>=23.7.0          # Code formatter
+flake8>=6.0.0          # Code linter
+mypy>=1.5.0            # Static type checker
+pre-commit>=3.3.0      # Pre-commit hooks
+```
+
+#### **Installation Options**
+```bash
+# Complete installation (recommended)
+pip install -r requirements.txt
+
+# Core platform only
+pip install pandas numpy matplotlib seaborn streamlit plotly pillow yfinance fredapi
+
+# Development setup
+pip install pytest black flake8 mypy pre-commit
+```
+
+#### **Verify Installation**
+```bash
+# Test core functionality
+python -c "import pandas, numpy, streamlit, plotly; print('✅ Core dependencies OK')"
+
+# Test financial tools
+python -c "import matplotlib, seaborn; print('✅ Chart generation OK')"
+
+# Test UI components
+python run_ui.py --help
 ```
 
 ### **Configuration**
 1. Set up your API keys in environment variables
 2. Configure data source preferences
 3. Set up your initial watchlist
+
+### **🚨 Troubleshooting**
+
+#### **Common Installation Issues**
+```bash
+# Matplotlib backend issues (Linux/macOS)
+export MPLBACKEND=Agg
+
+# Streamlit installation problems
+pip install --upgrade pip setuptools wheel
+pip install streamlit
+
+# Chart generation issues
+pip uninstall matplotlib && pip install matplotlib
+python scripts/generate_sample_charts.py
+```
+
+#### **System Requirements**
+- **Python**: 3.8+ (3.9+ recommended)
+- **RAM**: 4GB minimum, 8GB recommended
+- **Storage**: 2GB free space minimum
+- **Browser**: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
 
 ## 📊 **Current Features**
 
@@ -66,6 +162,9 @@ pip install -r requirements.txt
 - Multi-source data validation framework
 - CI/CD pipeline with financial-specific rules
 - Comprehensive testing infrastructure
+- **🎨 Complete UI Platform**: Portfolio dashboard, financial calculator, chart viewer
+- **📊 Professional Charts**: 6 types of financial charts with high-resolution output
+- **🚀 Interactive Components**: Streamlit-based professional financial tools
 
 ### **📁 Project Structure & Documentation**
 ```
@@ -77,12 +176,21 @@ investByYourself/
 │   ├── core/                                   # Core financial modules
 │   ├── data_sources/                           # Data source integrations
 │   ├── analysis/                               # Analysis modules
+│   ├── ui/                                     # 🎨 User interface components
+│   │   ├── main_app.py                         # Main launcher & navigation
+│   │   ├── portfolio_dashboard.py              # Portfolio management
+│   │   ├── financial_calculator.py             # Financial tools
+│   │   ├── chart_viewer.py                     # Chart display
+│   │   └── README.md                           # UI documentation
 │   └── utils/                                  # Utility functions
 ├── tests/                                       # 🧪 Test suite
 │   ├── unit/                                   # Unit tests
 │   ├── integration/                            # Integration tests
 │   └── fixtures/                               # Test fixtures
 ├── scripts/                                     # Python analysis scripts
+│   ├── generate_sample_charts.py                # Chart generation system
+│   └── run_local_financial_ci.py               # Local CI pipeline runner
+├── run_ui.py                                    # 🚀 UI launcher script
 ├── config/                                      # Configuration files
 ├── tools/                                       # Development tools
 ├── docker/                                      # Docker configuration
