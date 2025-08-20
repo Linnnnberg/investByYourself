@@ -151,6 +151,31 @@
 
 ## 🎯 **Core Financial Platform Features**
 
+### **<Story-004> Earnings Data & Transcript Integration**
+- [ ] **API Ninjas Integration (MVP)**
+  - Set up API key and test connectivity
+  - Implement earnings calendar endpoint (`/v1/calendar/earnings`)
+  - Add company earnings history (`/v1/earnings`)
+  - Create transcript search and retrieval
+  - Basic sentiment analysis and key metrics extraction
+- [ ] **Finnhub Integration (Comparison)**
+  - Set up API key and Python SDK
+  - Test earnings calendar and company earnings endpoints
+  - Compare transcript quality and real-time capabilities
+  - Evaluate advanced features vs cost
+- [ ] **Analysis & Decision**
+  - Compare data quality, accuracy, and cost
+  - Test performance and reliability
+  - Choose production API based on results
+  - Implement full production integration
+- **Priority**: High
+- **Effort**: High
+- **Dependencies**: Story-001, Tech-002
+- **Timeline**: Weeks 3-6
+- **Success Criteria**:
+  - MVP: Earnings data for top 100 US companies, basic transcripts
+  - Production: Real-time updates, comprehensive analysis, >99% accuracy
+
 ### **<Story-006> Market Data Collection System**
 - [ ] Implement Yahoo Finance data collection
 - [ ] Add Alpha Vantage API integration
@@ -208,6 +233,21 @@
 - **Priority**: High
 - **Effort**: High
 - **Dependencies**: Tech-011
+
+### **<Tech-013> API Integration Infrastructure**
+- [ ] Create standardized API client wrapper classes
+- [ ] Implement rate limiting and caching strategies
+- [ ] Add comprehensive error handling and retry logic
+- [ ] Set up data validation and quality checks
+- [ ] Create common data models across APIs
+- **Priority**: High
+- **Effort**: High
+- **Dependencies**: Story-004, Tech-011
+- **Timeline**: Weeks 4-6
+- **Success Criteria**:
+  - Unified interface for multiple financial APIs
+  - Robust error handling and rate limit management
+  - Consistent data models across sources
 
 ---
 
@@ -328,11 +368,12 @@
 ### **Next Sprint (Weeks 3-4)**
 - [ ] Story-001: Financial Data Testing Framework
 - [ ] Story-002: Financial Calculation Testing Suite
+- [ ] Story-004: Earnings Data & Transcript Integration
 - [ ] Tech-005: Performance Testing for Financial Data
 - [ ] Tech-006: Security for Financial Applications
 
 ### **Upcoming Sprints**
-- [ ] Weeks 5-6: Advanced CI/CD Features
+- [ ] Weeks 5-6: Advanced CI/CD Features + API Integration
 - [ ] Weeks 7-8: Production-Ready Features
 - [ ] Future: Core Financial Platform Features
 
