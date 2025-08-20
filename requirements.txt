@@ -1,3 +1,6 @@
+# Comprehensive Requirements for investByYourself Financial Platform
+
+# Core Financial Dependencies
 financetoolkit>=1.0.0
 pandas>=1.5.0
 seaborn>=0.12.0
@@ -6,4 +9,30 @@ fredapi>=0.5.0
 numpy>=1.21.0
 python-dotenv>=1.0.0
 yfinance>=0.2.55
+
+# HTTP and API Dependencies
 requests>=2.31.0
+httpx>=0.24.0
+
+# Testing Framework
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.0
+pytest-asyncio>=0.21.0
+freezegun>=1.2.0
+
+# Code Quality Tools
+black>=23.7.0
+flake8>=6.0.0
+mypy>=1.5.0
+isort>=5.12.0
+
+# Security Tools
+bandit>=1.7.5
+safety>=2.3.0
+
+# Documentation
+pdoc3>=0.10.0
+
+# Pre-commit hooks
+pre-commit>=3.3.0

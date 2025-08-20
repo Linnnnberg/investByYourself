@@ -24,7 +24,7 @@ This document outlines the roadmap for expanding the financial analysis toolkit 
 - [ ] **Employee Count**: Total workforce size
 
 ### 3. **Business Distribution & Market Presence**
-- [ ] **Geographic Markets**: 
+- [ ] **Geographic Markets**:
   - [ ] Primary markets (e.g., North America, Europe, Asia)
   - [ ] Emerging markets presence
   - [ ] Market entry dates for key regions

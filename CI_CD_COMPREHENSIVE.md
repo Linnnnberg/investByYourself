@@ -90,11 +90,11 @@ def validate_yahoo_finance_response(data):
     for field in required_fields:
         if field not in data:
             raise ValueError(f"Missing required field: {field}")
-    
+
     # Validate data types and ranges
     if not isinstance(data['regularMarketPrice'], (int, float)) or data['regularMarketPrice'] < 0:
         raise ValueError("Invalid price data")
-    
+
     return True
 ```
 
@@ -108,7 +108,7 @@ def test_pe_ratio_calculation():
     price = 100.0
     earnings = 5.0
     expected_pe = 20.0
-    
+
     calculated_pe = calculate_pe_ratio(price, earnings)
     assert abs(calculated_pe - expected_pe) < 0.01
 
@@ -118,10 +118,10 @@ def test_portfolio_value_calculation():
         {'symbol': 'AAPL', 'shares': 10, 'price': 150.0},
         {'symbol': 'GOOGL', 'shares': 5, 'price': 2800.0}
     ]
-    
+
     expected_value = (10 * 150.0) + (5 * 2800.0)
     calculated_value = calculate_portfolio_value(holdings)
-    
+
     assert abs(calculated_value - expected_value) < 0.01
 ```
 
@@ -292,7 +292,7 @@ class FinancialSettings(BaseSettings):
     alpha_vantage_api_key: str = "test_key"
     fred_api_key: str = "test_key"
     financial_calculation_precision: float = 0.01
-    
+
     def __init__(self, **kwargs):
         if os.getenv("CI"):
             kwargs["yahoo_finance_api_key"] = "test-key"
@@ -485,7 +485,7 @@ pre-commit run --all-files
     format: 'table'
     output: 'financial-security-results.txt'
     severity: 'CRITICAL,HIGH,MEDIUM'
-    
+
 - name: Run financial data security scan
   run: |
     python scripts/security_scan_financial_data.py
@@ -899,9 +899,9 @@ python scripts/generate_financial_docs.py
 
 ---
 
-**Last Updated**: January 2025  
-**Pipeline Version**: v1.0 (Financial Platform Optimized)  
-**Performance Improvement**: 40-60% reduction in financial CI/CD time  
+**Last Updated**: January 2025
+**Pipeline Version**: v1.0 (Financial Platform Optimized)
+**Performance Improvement**: 40-60% reduction in financial CI/CD time
 **Maintained By**: investByYourself Development Team
 
 ---
