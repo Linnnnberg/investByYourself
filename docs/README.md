@@ -62,7 +62,13 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 - Company profile collection enhancements
 - Basic analysis tools development
 
-### **Phase 3: Advanced Analysis & Dashboards** ⏳ **PLANNED**
+### **Phase 3: ETL & Database Infrastructure** 🚧 **IN PROGRESS (50%)**
+- ✅ **Tech-008: Database Infrastructure Setup** - COMPLETED
+- 🚧 **Tech-009: ETL Pipeline Implementation** - IN PROGRESS
+- Database schema and connection management ready
+- ETL pipeline development in progress
+
+### **Phase 4: Advanced Analysis & Dashboards** ⏳ **PLANNED**
 - Enhanced financial analysis engine
 - Sector analysis and screening tools
 - Interactive dashboards
@@ -77,13 +83,13 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 ## 🔗 **Quick Links**
 
 ### **📊 Current Focus**
-- **[Story-005: Enhanced Company Profile & Fundamentals Analysis](../MASTER_TODO.md#story-005-enhanced-company-profile--fundamentals-analysis)** - Main development priority
+- **[Tech-009: ETL Pipeline Implementation](../MASTER_TODO.md#tech-009-etl-pipeline-implementation)** - Main development priority
 - **[Tech-013: Company Analysis Infrastructure](../MASTER_TODO.md#tech-013-company-analysis-infrastructure)** - Technical setup
 
 ### **🎯 Next Milestones**
-- **Week 4-5**: Local vs Web App Architecture Decision
-- **Week 5-6**: ETL Architecture & Database Design
-- **Week 6-8**: ETL Implementation & Core Platform
+- **Week 5-6**: ETL Pipeline Implementation (Tech-009)
+- **Week 6-7**: Data Models & Schema Design (Tech-010)
+- **Week 7-8**: Company Analysis Infrastructure (Tech-013)
 
 ### **📈 Success Metrics**
 - Company profile completeness >95%
