@@ -144,7 +144,10 @@ async def test_cache_operations():
 
         # Create config with test environment
         config = CacheConfig(
-            host="localhost", port=6379, password="test_password", database=1
+            host="localhost",
+            port=6379,
+            password=os.getenv("REDIS_PASSWORD", "test_password"),
+            database=1,
         )
 
         print("✅ CacheConfig created with test credentials")
@@ -174,7 +177,7 @@ async def test_database_operations():
             port=5432,
             database="test_db",
             user="test_user",
-            password="test_password",
+            password=os.getenv("POSTGRES_PASSWORD", "test_password"),
         )
 
         print("✅ DatabaseConfig created with test credentials")
