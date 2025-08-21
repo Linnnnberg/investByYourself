@@ -929,6 +929,116 @@
   - <15 minute root cause identification
   - Comprehensive performance insights
 
+### **<Tech-020> Microservices Foundation & Structure**
+- [ ] **Directory Structure Setup** ✅ COMPLETED
+  - Create services, shared, and infrastructure directories
+  - Set up service-specific folders
+  - Create documentation and README files
+- [ ] **Service Requirements Files**
+  - Split main requirements.txt into service-specific files
+  - Manage service dependencies independently
+  - Set up shared dependency management
+- [ ] **Service Dockerfiles**
+  - Create service-specific Docker configurations
+  - Set up multi-stage builds for optimization
+  - Configure service orchestration
+- **Priority**: High
+- **Effort**: Low
+- **Timeline**: Week 1 (Foundation)
+- **Dependencies**: None
+- **Success Criteria**:
+  - Complete directory structure created
+  - Service-specific requirements files ready
+  - Basic Docker configuration complete
+
+### **<Tech-021> ETL Service Extraction**
+- [ ] **Code Migration**
+  - Move ETL components from src/etl/ to services/etl-service/
+  - Update import paths and dependencies
+  - Maintain existing functionality during migration
+- [ ] **Service API Setup**
+  - Create REST API endpoints for ETL operations
+  - Implement service health checks
+  - Set up service configuration management
+- [ ] **Testing & Validation**
+  - Ensure ETL functionality works in new structure
+  - Update test suites for service isolation
+  - Validate data collection and transformation
+- **Priority**: High
+- **Effort**: Medium
+- **Timeline**: Week 2-3 (Service Extraction)
+- **Dependencies**: Tech-020
+- **Success Criteria**:
+  - ETL service fully extracted and functional
+  - All existing ETL tests passing
+  - Service API endpoints working
+
+### **<Tech-022> Financial Analysis Service Extraction**
+- [ ] **Code Migration**
+  - Move financial analysis components to services/financial-analysis-service/
+  - Extract financial transformers and calculators
+  - Update dependencies and imports
+- [ ] **Service API Development**
+  - Create REST API for financial calculations
+  - Implement ratio calculation endpoints
+  - Set up chart generation services
+- [ ] **Integration Testing**
+  - Test service isolation and independence
+  - Validate financial calculations accuracy
+  - Ensure performance meets requirements
+- **Priority**: High
+- **Effort**: Medium
+- **Timeline**: Week 2-3 (Service Extraction)
+- **Dependencies**: Tech-020, Tech-021
+- **Success Criteria**:
+  - Financial analysis service fully extracted
+  - All financial calculations working correctly
+  - API endpoints responding within SLA
+
+### **<Tech-023> Inter-Service Communication Setup**
+- [ ] **API Gateway Implementation**
+  - Set up request routing and load balancing
+  - Implement authentication and authorization
+  - Configure rate limiting and API versioning
+- [ ] **Service Discovery**
+  - Implement service registration and discovery
+  - Set up health check endpoints
+  - Configure service-to-service communication
+- [ ] **Message Queue Setup**
+  - Configure Redis/RabbitMQ for async communication
+  - Implement event-driven architecture patterns
+  - Set up dead letter queues and error handling
+- **Priority**: High
+- **Effort**: High
+- **Timeline**: Week 3-4 (Infrastructure & Testing)
+- **Dependencies**: Tech-021, Tech-022
+- **Success Criteria**:
+  - API gateway routing requests correctly
+  - Services can communicate asynchronously
+  - Health checks and monitoring working
+
+### **<Tech-024> Data Service & Database Management**
+- [ ] **Service Extraction**
+  - Move database components to services/data-service/
+  - Implement service-specific database schemas
+  - Set up connection pooling and management
+- [ ] **Data Migration Strategy**
+  - Plan data migration from monolithic structure
+  - Implement gradual migration with rollback
+  - Ensure data consistency during transition
+- [ ] **Performance Optimization**
+  - Optimize database queries for service isolation
+  - Implement caching strategies
+  - Set up database monitoring and alerting
+- **Priority**: High
+- **Effort**: High
+- **Timeline**: Week 4 (Infrastructure & Testing)
+- **Dependencies**: Tech-023
+- **Success Criteria**:
+  - Data service fully functional
+  - Database performance maintained or improved
+  - Migration strategy tested and validated
+
 ---
 
 ## 📝 **Notes & Considerations**
@@ -952,7 +1062,7 @@
 ---
 
 **Last Updated**: January 2025
-**Total Tickets**: 21 Story, 19 Tech, 3 Fix
+**Total Tickets**: 21 Story, 24 Tech, 3 Fix
 **Estimated Timeline**: 8-12 weeks for MVP
 **Maintained By**: investByYourself Development Team
 
