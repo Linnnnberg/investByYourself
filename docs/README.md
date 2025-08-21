@@ -13,6 +13,7 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 ### **🚀 Planning & Roadmap**
 - **[📈 Development Plan](investbyyourself_plan.md)** - Main project roadmap, architecture decisions, and implementation phases
 - **[📋 Master TODO List](../MASTER_TODO.md)** - Complete task tracking, progress status, and development timeline
+- **[📊 Current Status Summary](current_status_summary.md)** - Real-time project status and development priorities
 
 ### **🔍 Feature Analysis & Planning**
 - **[🔍 Company Analysis Enhancement Summary](company_analysis_enhancement_summary.md)** - Enhanced company analysis capabilities and implementation details
@@ -25,13 +26,14 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 ### **📊 Analysis Reports & Examples**
 - **[📈 Company Profiles Report](reports/company_profiles_report.md)** - Company analysis examples and methodology
 - **[📊 Inflation Analysis Report](reports/inflation_analysis_report.md)** - Economic indicators analysis and insights
+- **[🔍 Data Source Analysis](data_source_analysis.md)** - API strategy and data source decisions
 
 ---
 
 ## 🧭 **Navigation Guide**
 
 ### **For New Team Members**
-1. **Start Here** → [Development Plan](investbyyourself_plan.md) - Understand project goals and architecture
+1. **Start Here** → [Current Status Summary](current_status_summary.md) - Get current project overview
 2. **Check Progress** → [Master TODO](../MASTER_TODO.md) - See current status and next steps
 3. **Review Structure** → [Project Organization](project_organization.md) - Understand code organization
 4. **Technical Details** → [ETL Architecture Plan](etl_architecture_plan.md) - Implementation specifics
@@ -62,7 +64,13 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 - Company profile collection enhancements
 - Basic analysis tools development
 
-### **Phase 3: Advanced Analysis & Dashboards** ⏳ **PLANNED**
+### **Phase 3: ETL & Database Infrastructure** 🚧 **IN PROGRESS (50%)**
+- ✅ **Tech-008: Database Infrastructure Setup** - COMPLETED
+- 🚧 **Tech-009: ETL Pipeline Implementation** - IN PROGRESS
+- Database schema and connection management ready
+- ETL pipeline development in progress
+
+### **Phase 4: Advanced Analysis & Dashboards** ⏳ **PLANNED**
 - Enhanced financial analysis engine
 - Sector analysis and screening tools
 - Interactive dashboards
@@ -77,13 +85,13 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 ## 🔗 **Quick Links**
 
 ### **📊 Current Focus**
-- **[Story-005: Enhanced Company Profile & Fundamentals Analysis](../MASTER_TODO.md#story-005-enhanced-company-profile--fundamentals-analysis)** - Main development priority
+- **[Tech-009: ETL Pipeline Implementation](../MASTER_TODO.md#tech-009-etl-pipeline-implementation)** - Main development priority
 - **[Tech-013: Company Analysis Infrastructure](../MASTER_TODO.md#tech-013-company-analysis-infrastructure)** - Technical setup
 
 ### **🎯 Next Milestones**
-- **Week 4-5**: Local vs Web App Architecture Decision
-- **Week 5-6**: ETL Architecture & Database Design
-- **Week 6-8**: ETL Implementation & Core Platform
+- **Week 5-6**: ETL Pipeline Implementation (Tech-009)
+- **Week 6-7**: Data Models & Schema Design (Tech-010)
+- **Week 7-8**: Company Analysis Infrastructure (Tech-013)
 
 ### **📈 Success Metrics**
 - Company profile completeness >95%
