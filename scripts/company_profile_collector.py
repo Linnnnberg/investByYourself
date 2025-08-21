@@ -52,9 +52,11 @@ def collect_company_profile(symbol):
                 "industry": info.get("industry", "N/A"),
                 "industry_group": info.get("industryGroup", "N/A"),
                 "currency": info.get("currency", "N/A"),
-                "ceo": info.get("companyOfficers", [{}])[0].get("name", "N/A")
-                if info.get("companyOfficers")
-                else "N/A",
+                "ceo": (
+                    info.get("companyOfficers", [{}])[0].get("name", "N/A")
+                    if info.get("companyOfficers")
+                    else "N/A"
+                ),
                 "employees": info.get("fullTimeEmployees", "N/A"),
                 "headquarters": {
                     "address1": info.get("address1", "N/A"),
