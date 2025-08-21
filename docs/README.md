@@ -21,6 +21,7 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 
 ### **🏗️ Technical Implementation**
 - **[🏗️ ETL Architecture Plan](etl_architecture_plan.md)** - Data pipeline design, database schema, and technical architecture
+- **[🏗️ Microservices Architecture Plan](microservices_architecture_plan.md)** - Strategic plan for microservices transformation
 - **[📊 Project Organization](project_organization.md)** - Code structure, file organization, and development workflow
 
 ### **📊 Analysis Reports & Examples**

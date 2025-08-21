@@ -12,6 +12,7 @@
 - **[📈 Development Plan](docs/investbyyourself_plan.md)** - Main project roadmap, architecture decisions, and implementation phases
 - **[🔍 Company Analysis Enhancement Summary](docs/company_analysis_enhancement_summary.md)** - Enhanced company analysis capabilities and implementation details
 - **[🏗️ ETL & Database Architecture](docs/etl_architecture_plan.md)** - Comprehensive ETL pipeline design and database schema
+- **[🏗️ Microservices Architecture Plan](docs/microservices_architecture_plan.md)** - Strategic plan for microservices transformation
 
 ## 🏗️ **System Architecture**
 
