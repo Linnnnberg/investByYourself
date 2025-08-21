@@ -52,7 +52,7 @@ class CacheConfig:
 
     host: str = "localhost"
     port: int = 6379
-    password: Optional[str] = "secure_redis_2025"
+    password: Optional[str] = None
     database: int = 0
 
     # Connection pool settings
@@ -72,7 +72,7 @@ class CacheConfig:
         return cls(
             host=os.getenv("REDIS_HOST", "localhost"),
             port=int(os.getenv("REDIS_PORT", "6379")),
-            password=os.getenv("REDIS_PASSWORD", "secure_redis_2025"),
+            password=os.getenv("REDIS_PASSWORD"),
             database=int(os.getenv("REDIS_DATABASE", "0")),
             max_connections=int(os.getenv("REDIS_MAX_CONNECTIONS", "20")),
             default_ttl=int(os.getenv("REDIS_DEFAULT_TTL", "3600")),

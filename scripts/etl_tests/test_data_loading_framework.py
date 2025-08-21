@@ -81,7 +81,7 @@ async def test_database_loader():
             port=5432,
             database="investbyyourself",
             user="etl_user",
-            password="secure_password_2025",
+            password=os.getenv("DB_PASSWORD", ""),
         )
 
         async with DatabaseLoader(config=config, enable_versioning=True) as loader:
@@ -290,7 +290,7 @@ async def test_cache_loader():
         config = CacheConfig(
             host="localhost",
             port=6379,
-            password="secure_redis_2025",
+            password=os.getenv("REDIS_PASSWORD"),
             default_ttl=3600,  # 1 hour
         )
 

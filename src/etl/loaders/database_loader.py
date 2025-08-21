@@ -46,7 +46,7 @@ class DatabaseConfig:
     port: int = 5432
     database: str = "investbyyourself"
     user: str = "etl_user"
-    password: str = "secure_password_2025"
+    password: str = ""
 
     # Connection pool settings
     min_connections: int = 2
@@ -69,7 +69,7 @@ class DatabaseConfig:
             port=int(os.getenv("DB_PORT", "5432")),
             database=os.getenv("DB_DATABASE", "investbyyourself"),
             user=os.getenv("DB_USER", "etl_user"),
-            password=os.getenv("DB_PASSWORD", "secure_password_2025"),
+            password=os.getenv("DB_PASSWORD", ""),
             min_connections=int(os.getenv("DB_MIN_CONNECTIONS", "2")),
             max_connections=int(os.getenv("DB_MAX_CONNECTIONS", "10")),
         )

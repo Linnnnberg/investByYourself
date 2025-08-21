@@ -31,19 +31,19 @@ class DatabaseConfig:
     postgres_port: int = 5432
     postgres_database: str = "investbyyourself"
     postgres_user: str = "etl_user"
-    postgres_password: str = "secure_password_2025"
+    postgres_password: str = ""
 
     # Redis Configuration
     redis_host: str = "localhost"
     redis_port: int = 6379
-    redis_password: str = "secure_redis_2025"
+    redis_password: Optional[str] = None
     redis_database: int = 0
 
     # MinIO Configuration
     minio_host: str = "localhost"
     minio_port: int = 9000
     minio_access_key: str = "minio_admin"
-    minio_secret_key: str = "secure_minio_2025"
+    minio_secret_key: str = ""
     minio_secure: bool = False
 
     # Connection Pool Configuration
@@ -60,14 +60,14 @@ class DatabaseConfig:
             postgres_port=int(os.getenv("POSTGRES_PORT", "5432")),
             postgres_database=os.getenv("POSTGRES_DB", "investbyyourself"),
             postgres_user=os.getenv("POSTGRES_USER", "etl_user"),
-            postgres_password=os.getenv("POSTGRES_PASSWORD", "secure_password_2025"),
+            postgres_password=os.getenv("POSTGRES_PASSWORD", ""),
             redis_host=os.getenv("REDIS_HOST", "localhost"),
             redis_port=int(os.getenv("REDIS_PORT", "6379")),
-            redis_password=os.getenv("REDIS_PASSWORD", "secure_redis_2025"),
+            redis_password=os.getenv("REDIS_PASSWORD"),
             minio_host=os.getenv("MINIO_HOST", "localhost"),
             minio_port=int(os.getenv("MINIO_PORT", "9000")),
             minio_access_key=os.getenv("MINIO_ACCESS_KEY", "minio_admin"),
-            minio_secret_key=os.getenv("MINIO_SECRET_KEY", "secure_minio_2025"),
+            minio_secret_key=os.getenv("MINIO_SECRET_KEY", ""),
         )
 
 
