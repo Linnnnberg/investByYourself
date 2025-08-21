@@ -7,10 +7,11 @@
 **Invest By Yourself** empowers individual investors to take control of their financial future with professional-grade tools and data.
 
 ### **📚 Planning & Documentation**
-- **[📋 Master Todo List](MASTER_TODO.md)** - Complete project roadmap with phases, priorities, and progress tracking (48% Complete)
+- **[📚 Documentation Hub](docs/README.md)** - Complete documentation navigation and overview
+- **[📋 Master Todo List](MASTER_TODO.md)** - Complete project roadmap with phases, priorities, and progress tracking (43% Complete)
+- **[📈 Development Plan](docs/investbyyourself_plan.md)** - Main project roadmap, architecture decisions, and implementation phases
+- **[🔍 Company Analysis Enhancement Summary](docs/company_analysis_enhancement_summary.md)** - Enhanced company analysis capabilities and implementation details
 - **[🏗️ ETL & Database Architecture](docs/etl_architecture_plan.md)** - Comprehensive ETL pipeline design and database schema
-- **[🚀 Strategic Vision Document](docs/investbyyourself_plan.md)** - Complete project vision, user personas, and long-term roadmap
-- **[📊 Project Analysis](docs/investbyyourself_plan_analysis.md)** - Strategic analysis and integration planning
 
 ## 🏗️ **System Architecture**
 
@@ -87,7 +88,10 @@ investByYourself/
 
 ## 🎯 **Current Status**
 
-**Progress**: 48% Complete - See [Master Todo](MASTER_TODO.md) for detailed roadmap.
+**Progress**: 43% Complete - See [Master Todo](MASTER_TODO.md) for detailed roadmap.
+
+**Current Phase**: Phase 2 - Core Data & Company Analysis (70% Complete)
+**Next Milestone**: ETL Architecture & Database Design (Weeks 5-6)
 
 ## 🤝 **Contributing**
 

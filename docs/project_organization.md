@@ -2,6 +2,24 @@
 
 *Last Updated: 2025-08-19*
 
+## 📚 **Documentation Navigation**
+
+**Related Documents:**
+- **[📈 Development Plan](investbyyourself_plan.md)** - Main project roadmap and architecture
+- **[📋 Master TODO List](../MASTER_TODO.md)** - Complete task tracking and progress
+- **[🔍 Company Analysis Enhancement Summary](company_analysis_enhancement_summary.md)** - Enhanced company analysis capabilities
+- **[🏗️ ETL Architecture Plan](etl_architecture_plan.md)** - Technical implementation details
+- **[🔍 Data Source Analysis](data_source_analysis.md)** - API and data source strategy
+
+**Quick Navigation:**
+- [Project Overview](#-project-overview) - System purpose and goals
+- [Directory Structure](#-directory-structure) - File organization
+- [Scripts Organization](#-scripts-organization) - Code organization
+- [Documentation Organization](#-documentation-organization) - Documentation structure
+- [Development Workflow](#-development-workflow) - Development process
+
+---
+
 ## 🎯 **Project Overview**
 
 This Financial & Macro Economic Analysis Toolkit is organized for clarity, maintainability, and scalability. The project follows a logical structure that separates different types of analysis, data, and documentation.
@@ -160,4 +178,26 @@ NewProject/
 
 ---
 
+## 🔗 **Related Documentation & Next Steps**
+
+### **📖 Read Next**
+- **[Development Plan](investbyyourself_plan.md)** - Complete project roadmap and implementation phases
+- **[Master TODO List](../MASTER_TODO.md)** - Current progress and next tasks
+- **[Company Analysis Enhancement Summary](company_analysis_enhancement_summary.md)** - Enhanced company analysis capabilities
+
+### **🎯 Implementation Focus**
+- **Current Phase**: Phase 2 - Core Data & Company Analysis (Weeks 3-4)
+- **Key Components**: Company profile collector, financial analysis engine, sector analysis
+- **Technical Setup**: ETL architecture, database design, data pipeline
+
+### **📊 Development Workflow**
+1. **Review** [Development Plan](investbyyourself_plan.md) for implementation roadmap
+2. **Check** [Master TODO](../MASTER_TODO.md) for current progress
+3. **Implement** company analysis enhancements in `src/etl/` and `src/analysis/`
+4. **Test** new functionality with existing test framework
+
+---
+
 *This organization structure ensures the project remains maintainable, scalable, and easy to navigate as it grows.*
+
+*For detailed implementation plans and technical specifications, refer to the [Development Plan](investbyyourself_plan.md) and [ETL Architecture Plan](etl_architecture_plan.md).*

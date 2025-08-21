@@ -1,5 +1,23 @@
 # Master Todo List - investByYourself
 
+## 📚 **Documentation Navigation**
+
+**Related Documents:**
+- **[📈 Development Plan](docs/investbyyourself_plan.md)** - Main project roadmap and architecture
+- **[🔍 Company Analysis Enhancement Summary](docs/company_analysis_enhancement_summary.md)** - Enhanced company analysis capabilities
+- **[🏗️ ETL Architecture Plan](docs/etl_architecture_plan.md)** - Technical implementation details
+- **[📊 Project Organization](docs/project_organization.md)** - Code structure and file organization
+- **[🔍 Data Source Analysis](docs/data_source_analysis.md)** - API and data source strategy
+
+**Quick Navigation:**
+- [Completion Summary](#-completion-summary) - Current progress status
+- [Phase 1: Foundation](#-phase-1-foundation--core-cicd-weeks-1-2) - CI/CD setup (✅ COMPLETED)
+- [Phase 2: Financial Data](#-phase-2--financial-data-validation--testing-weeks-3-4) - Testing & validation (🚧 IN PROGRESS)
+- [Core Features](#-core-financial-platform-features) - Main system capabilities
+- [Technical Infrastructure](#-technical-infrastructure--refactoring) - Development tools and setup
+
+---
+
 ## 📋 **Ticket Naming Convention**
 - **`<Story-XXX>`** - New features or enhancements
 - **`<Tech-XXX>`** - Pure technical tasks, refactoring, and infrastructure
@@ -24,7 +42,8 @@
 ### **🚧 IN PROGRESS (1/21)**
 - **Tech-006**: Performance Testing for Financial Data *(PLANNED)*
 
-### **📋 PENDING (12/21)**
+### **📋 PENDING (14/23)**
+- **Story-005**: Enhanced Company Profile & Fundamentals Analysis *(NEW)*
 - **Story-006**: Local vs Web App Architecture Decision *(NEW)*
 - **Story-007**: Portfolio Analysis & Risk Tools *(NEW)*
 - **Story-008**: Backtesting & Strategy Testing *(NEW)*
@@ -37,11 +56,12 @@
 - **Tech-010**: Data Models & Schema Design *(NEW)*
 - **Tech-011**: Multi-Environment Deployment
 - **Tech-012**: Advanced Security Features
+- **Tech-013**: Company Analysis Infrastructure *(NEW)*
 
-### **📊 Progress: 48% Complete**
+### **📊 Progress: 43% Complete**
 - **Phase 1**: ✅ 100% Complete
-- **Phase 2**: 🚧 80% Complete
-- **Phase 3**: 🚧 40% Complete (ETL & Database)
+- **Phase 2**: 🚧 70% Complete
+- **Phase 3**: ⏳ 30% Complete (ETL & Database)
 - **Phase 4**: ⏳ 0% Complete
 
 ---
@@ -253,7 +273,7 @@
 
 ### **<Tech-010> Data Models & Schema Design**
 - [ ] **Core Financial Entities**
-  - Design Company entity (profile, fundamentals, ratios)
+  - Design Company entity (profile, fundamentals, ratios, market metrics)
   - Design Stock entity (prices, volumes, technical indicators)
   - Design Economic entity (indicators, trends, forecasts)
   - Design Portfolio entity (holdings, transactions, performance)
@@ -279,6 +299,32 @@
   - Efficient query performance for all operations
   - Flexible schema evolution without data loss
   - Complete data integrity and constraint validation
+
+### **<Tech-013> Company Analysis Infrastructure**
+- [ ] **Enhanced Data Collection Framework**
+  - Implement abstract base classes for company data collectors
+  - Create Yahoo Finance collector with rate limiting and error handling
+  - Add Financial Modeling Prep (FMP) collector for enhanced fundamentals
+  - Implement data quality scoring and validation system
+- [ ] **Financial Analysis Engine**
+  - Build comprehensive financial ratio calculation engine
+  - Create sector analysis and peer benchmarking algorithms
+  - Implement trend analysis and time-series processing
+  - Add data export capabilities (PDF, Excel, API)
+- [ ] **Performance Optimization**
+  - Implement caching layer for frequently accessed data
+  - Add batch processing for multiple companies
+  - Create efficient database queries for large datasets
+  - Implement data compression and archiving
+- **Priority**: High
+- **Effort**: High
+- **Dependencies**: Tech-010, Story-005
+- **Timeline**: Weeks 6-8
+- **Success Criteria**:
+  - Support 100+ companies with <30 second analysis generation
+  - Handle 1000+ financial ratios and metrics efficiently
+  - Real-time data refresh <15 minutes for market data
+  - 99.9% uptime for data collection and analysis services
 
 ### **<Story-006> Local vs Web App Architecture Decision**
 - [ ] **Architecture Analysis**
@@ -433,6 +479,34 @@
 - **Success Criteria**:
   - MVP: Earnings data for top 100 US companies, basic transcripts
   - Production: Real-time updates, comprehensive analysis, >99% accuracy
+
+### **<Story-005> Enhanced Company Profile & Fundamentals Analysis**
+- [ ] **Comprehensive Company Profile Collection**
+  - Enhance existing company profile collector (80+ data points)
+  - Implement batch processing for 100+ companies with rate limiting
+  - Add data validation and quality scoring system
+  - Create multi-source data validation (Yahoo + FMP + manual checks)
+- [ ] **Advanced Financial Analysis Engine**
+  - Implement comprehensive financial ratio calculations (1000+ metrics)
+  - Create sector analysis and peer benchmarking tools
+  - Add trend analysis for financial metrics over time
+  - Build multi-dimensional company comparison dashboards
+- [ ] **Sector Intelligence & Screening**
+  - Develop sector rotation analysis and insights
+  - Create company screening tools with customizable filters
+  - Implement alert system for fundamental changes
+  - Add industry peer group analysis and benchmarking
+- **Priority**: High
+- **Effort**: High
+- **Dependencies**: Story-001, Tech-002
+- **Timeline**: Weeks 3-6
+- **Success Criteria**:
+  - Company profile completeness >95% with 80+ data points
+  - Support 100+ companies simultaneously with <30 second report generation
+  - Real-time data refresh <15 minutes for market data
+  - Comprehensive sector analysis with peer benchmarking
+
+> **📖 Detailed Analysis**: See [Company Analysis Enhancement Summary](docs/company_analysis_enhancement_summary.md) for comprehensive breakdown of enhanced capabilities and implementation roadmap.
 
 ### **<Story-006> Market Data Collection System**
 - [ ] Implement Yahoo Finance data collection
@@ -759,3 +833,27 @@
 **Total Tickets**: 18 Story, 18 Tech, 3 Fix
 **Estimated Timeline**: 8-12 weeks for MVP
 **Maintained By**: investByYourself Development Team
+
+---
+
+## 🔗 **Related Documentation & Next Steps**
+
+### **📖 Read Next**
+- **[Development Plan](docs/investbyyourself_plan.md)** - Complete project roadmap and architecture
+- **[Company Analysis Enhancement Summary](docs/company_analysis_enhancement_summary.md)** - Enhanced company analysis capabilities
+- **[ETL Architecture Plan](docs/etl_architecture_plan.md)** - Technical implementation details
+
+### **🎯 Implementation Priority**
+1. **Complete Phase 2**: Finish financial data validation and testing
+2. **Start Company Analysis**: Implement [Story-005](#story-005-enhanced-company-profile--fundamentals-analysis)
+3. **Setup Infrastructure**: Begin [Tech-013](#tech-013-company-analysis-infrastructure)
+4. **Plan Phase 3**: ETL architecture and database design
+
+### **📊 Current Focus**
+- **Active Phase**: Phase 2 - Financial Data Validation & Testing (🚧 70% Complete)
+- **Next Major Milestone**: ETL & Database Architecture (Weeks 5-6)
+- **Key Decision**: Local vs Web App Architecture (Week 4-5)
+
+---
+
+*For detailed implementation plans, refer to the [Development Plan](docs/investbyyourself_plan.md) and [Company Analysis Enhancement Summary](docs/company_analysis_enhancement_summary.md).*

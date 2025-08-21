@@ -1,147 +1,120 @@
 # 📚 InvestByYourself Documentation
 
-*Last Updated: January 2025*
+*Last Updated: 2025-01-27*
 
 ## 🎯 **Documentation Overview**
 
-This directory contains the strategic planning, technical architecture, and implementation guides for the InvestByYourself platform. We've recently cleaned up outdated documents and consolidated our planning into a comprehensive Master Todo and ETL Architecture Plan.
+This directory contains comprehensive documentation for the InvestByYourself project - a personal wealth planning & trading analysis system. The documentation is organized to provide clear navigation between planning, implementation, and technical details.
 
 ---
 
-## 📋 **Current Documentation Structure**
+## 📖 **Documentation Structure**
 
-### **🏗️ Strategic Planning**
-- **[📋 Master Todo List](../MASTER_TODO.md)** - Complete project roadmap with phases, priorities, and progress tracking
-- **[📊 Plan Analysis](investbyyourself_plan_analysis.md)** - Analysis of old vs new planning approach
-- **[🚀 Project Vision](invest_by_yourself_vision.md)** - Strategic vision and long-term goals
-- **[📁 Project Organization](project_organization.md)** - Current project structure and organization
+### **🚀 Planning & Roadmap**
+- **[📈 Development Plan](investbyyourself_plan.md)** - Main project roadmap, architecture decisions, and implementation phases
+- **[📋 Master TODO List](../MASTER_TODO.md)** - Complete task tracking, progress status, and development timeline
 
-### **🔧 Technical Architecture**
-- **[🏗️ ETL Architecture Plan](etl_architecture_plan.md)** - Comprehensive ETL pipeline and database design
-- **[📊 Data Source Analysis](data_source_analysis.md)** - Analysis of financial data sources and APIs
-- **[🛠️ OpenBB Installation Guide](openbb_installation_guide.md)** - Tool setup and configuration
+### **🔍 Feature Analysis & Planning**
+- **[🔍 Company Analysis Enhancement Summary](company_analysis_enhancement_summary.md)** - Enhanced company analysis capabilities and implementation details
+- **[🔍 Data Source Analysis](data_source_analysis.md)** - API strategy, data source comparison, and decision framework
 
-### **📊 Analysis Reports**
+### **🏗️ Technical Implementation**
+- **[🏗️ ETL Architecture Plan](etl_architecture_plan.md)** - Data pipeline design, database schema, and technical architecture
+- **[📊 Project Organization](project_organization.md)** - Code structure, file organization, and development workflow
+
+### **📊 Analysis Reports & Examples**
 - **[📈 Company Profiles Report](reports/company_profiles_report.md)** - Company analysis examples and methodology
-- **[🌍 Inflation Analysis Report](reports/inflation_analysis_report.md)** - Economic data analysis examples
-- **[📋 Reports Directory](reports/)** - Additional analysis and research reports
-
-### **📖 User Guides**
-- **[📚 Guides Directory](guides/)** - User guides and tutorials
-- **[🔌 API Documentation](api/)** - API reference and examples
+- **[📊 Inflation Analysis Report](reports/inflation_analysis_report.md)** - Economic indicators analysis and insights
 
 ---
 
-## 🧹 **Recent Cleanup (January 2025)**
+## 🧭 **Navigation Guide**
 
-### **🗑️ Removed Outdated Documents:**
-- ~~`comprehensive_market_data_plan.md`~~ - **DELETED** (superseded by Master Todo)
-- ~~`price_data_model_plan.md`~~ - **DELETED** (duplicate content)
-- ~~`alpha_vantage_todo.md`~~ - **DELETED** (implementation details, not planning)
-- ~~`company_fundamentals_todo.md`~~ - **DELETED** (implementation details, not planning)
-- ~~`macro_data_todo.md`~~ - **DELETED** (implementation details, not planning)
+### **For New Team Members**
+1. **Start Here** → [Development Plan](investbyyourself_plan.md) - Understand project goals and architecture
+2. **Check Progress** → [Master TODO](../MASTER_TODO.md) - See current status and next steps
+3. **Review Structure** → [Project Organization](project_organization.md) - Understand code organization
+4. **Technical Details** → [ETL Architecture Plan](etl_architecture_plan.md) - Implementation specifics
 
-### **✅ Why These Were Removed:**
-1. **Outdated Plans**: Created in August 2025, superseded by current implementation
-2. **Duplicate Content**: Multiple documents covering the same topics
-3. **Implementation Details**: TODO lists belong in Master Todo, not separate docs
-4. **Strategic Focus**: Consolidated planning into Master Todo for better organization
+### **For Developers**
+1. **Current Tasks** → [Master TODO](../MASTER_TODO.md) - Active development items
+2. **Implementation** → [ETL Architecture Plan](etl_architecture_plan.md) - Technical specifications
+3. **Code Structure** → [Project Organization](project_organization.md) - File organization and patterns
+4. **Feature Details** → [Company Analysis Enhancement Summary](company_analysis_enhancement_summary.md) - Specific capabilities
 
----
-
-## 🎯 **Current Planning Approach**
-
-### **📋 Master Todo (Primary Planning)**
-- **Single source of truth** for all project tasks
-- **Phased implementation** with clear priorities
-- **Progress tracking** and completion status
-- **Dependencies** and timeline management
-
-### **🏗️ ETL Architecture Plan**
-- **Technical implementation** details
-- **Database schema** design
-- **Data pipeline** architecture
-- **Performance** and scalability considerations
-
-### **📊 Strategic Documents**
-- **Vision and goals** definition
-- **Technology choices** and rationale
-- **Business metrics** and success criteria
-- **Future expansion** planning
+### **For Stakeholders**
+1. **Project Overview** → [Development Plan](investbyyourself_plan.md) - Goals, timeline, and success metrics
+2. **Progress Tracking** → [Master TODO](../MASTER_TODO.md) - Current status and completion rates
+3. **Technical Strategy** → [Data Source Analysis](data_source_analysis.md) - Technology decisions and rationale
 
 ---
 
-## 🚀 **How to Use This Documentation**
+## 📋 **Current Project Status**
 
-### **For Developers:**
-1. **Start with Master Todo** - Understand current priorities and progress
-2. **Review ETL Architecture** - Understand technical implementation
-3. **Check Project Organization** - Understand code structure
+### **Phase 1: Foundation & Core CI/CD** ✅ **COMPLETED**
+- GitHub Actions workflow setup
+- Testing infrastructure
+- Code quality checks
+- Project structure reorganization
 
-### **For Stakeholders:**
-1. **Review Project Vision** - Understand long-term goals
-2. **Check Progress Tracking** - See current status and timeline
-3. **Review Business Metrics** - Understand success criteria
+### **Phase 2: Core Data & Company Analysis** 🚧 **IN PROGRESS (70%)**
+- Financial data validation framework
+- Company profile collection enhancements
+- Basic analysis tools development
 
-### **For New Team Members:**
-1. **Read Project Vision** - Understand the project purpose
-2. **Review Master Todo** - See what's planned and in progress
-3. **Check ETL Architecture** - Understand technical approach
-4. **Review Project Organization** - Understand code structure
+### **Phase 3: Advanced Analysis & Dashboards** ⏳ **PLANNED**
+- Enhanced financial analysis engine
+- Sector analysis and screening tools
+- Interactive dashboards
 
----
-
-## 📝 **Documentation Standards**
-
-### **📋 Planning Documents:**
-- **Clear objectives** and success criteria
-- **Phased approach** with realistic timelines
-- **Dependencies** and risk factors
-- **Progress tracking** and metrics
-
-### **🔧 Technical Documents:**
-- **Architecture diagrams** and flowcharts
-- **Code examples** and implementation details
-- **Performance** and scalability considerations
-- **Testing** and validation approaches
-
-### **📊 Analysis Documents:**
-- **Clear methodology** and data sources
-- **Results** and conclusions
-- **Limitations** and assumptions
-- **Future** research directions
+### **Phase 4: Advanced Features & Intelligence** ⏳ **PLANNED**
+- Backtesting engine
+- Risk analysis tools
+- Market intelligence features
 
 ---
 
-## 🔄 **Maintenance & Updates**
+## 🔗 **Quick Links**
 
-### **📅 Regular Updates:**
-- **Master Todo**: Updated weekly with progress
-- **Technical Plans**: Updated when architecture changes
-- **Reports**: Updated when new analysis is completed
+### **📊 Current Focus**
+- **[Story-005: Enhanced Company Profile & Fundamentals Analysis](../MASTER_TODO.md#story-005-enhanced-company-profile--fundamentals-analysis)** - Main development priority
+- **[Tech-013: Company Analysis Infrastructure](../MASTER_TODO.md#tech-013-company-analysis-infrastructure)** - Technical setup
 
-### **🧹 Cleanup Process:**
-- **Quarterly review** of documentation relevance
-- **Remove outdated** plans and implementations
-- **Consolidate** duplicate or overlapping content
-- **Update** references and cross-links
+### **🎯 Next Milestones**
+- **Week 4-5**: Local vs Web App Architecture Decision
+- **Week 5-6**: ETL Architecture & Database Design
+- **Week 6-8**: ETL Implementation & Core Platform
 
----
-
-## 📞 **Getting Help**
-
-### **🤔 Questions About:**
-- **Project Planning**: Check Master Todo and strategic documents
-- **Technical Implementation**: Check ETL Architecture and technical guides
-- **Current Status**: Check progress tracking in Master Todo
-- **Future Direction**: Check Project Vision and strategic documents
-
-### **💡 Suggestions:**
-- **Documentation improvements** are welcome
-- **New analysis** and research can be added
-- **User guides** can be expanded based on needs
-- **API documentation** can be enhanced with examples
+### **📈 Success Metrics**
+- Company profile completeness >95%
+- Support 100+ companies simultaneously
+- Real-time data refresh <15 minutes
+- Dashboard load time <3 seconds
 
 ---
 
-**This documentation structure provides a clean, organized approach to project planning and technical implementation, with clear separation between strategic planning and technical details.**
+## 📝 **Documentation Maintenance**
+
+### **Update Frequency**
+- **Planning Documents**: Updated weekly with progress and changes
+- **Technical Documents**: Updated when architecture or implementation changes
+- **Reports**: Generated after major analysis or feature completion
+
+### **Contributing**
+- Update relevant documents when making changes
+- Follow the established structure and formatting
+- Link related documents for better navigation
+- Maintain cross-references between planning and implementation
+
+---
+
+## 🎯 **Getting Started**
+
+1. **Read** [Development Plan](investbyyourself_plan.md) for project overview
+2. **Check** [Master TODO](../MASTER_TODO.md) for current priorities
+3. **Review** [Company Analysis Enhancement Summary](company_analysis_enhancement_summary.md) for feature details
+4. **Implement** using [ETL Architecture Plan](etl_architecture_plan.md) as technical guide
+
+---
+
+*For questions or updates to this documentation, refer to the [Master TODO](../MASTER_TODO.md) or [Development Plan](investbyyourself_plan.md).*
