@@ -20,7 +20,7 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 - **[🔍 Data Source Analysis](data_source_analysis.md)** - API strategy, data source comparison, and decision framework
 
 ### **🏗️ Technical Implementation**
-- **[🏗️ ETL Architecture Plan](etl_architecture_plan.md)** - Data pipeline design, database schema, and technical architecture
+- **[🏗️ TECH-009 ETL Pipeline Implementation](TECH-009-ETL-Pipeline-Implementation-Complete.md)** - Complete ETL pipeline implementation documentation
 - **[🏗️ Microservices Architecture Plan](microservices_architecture_plan.md)** - Strategic plan for microservices transformation
 - **[📊 Project Organization](project_organization.md)** - Code structure, file organization, and development workflow
 
