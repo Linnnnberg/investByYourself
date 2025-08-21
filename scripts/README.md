@@ -13,6 +13,16 @@ Scripts for testing and validating the ETL (Extract, Transform, Load) pipeline c
 - **`test_multiple_companies.py`** - Multi-company analysis and chart generation
 - **`test_debt_equity_fix.py`** - Specific fix validation for debt/equity ratios
 
+### **`testing/`** - Security & Functionality Validation Scripts
+Comprehensive testing scripts created after security fixes to validate ETL pipeline functionality.
+
+- **`test_env_loading.py`** - Environment variable loading validation
+- **`test_config_classes.py`** - Configuration class functionality testing
+- **`test_etl_core.py`** - Core ETL component testing
+- **`test_etl_functionality.py`** - Comprehensive ETL functionality testing
+- **`test_etl_workflow.py`** - End-to-end ETL workflow validation
+- **`test.env`** - Test environment configuration file
+
 ### **`financial_analysis/`** - Financial Analysis & Strategy Scripts
 Scripts for financial data analysis, chart generation, and investment strategy testing.
 
@@ -52,6 +62,21 @@ python scripts/etl_tests/test_data_processing_engine.py
 
 # Test multi-company analysis
 python scripts/etl_tests/test_multiple_companies.py
+```
+
+### Running Security & Functionality Tests
+```bash
+# Test environment variable loading
+python scripts/testing/test_env_loading.py
+
+# Test configuration classes
+python scripts/testing/test_config_classes.py
+
+# Test core ETL components
+python scripts/testing/test_etl_core.py
+
+# Test complete ETL workflow
+python scripts/testing/test_etl_workflow.py
 ```
 
 ### Running Financial Analysis

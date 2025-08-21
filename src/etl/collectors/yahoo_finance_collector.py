@@ -251,6 +251,75 @@ class YahooFinanceCollector(BaseDataCollector):
             logger.error(f"Data transformation error: {str(e)}")
             raise DataValidationError(f"Failed to transform data: {str(e)}")
 
+    async def _collect_options_data(self, symbol: str) -> Dict[str, Any]:
+        """Collect options data for a symbol."""
+        try:
+            ticker = yf.Ticker(symbol)
+            options = ticker.options
+
+            if not options:
+                return {
+                    "symbol": symbol,
+                    "options_data": [],
+                    "message": "No options data available",
+                }
+
+            # Get the nearest expiration date options
+            nearest_expiry = options[0] if options else None
+            if nearest_expiry:
+                calls = ticker.option_chain(nearest_expiry).calls
+                puts = ticker.option_chain(nearest_expiry).puts
+
+                return {
+                    "symbol": symbol,
+                    "expiration_date": nearest_expiry,
+                    "calls_count": len(calls) if calls is not None else 0,
+                    "puts_count": len(puts) if puts is not None else 0,
+                    "options_data": {
+                        "calls": calls.to_dict("records") if calls is not None else [],
+                        "puts": puts.to_dict("records") if puts is not None else [],
+                    },
+                }
+            else:
+                return {
+                    "symbol": symbol,
+                    "options_data": [],
+                    "message": "No options expiration dates available",
+                }
+
+        except Exception as e:
+            logger.error(f"Error collecting options data for {symbol}: {str(e)}")
+            raise DataCollectionError(f"Failed to collect options data: {str(e)}")
+
+    async def _collect_dividend_data(self, symbol: str) -> Dict[str, Any]:
+        """Collect dividend data for a symbol."""
+        try:
+            ticker = yf.Ticker(symbol)
+            dividends = ticker.dividends
+
+            if dividends is None or dividends.empty:
+                return {
+                    "symbol": symbol,
+                    "dividends_data": [],
+                    "message": "No dividend data available",
+                }
+
+            # Convert to list of records
+            dividends_list = dividends.reset_index().to_dict("records")
+
+            return {
+                "symbol": symbol,
+                "dividends_count": len(dividends_list),
+                "dividends_data": dividends_list,
+                "total_dividends": float(dividends.sum())
+                if dividends.sum() is not None
+                else 0.0,
+            }
+
+        except Exception as e:
+            logger.error(f"Error collecting dividend data for {symbol}: {str(e)}")
+            raise DataCollectionError(f"Failed to collect dividend data: {str(e)}")
+
     async def _collect_company_profile(self, symbol: str) -> Dict[str, Any]:
         """Collect company profile information."""
         try:
