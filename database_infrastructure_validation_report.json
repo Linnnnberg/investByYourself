@@ -31,14 +31,14 @@
     },
     "overall": {
       "status": "VALID",
-      "timestamp": "2025-08-21T10:55:58.748629"
+      "timestamp": "2025-08-21T11:09:33.341211"
     }
   },
   "schema_files": {
     "schema_files": {
       "schema.sql": {
         "exists": true,
-        "size_bytes": 10926,
+        "size_bytes": 10919,
         "lines": 308,
         "has_tables": true,
         "has_indexes": true,
@@ -97,42 +97,42 @@
     "required_files": {
       "config/database.py": {
         "exists": true,
-        "size_bytes": 7988,
+        "size_bytes": 7755,
         "is_file": true
       },
       "scripts/setup_database_infrastructure.py": {
         "exists": true,
-        "size_bytes": 9360,
+        "size_bytes": 9084,
         "is_file": true
       },
       "scripts/database_migrations.py": {
         "exists": true,
-        "size_bytes": 11143,
+        "size_bytes": 10805,
         "is_file": true
       },
       "scripts/validate_database_infrastructure.py": {
         "exists": true,
-        "size_bytes": 16081,
+        "size_bytes": 15345,
         "is_file": true
       },
       "tests/unit/test_database_infrastructure.py": {
         "exists": true,
-        "size_bytes": 9464,
+        "size_bytes": 9305,
         "is_file": true
       },
       "requirements-database.txt": {
         "exists": true,
-        "size_bytes": 493,
+        "size_bytes": 463,
         "is_file": true
       },
       "database/schema.sql": {
         "exists": true,
-        "size_bytes": 10926,
+        "size_bytes": 10919,
         "is_file": true
       },
       "env.template": {
         "exists": true,
-        "size_bytes": 2273,
+        "size_bytes": 2172,
         "is_file": true
       }
     },
