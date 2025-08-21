@@ -1,0 +1,38 @@
+{
+  "data\\strategy_demo\\20250821_165940\\strategy_test.json.gzip": {
+    "file_path": "data\\strategy_demo\\20250821_165940\\strategy_test.json.gzip",
+    "file_format": "json",
+    "compression": "gzip",
+    "size_bytes": 125,
+    "checksum": "cf59b87bd62f4b280e4a6758485bb50c",
+    "record_count": 2,
+    "created_at": "2025-08-21T16:59:40.504321",
+    "version_id": "e6914d66-39f3-48bc-ab41-0cababe3b5a3",
+    "schema_version": "1.0",
+    "tags": {}
+  },
+  "data\\strategy_demo\\20250821_165940\\append_test.json.gzip": {
+    "file_path": "data\\strategy_demo\\20250821_165940\\append_test.json.gzip",
+    "file_format": "json",
+    "compression": "gzip",
+    "size_bytes": 213,
+    "checksum": "f08ae5738d46c04ad81fdedf46795722",
+    "record_count": 2,
+    "created_at": "2025-08-21T16:59:40.529677",
+    "version_id": "70ce3883-8a10-468a-879d-783d118db638",
+    "schema_version": "1.0",
+    "tags": {}
+  },
+  "data\\strategy_demo\\20250821_165940\\incremental_test.json.gzip": {
+    "file_path": "data\\strategy_demo\\20250821_165940\\incremental_test.json.gzip",
+    "file_format": "json",
+    "compression": "gzip",
+    "size_bytes": 214,
+    "checksum": "9f4bc96bf9881a7be3533e3695304146",
+    "record_count": 2,
+    "created_at": "2025-08-21T16:59:40.557248",
+    "version_id": "0fb3a2ff-97fe-4f87-8769-1019cfd16f10",
+    "schema_version": "1.0",
+    "tags": {}
+  }
+}

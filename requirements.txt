@@ -13,6 +13,12 @@ yfinance>=0.2.55
 # HTTP and API Dependencies
 requests>=2.31.0
 httpx>=0.24.0
+aiohttp>=3.8.0
+
+# Data Storage Dependencies (Phase 3)
+asyncpg>=0.28.0
+redis>=4.5.0
+structlog>=23.1.0
 
 # Testing Framework
 pytest>=7.4.0

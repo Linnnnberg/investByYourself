@@ -1,0 +1,14 @@
+{
+  "data\\demo_output\\20250821_165940\\incremental_test.jsonl.gzip": {
+    "file_path": "data\\demo_output\\20250821_165940\\incremental_test.jsonl.gzip",
+    "file_format": "jsonl",
+    "compression": "gzip",
+    "size_bytes": 462,
+    "checksum": "a1d91402e04e810fb6162a8740d152c0",
+    "record_count": 1,
+    "created_at": "2025-08-21T16:59:40.472878",
+    "version_id": "b300d54a-5cc9-4c92-8e2d-db2fdc02457b",
+    "schema_version": "1.0",
+    "tags": {}
+  }
+}

@@ -1,0 +1,4 @@
+symbol,company,sector,price,market_cap,pe_ratio,timestamp
+AAPL,Apple Inc.,Technology,150.25,2500000000000,25.4,2025-08-21T16:59:40.409417
+MSFT,Microsoft Corporation,Technology,285.76,2100000000000,28.2,2025-08-21T16:59:40.409436
+GOOGL,Alphabet Inc.,Technology,125.33,1600000000000,22.1,2025-08-21T16:59:40.409439
