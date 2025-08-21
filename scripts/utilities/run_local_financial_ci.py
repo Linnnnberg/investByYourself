@@ -88,7 +88,7 @@ class FinancialCIRunner:
         required_files = [
             "requirements.txt",
             ".pre-commit-config.yaml",
-            "tests/test_financial_basic.py",
+            "tests/unit/test_financial_basic.py",
         ]
 
         for file_path in required_files:
