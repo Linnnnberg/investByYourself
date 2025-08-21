@@ -402,6 +402,13 @@ class FinancialDataTransformer(BaseDataTransformer):
                 }
             }
             
+            # Recalculate financial metrics with the properly structured data
+            final_financial_metrics = self.metrics_calculator.calculate_all_metrics(
+                standardized_data['financial_statements'],
+                standardized_data['market_data']
+            )
+            standardized_data['financial_metrics'] = self._metrics_to_dict(final_financial_metrics)
+            
             result.transformed_data = standardized_data
             
             # Calculate quality metrics
@@ -521,23 +528,34 @@ class FinancialDataTransformer(BaseDataTransformer):
         """Extract financial statement data."""
         statements = {}
         
-        # Income statement
-        if any(field in data for field in ['revenue', 'totalRevenue', 'Revenue']):
+        # Income statement - check both original and transformed field names
+        revenue_fields = ['revenue', 'totalRevenue', 'Revenue']
+        cost_fields = ['cost_of_revenue', 'costOfRevenue', 'Cost of Revenue']
+        gross_profit_fields = ['gross_profit', 'grossProfit', 'Gross Profit']
+        operating_income_fields = ['operating_income', 'operatingIncome', 'Operating Income']
+        net_income_fields = ['net_income', 'netIncome', 'Net Income']
+        
+        if any(field in data for field in revenue_fields):
             statements['income_statement'] = {
-                'revenue': data.get('revenue'),
-                'cost_of_revenue': data.get('cost_of_revenue'),
-                'gross_profit': data.get('gross_profit'),
-                'operating_income': data.get('operating_income'),
-                'net_income': data.get('net_income')
+                'revenue': data.get('revenue') or data.get('totalRevenue') or data.get('Revenue'),
+                'cost_of_revenue': data.get('cost_of_revenue') or data.get('costOfRevenue') or data.get('Cost of Revenue'),
+                'gross_profit': data.get('gross_profit') or data.get('grossProfit') or data.get('Gross Profit'),
+                'operating_income': data.get('operating_income') or data.get('operatingIncome') or data.get('Operating Income'),
+                'net_income': data.get('net_income') or data.get('netIncome') or data.get('Net Income')
             }
         
-        # Balance sheet
-        if any(field in data for field in ['totalAssets', 'total_assets', 'Total Assets']):
+        # Balance sheet - check both original and transformed field names
+        assets_fields = ['total_assets', 'totalAssets', 'Total Assets']
+        current_assets_fields = ['current_assets', 'currentAssets', 'Current Assets']
+        liabilities_fields = ['total_liabilities', 'totalLiabilities', 'Total Liabilities']
+        equity_fields = ['total_equity', 'totalEquity', 'Total Equity']
+        
+        if any(field in data for field in assets_fields):
             statements['balance_sheet'] = {
-                'total_assets': data.get('total_assets'),
-                'current_assets': data.get('current_assets'),
-                'total_liabilities': data.get('total_liabilities'),
-                'total_equity': data.get('total_equity')
+                'total_assets': data.get('total_assets') or data.get('totalAssets') or data.get('Total Assets'),
+                'current_assets': data.get('current_assets') or data.get('currentAssets') or data.get('Current Assets'),
+                'total_liabilities': data.get('total_liabilities') or data.get('totalLiabilities') or data.get('Total Liabilities'),
+                'total_equity': data.get('total_equity') or data.get('totalEquity') or data.get('Total Equity')
             }
         
         return statements
@@ -546,18 +564,37 @@ class FinancialDataTransformer(BaseDataTransformer):
         """Extract market-related data."""
         market_data = {}
         
-        market_fields = {
-            'price': ['price', 'currentPrice', 'regularMarketPrice'],
-            'market_cap': ['marketCap', 'market_cap', 'Market Cap'],
-            'volume': ['volume', 'regularMarketVolume'],
-            'pe_ratio': ['trailingPE', 'pe_ratio', 'PE Ratio']
-        }
+        # Price fields - check multiple variations
+        price_value = (data.get('price') or data.get('currentPrice') or 
+                      data.get('regularMarketPrice') or data.get('Price'))
+        if price_value:
+            market_data['price'] = price_value
         
-        for target_field, source_fields in market_fields.items():
-            for source_field in source_fields:
-                if source_field in data:
-                    market_data[target_field] = data[source_field]
-                    break
+        # Market cap fields
+        market_cap_value = (data.get('market_cap') or data.get('marketCap') or 
+                           data.get('Market Cap') or data.get('market_capitalization'))
+        if market_cap_value:
+            market_data['market_cap'] = market_cap_value
+        
+        # Volume fields
+        volume_value = (data.get('volume') or data.get('regularMarketVolume') or 
+                       data.get('Volume') or data.get('market_volume'))
+        if volume_value:
+            market_data['volume'] = volume_value
+        
+        # PE ratio fields
+        pe_ratio_value = (data.get('pe_ratio') or data.get('trailingPE') or 
+                          data.get('PE Ratio') or data.get('price_earnings_ratio'))
+        if pe_ratio_value:
+            market_data['pe_ratio'] = pe_ratio_value
+        
+        # Additional market metrics
+        if data.get('earningsPerShare'):
+            market_data['earnings_per_share'] = data['earningsPerShare']
+        if data.get('bookValuePerShare'):
+            market_data['book_value_per_share'] = data['bookValuePerShare']
+        if data.get('salesPerShare'):
+            market_data['sales_per_share'] = data['salesPerShare']
         
         return market_data
     
