@@ -13,6 +13,7 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 ### **🚀 Planning & Roadmap**
 - **[📈 Development Plan](investbyyourself_plan.md)** - Main project roadmap, architecture decisions, and implementation phases
 - **[📋 Master TODO List](../MASTER_TODO.md)** - Complete task tracking, progress status, and development timeline
+- **[📊 Current Status Summary](current_status_summary.md)** - Real-time project status and development priorities
 
 ### **🔍 Feature Analysis & Planning**
 - **[🔍 Company Analysis Enhancement Summary](company_analysis_enhancement_summary.md)** - Enhanced company analysis capabilities and implementation details
@@ -25,13 +26,14 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 ### **📊 Analysis Reports & Examples**
 - **[📈 Company Profiles Report](reports/company_profiles_report.md)** - Company analysis examples and methodology
 - **[📊 Inflation Analysis Report](reports/inflation_analysis_report.md)** - Economic indicators analysis and insights
+- **[🔍 Data Source Analysis](data_source_analysis.md)** - API strategy and data source decisions
 
 ---
 
 ## 🧭 **Navigation Guide**
 
 ### **For New Team Members**
-1. **Start Here** → [Development Plan](investbyyourself_plan.md) - Understand project goals and architecture
+1. **Start Here** → [Current Status Summary](current_status_summary.md) - Get current project overview
 2. **Check Progress** → [Master TODO](../MASTER_TODO.md) - See current status and next steps
 3. **Review Structure** → [Project Organization](project_organization.md) - Understand code organization
 4. **Technical Details** → [ETL Architecture Plan](etl_architecture_plan.md) - Implementation specifics
