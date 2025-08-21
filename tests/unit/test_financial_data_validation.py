@@ -172,7 +172,7 @@ class TestAPIResponseFormat:
         # Invalid response (missing required fields)
         invalid_response = {
             "symbol": "AAPL",
-            "price": 150.25
+            "price": 150.25,
             # Missing other required fields
         }
 
