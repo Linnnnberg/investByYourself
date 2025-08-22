@@ -46,6 +46,7 @@
 - **Security-004**: Change/rotate the exposed Redis password in production ✅ **COMPLETED**
 - **Security-005**: Set up proper .env file with new secure credentials ✅ **COMPLETED**
 - **Security-006**: Review GitGuardian report to confirm vulnerability is resolved ✅ **COMPLETED**
+- **Security-007**: Reset Redis password after .env file overwrite *(NEW)*
 
 ### **🚧 IN PROGRESS (1/26)**
 - **Tech-006**: Performance Testing for Financial Data *(PLANNED)*
@@ -62,10 +63,11 @@
 - **Story-013**: Real-time Market Intelligence Dashboard *(NEW)*
 - **Story-014**: Multi-Asset Investment Platform *(NEW)*
 - **Tech-007**: Security for Financial Applications
-- **Tech-010**: Data Models & Schema Design *(NEW)*
+- **Tech-010**: Data Models & Schema Design *(IN PROGRESS)*
 - **Tech-011**: Multi-Environment Deployment
 - **Tech-012**: Advanced Security Features
 - **Tech-013**: Company Analysis Infrastructure *(NEW)*
+- **Security-007**: Reset Redis password after .env file overwrite *(NEW)*
 
 ### **📊 Progress: 69% Complete**
 - **Phase 1**: ✅ 100% Complete
@@ -989,6 +991,51 @@
   - API cost optimization: <$100/month
   - Infrastructure costs: <$50/month for MVP
   - Development velocity: 2-3 features per week
+
+---
+
+## 🔒 **Security Tasks**
+
+### **<Security-007> Reset Redis Password After .env File Overwrite**
+- [ ] Identify current Redis service status
+- [ ] Stop Redis service if running
+- [ ] Reset Redis password using redis-cli or configuration
+- [ ] Update .env file with new secure Redis password
+- [ ] Test Redis connection with new password
+- [ ] Verify ETL functionality works with new credentials
+- **Priority**: High
+- **Dependencies**: None
+- **Status**: 📋 PENDING
+- **ETA**: S (Small)
+- **Details**:
+  - .env file was accidentally overwritten during Tech-010 setup
+  - Need to reset Redis password and restore secure configuration
+  - Ensure ETL pipeline continues to function with new credentials
+
+## 🏗️ **Database & Schema Tasks**
+
+### **<Tech-010> Data Models & Schema Design - Enhanced Data Models**
+- [x] Design "One Company = One Stock" data model approach
+- [x] Create comprehensive database migration script
+- [x] Install and configure PostgreSQL 17
+- [x] Verify PostgreSQL service is running
+- [x] Test database connection and permissions
+- [ ] Connect to investbyyourself database in DBeaver
+- [ ] Apply Tech-010 migration script to database
+- [ ] Verify new tables, views, and functions are created
+- [ ] Test enhanced data model functionality
+- [ ] Update ETL pipeline to use new schema
+- **Priority**: High
+- **Dependencies**: Tech-008 (Database Infrastructure)
+- **Status**: 🚧 IN PROGRESS
+- **ETA**: M (Medium)
+- **Details**:
+  - Migration script created: `database/migrations/001_tech010_schema_update.sql`
+  - PostgreSQL installed and running
+  - Database connection tested successfully
+  - Need to resolve DBeaver connection to investbyyourself database
+  - Migration script ready to apply once connected
+  - Will add user/portfolio management, preferred exchange support, and enhanced market data
 
 ---
 
