@@ -1,4 +1,4 @@
-# ETL Service Dockerfile
+# Data Service Dockerfile
 # Tech-020: Microservices Foundation
 
 # Multi-stage build for optimization
@@ -33,7 +33,7 @@ FROM base as development
 RUN pip install --no-cache-dir \
     pytest \
     pytest-asyncio \
-    pytest-mock \
+    pytest-benchmark \
     black \
     flake8 \
     mypy \
@@ -47,10 +47,10 @@ ENV ENVIRONMENT=development
 ENV DEBUG=true
 
 # Expose port for development
-EXPOSE 8000
+EXPOSE 8002
 
 # Development command
-CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8002", "--reload"]
 
 # Production stage
 FROM base as production
@@ -68,11 +68,11 @@ ENV ENVIRONMENT=production
 ENV DEBUG=false
 
 # Expose port
-EXPOSE 8000
+EXPOSE 8002
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/health')" || exit 1
+    CMD python -c "import requests; requests.get('http://localhost:8002/health')" || exit 1
 
 # Production command
-CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8002"]

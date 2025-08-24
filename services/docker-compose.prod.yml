@@ -1,0 +1,126 @@
+# Production Docker Compose
+# Tech-020: Microservices Foundation
+
+# This file is for production deployment
+# Run with: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+version: '3.8'
+
+services:
+  # Production-specific overrides
+  postgres:
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports: []  # Don't expose database ports in production
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # Remove development volumes in production
+    restart: always
+
+  redis:
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    ports: []  # Don't expose Redis ports in production
+    restart: always
+
+  minio:
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    ports: []  # Don't expose MinIO ports in production
+    restart: always
+
+  etl-service:
+    build:
+      target: production
+    environment:
+      - ENVIRONMENT=production
+      - DEBUG=false
+      - ETL_BATCH_SIZE=${ETL_BATCH_SIZE:-200}
+      - ETL_RETRY_ATTEMPTS=${ETL_RETRY_ATTEMPTS:-5}
+    volumes: []  # No development volumes in production
+    restart: always
+
+  financial-analysis-service:
+    build:
+      target: production
+    environment:
+      - ENVIRONMENT=production
+      - DEBUG=false
+      - ANALYSIS_CACHE_TTL=${ANALYSIS_CACHE_TTL:-7200}
+      - ANALYSIS_MAX_WORKERS=${ANALYSIS_MAX_WORKERS:-8}
+    volumes: []  # No development volumes in production
+    restart: always
+
+  data-service:
+    build:
+      target: production
+    environment:
+      - ENVIRONMENT=production
+      - DEBUG=false
+      - DB_POOL_SIZE=${DB_POOL_SIZE:-50}
+      - DB_CONNECTION_TIMEOUT=${DB_CONNECTION_TIMEOUT:-60}
+    volumes: []  # No development volumes in production
+    restart: always
+
+  # Production API Gateway
+  api-gateway:
+    image: nginx:alpine
+    container_name: investbyyourself-api-gateway
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    networks:
+      - investbyyourself-network
+    depends_on:
+      - etl-service
+      - financial-analysis-service
+      - data-service
+    restart: always
+
+  # Production monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: investbyyourself-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - investbyyourself-network
+    restart: always
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: investbyyourself-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+    networks:
+      - investbyyourself-network
+    depends_on:
+      - prometheus
+    restart: always
+
+volumes:
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
