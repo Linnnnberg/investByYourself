@@ -10,21 +10,21 @@ services:
   # Development-specific overrides
   postgres:
     environment:
-      POSTGRES_PASSWORD: dev_password_123
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev_password_123}
     ports:
       - "5432:5432"  # Expose for local development tools
 
   redis:
-    command: redis-server --requirepass dev_redis_123
+    command: redis-server --requirepass ${REDIS_PASSWORD:-dev_redis_123}
     environment:
-      REDIS_PASSWORD: dev_redis_123
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-dev_redis_123}
     ports:
       - "6379:6379"  # Expose for local development tools
 
   minio:
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin123
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin123}
     ports:
       - "9000:9000"  # Expose for local development tools
       - "9001:9001"  # Expose console for local development
@@ -90,7 +90,7 @@ services:
     image: rediscommander/redis-commander:latest
     container_name: investbyyourself-redis-commander
     environment:
-      - REDIS_HOSTS=local:redis:6379:0:dev_redis_123
+      - REDIS_HOSTS=local:redis:6379:0:${REDIS_PASSWORD:-dev_redis_123}
     ports:
       - "8081:8081"
     networks:
