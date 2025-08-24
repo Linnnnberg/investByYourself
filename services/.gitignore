@@ -3,6 +3,7 @@
 .env.local
 .env.production
 .env.staging
+.env.development
 
 # Docker volumes and data
 postgres_data/
