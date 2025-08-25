@@ -1,6 +1,6 @@
 # 📚 InvestByYourself Documentation
 
-*Last Updated: August 25, 2025*
+*Last Updated: August 26, 2025*
 
 ## 🎯 **Documentation Overview**
 
@@ -23,6 +23,7 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 - **[🏗️ TECH-009 ETL Pipeline Implementation](TECH-009-ETL-Pipeline-Implementation-Complete.md)** - Complete ETL pipeline implementation documentation
 - **[🏗️ Microservices Architecture Plan](microservices_architecture_plan.md)** - Strategic plan for microservices transformation
 - **[✅ Story-015 Complete Implementation](story-015-completion-report.md)** - Investment Strategy Module - COMPLETED (100%)
+- **[✅ Docker & Redis Infrastructure](docker-redis-setup-completion-report.md)** - Infrastructure setup - COMPLETED (100%)
 - **[📊 Project Organization](project_organization.md)** - Code structure, file organization, and development workflow
 
 ### **📊 Analysis Reports & Examples**
@@ -75,6 +76,7 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 ### **Phase 4: Microservices Architecture** ✅ **COMPLETED (100%)**
 - ✅ **Tech-020: Microservices Foundation** - COMPLETED
 - ✅ **Story-015: Investment Strategy Module** - COMPLETED (100%)
+- ✅ **Infrastructure Setup: Docker & Redis** - COMPLETED (100%)
 - ⏳ **Tech-021 to Tech-024**: Service Extraction - PLANNED
 
 ### **Phase 5: Advanced Features & Intelligence** ⏳ **PLANNED**
@@ -89,10 +91,12 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 ### **📊 Current Focus**
 - ✅ **[Tech-020: Microservices Foundation](../MASTER_TODO.md#tech-020-microservices-foundation--structure)** - COMPLETED
 - ✅ **[Story-015: Investment Strategy Module](../MASTER_TODO.md#story-015-investment-strategy-module)** - COMPLETED (100%)
+- ✅ **[Infrastructure Setup: Docker & Redis](docker-redis-setup-completion-report.md)** - COMPLETED (100%)
 - ⏳ **[Tech-021: ETL Service Extraction](../MASTER_TODO.md#tech-021-etl-service-extraction)** - Next Priority
 
 ### **🎯 Next Milestones**
 - ✅ **Story-015: Investment Strategy Module** - COMPLETED (100%)
+- ✅ **Infrastructure Setup: Docker & Redis** - COMPLETED (100%)
 - ⏳ **Story-005: Enhanced Company Analysis** - Next Priority
 - ⏳ **Story-007: Portfolio Analysis & Risk Tools** - Planned
 - ⏳ **Story-013: Real-time Market Dashboard** - Planned

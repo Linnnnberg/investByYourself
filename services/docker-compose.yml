@@ -75,8 +75,8 @@ services:
   # ETL Service
   etl-service:
     build:
-      context: .
-      dockerfile: etl-service/Dockerfile
+      context: ./etl-service
+      dockerfile: Dockerfile
       target: ${BUILD_TARGET:-development}
     container_name: investbyyourself-etl
     environment:
@@ -122,8 +122,8 @@ services:
   # Financial Analysis Service
   financial-analysis-service:
     build:
-      context: .
-      dockerfile: financial-analysis-service/Dockerfile
+      context: ./financial-analysis-service
+      dockerfile: Dockerfile
       target: ${BUILD_TARGET:-development}
     container_name: investbyyourself-financial-analysis
     environment:
@@ -163,8 +163,8 @@ services:
   # Data Service
   data-service:
     build:
-      context: .
-      dockerfile: data-service/Dockerfile
+      context: ./data-service
+      dockerfile: Dockerfile
       target: ${BUILD_TARGET:-development}
     container_name: investbyyourself-data
     environment:
