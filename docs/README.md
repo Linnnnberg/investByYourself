@@ -1,6 +1,6 @@
 # 📚 InvestByYourself Documentation
 
-*Last Updated: October 2023*
+*Last Updated: August 25, 2025*
 
 ## 🎯 **Documentation Overview**
 
