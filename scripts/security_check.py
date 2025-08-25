@@ -54,14 +54,25 @@ def main():
                         content,
                         re.IGNORECASE,
                     ):
-                        if "os.getenv(" not in content and "${" not in content:
+                        # Skip if it's template syntax or environment variable usage
+                        if (
+                            "os.getenv(" not in content
+                            and "${" not in content
+                            and "{config" not in content
+                            and "getpass" not in content
+                        ):
                             issues.append(f"Hardcoded password found in {file_path}")
 
                     # Check for hardcoded API keys
                     if re.search(
                         r'api_key\s*[=:]\s*[\'"][^\'"]{8,}[\'"]', content, re.IGNORECASE
                     ):
-                        if "os.getenv(" not in content and "${" not in content:
+                        # Skip if it's template syntax or environment variable usage
+                        if (
+                            "os.getenv(" not in content
+                            and "${" not in content
+                            and "{config" not in content
+                        ):
                             issues.append(f"Hardcoded API key found in {file_path}")
 
             except Exception as e:

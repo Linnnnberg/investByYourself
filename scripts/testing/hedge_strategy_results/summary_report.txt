@@ -1,0 +1,36 @@
+Hedge Strategy Backtest Report
+===============================================
+
+Strategy: Dynamic Hedge with Trend-Following and Inverse Volatility
+Risk Asset: SPY (S&P 500 ETF)
+Defensive Asset: TLT (20+ Year Treasury ETF)
+Period: 2020-01-01 to 2024-12-31
+Initial Investment: $10,000.00
+SMA Period: 200 days
+Volatility Period: 60 days
+
+Strategy Rules:
+- Risk-ON: When SPY > 200-day SMA, use inverse volatility weighting
+- Risk-OFF: When SPY < 200-day SMA, 100% TLT
+- Rebalancing: Daily with 1-day lag to avoid look-ahead bias
+
+Key Results:
+- Total Return: 8.59%
+- Annualized Return: 1.67%
+- Annualized Volatility: 13.63%
+- Sharpe Ratio: 0.12
+- Maximum Drawdown: -36.78%
+- Calmar Ratio: 0.05
+
+Files Generated:
+- portfolio_values.csv: Daily portfolio and asset values
+- portfolio_weights.csv: Daily portfolio weights
+- strategy_returns.csv: Daily strategy and asset returns
+- performance_metrics.csv: Key performance metrics
+- equity_curve_comparison.png: Portfolio vs assets performance
+- portfolio_weights.png: Weight evolution over time
+- trend_signal.png: Trend signal visualization
+- rolling_volatility.png: Volatility comparison
+- drawdown_comparison.png: Drawdown analysis
+
+Generated on: 2025-08-25 18:10:26

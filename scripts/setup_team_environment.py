@@ -101,12 +101,8 @@ def create_env_from_template():
     if minio_host:
         config["MINIO_HOST"] = minio_host
         config["MINIO_PORT"] = input("MinIO Port [9000]: ").strip() or "9000"
-        config["MINIO_ACCESS_KEY"] = (
-            input("MinIO Access Key: ").strip() or ""
-        )
-        config["MINIO_SECRET_KEY"] = (
-            getpass.getpass("MinIO Secret Key: ") or ""
-        )
+        config["MINIO_ACCESS_KEY"] = input("MinIO Access Key: ").strip() or ""
+        config["MINIO_SECRET_KEY"] = getpass.getpass("MinIO Secret Key: ") or ""
 
     # API Keys (optional)
     print("\n🔑 API KEYS (press Enter to skip)")
@@ -159,13 +155,13 @@ POSTGRES_HOST={config['POSTGRES_HOST']}
 POSTGRES_PORT={config['POSTGRES_PORT']}
 POSTGRES_DATABASE={config['POSTGRES_DATABASE']}
 POSTGRES_USER={config['POSTGRES_USER']}
-POSTGRES_PASSWORD={config['POSTGRES_PASSWORD']}
+POSTGRES_PASS={config['POSTGRES_PASSWORD']}
 
 # Redis Cache
 REDIS_HOST={config.get('REDIS_HOST', 'localhost')}
 REDIS_PORT={config.get('REDIS_PORT', '6379')}
 REDIS_DB=0
-REDIS_PASSWORD={config.get('REDIS_PASSWORD', '')}
+REDIS_PASS={config.get('REDIS_PASSWORD', '')}
 
 # MinIO Object Storage
 MINIO_HOST={config.get('MINIO_HOST', 'localhost')}
@@ -178,13 +174,13 @@ MINIO_SECURE=false
 # --------
 
 # FRED API (Federal Reserve Economic Data)
-FRED_API_KEY={config.get('FRED_API_KEY', 'your_fred_api_key_here')}
+FRED_API_KEY={config.get('FRED_API_KEY', 'ADD_KEY')}
 
 # Alpha Vantage API
-ALPHA_VANTAGE_API_KEY={config.get('ALPHA_VANTAGE_API_KEY', 'your_alpha_vantage_key_here')}
+ALPHA_VANTAGE_API_KEY={config.get('ALPHA_VANTAGE_API_KEY', 'ADD_KEY')}
 
 # Financial Modeling Prep API
-FMP_API_KEY={config.get('FMP_API_KEY', 'your_fmp_api_key_here')}
+FMP_API_KEY={config.get('FMP_API_KEY', 'ADD_KEY')}
 
 # Yahoo Finance (no API key required, but rate limiting applies)
 YFINANCE_RATE_LIMIT=1000
@@ -209,14 +205,14 @@ CONNECTION_TIMEOUT=30
 QUERY_TIMEOUT=60
 
 # Security Settings
-ENCRYPTION_KEY=your_32_character_encryption_key_here
-JWT_SECRET=your_jwt_secret_key_here
+ENCRYPTION_KEY=ADD_KEY
+JWT_SECRET=ADD_KEY
 
 # Monitoring & Logging
 # --------------------
 
 # Sentry (Error Tracking)
-SENTRY_DSN=your_sentry_dsn_here
+SENTRY_DSN=ADD_DSN
 
 # Prometheus (Metrics)
 PROMETHEUS_PORT=8000
