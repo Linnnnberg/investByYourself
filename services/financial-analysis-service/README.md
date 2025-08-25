@@ -31,13 +31,13 @@ A FastAPI-based microservice for managing investment strategies, executing backt
 
 4. **Start the service**:
    ```bash
-   python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+   python -m uvicorn app.main:app --host 127.0.0.1 --port 8001 --reload
    ```
 
 5. **Access the API**:
-   - **API Documentation**: http://127.0.0.1:8000/docs
-   - **Health Check**: http://127.0.0.1:8000/health
-   - **Ready Check**: http://127.0.0.1:8000/ready
+   - **API Documentation**: http://127.0.0.1:8001/docs
+   - **Health Check**: http://127.0.0.1:8001/health
+   - **Ready Check**: http://127.0.0.1:8001/ready
 
 ## 📊 **API Endpoints**
 
@@ -97,7 +97,7 @@ app/
 | `SECRET_KEY` | `your-secret-key-here-change-in-production` | JWT secret key |
 | `DEBUG` | `False` | Debug mode flag |
 | `HOST` | `0.0.0.0` | Service host address |
-| `PORT` | `8000` | Service port number |
+| `PORT` | `8001` | Service port number |
 | `REDIS_URL` | `redis://localhost:6379/0` | Redis connection string |
 | `LOG_LEVEL` | `INFO` | Logging level |
 
@@ -127,10 +127,10 @@ python -c "from app.core.config import get_settings; print(get_settings().servic
 ### **API Testing**
 ```bash
 # Health check
-curl http://127.0.0.1:8000/health
+curl http://127.0.0.1:8001/health
 
 # List strategies
-curl http://127.0.0.1:8000/api/v1/strategies/
+curl http://127.0.0.1:8001/api/v1/strategies/
 ```
 
 ## 🚀 **Deployment**
@@ -141,7 +141,7 @@ curl http://127.0.0.1:8000/api/v1/strategies/
 docker build -t financial-analysis-service .
 
 # Run container
-docker run -p 8000:8000 financial-analysis-service
+docker run -p 8001:8001 financial-analysis-service
 ```
 
 ### **Production Considerations**
@@ -175,7 +175,7 @@ This service is part of the InvestByYourself microservices architecture:
 
 ## 📚 **Documentation**
 
-- [API Documentation](http://127.0.0.1:8000/docs) - Interactive API docs
+- [API Documentation](http://127.0.0.1:8001/docs) - Interactive API docs
 - [Week 1 Completion Report](../../docs/story-015-week1-completion-report.md)
 - [Microservices Architecture Plan](../../docs/microservices_architecture_plan.md)
 
