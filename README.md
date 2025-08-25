@@ -38,15 +38,19 @@ streamlit run scripts/financial_analysis/financial_dashboard.py
 
 ## 📊 **Current Status**
 
-- **Overall Progress**: 71% Complete (22/31 tasks)
+- **Overall Progress**: 75% Complete (24/31 tasks)
 - **Phase 3**: ✅ **100% Complete** (Database & ETL Infrastructure)
-- **Current Focus**: Microservices Architecture Implementation
+- **Phase 4**: 🔄 **In Progress** (Microservices Architecture Implementation)
+- **Current Focus**: Story-015 Investment Strategy Module (Week 2)
 
 ### **Recent Achievements**
 - ✅ **Complete Database Infrastructure** with 13 tables
 - ✅ **ETL Pipeline** with data collectors and processors
 - ✅ **Financial Data Exploration System** with interactive dashboard
 - ✅ **Sample Data Population** for testing and development
+- ✅ **Story-015 Week 1 Complete** - Financial Analysis Service Foundation
+- ✅ **21 API Endpoints** implemented for strategy management and backtesting
+- ✅ **Production-ready microservice** with FastAPI, SQLAlchemy, and JWT auth
 
 ---
 
@@ -63,6 +67,8 @@ streamlit run scripts/financial_analysis/financial_dashboard.py
 - **Data Processors**: Transformation, validation, and enrichment
 - **Data Loaders**: Efficient storage and retrieval systems
 - **Analysis Tools**: Company research, screening, and portfolio management
+- **Financial Analysis Service**: Investment strategy management and backtesting
+- **Microservices Architecture**: Scalable, maintainable service structure
 
 ---
 
@@ -92,12 +98,20 @@ streamlit run scripts/financial_analysis/financial_dashboard.py
 - **Incremental Loading**: Efficient data updates and versioning
 - **Monitoring**: Comprehensive logging and health checks
 
+### **Investment Strategy Module**
+- **Strategy Management**: Create, update, and manage investment strategies
+- **Backtesting Engine**: Execute and monitor strategy backtests
+- **Results Analysis**: Comprehensive performance metrics and reporting
+- **API-First Design**: RESTful API for integration and automation
+
 ---
 
 ## 🎯 **Development Roadmap**
 
 ### **Phase 4: Microservices Implementation (Current)**
-- **Tech-021**: ETL Service Extraction (Highest Priority)
+- **Tech-020**: ✅ **COMPLETED** - Microservices Foundation & Structure
+- **Story-015**: 🔄 **IN PROGRESS** - Investment Strategy Module (Week 2)
+- **Tech-021**: ETL Service Extraction (Next Priority)
 - **Tech-022**: Financial Analysis Service Extraction
 - **Tech-023**: Inter-Service Communication Setup
 - **Tech-024**: Data Service & Database Management
@@ -133,6 +147,8 @@ streamlit run scripts/financial_analysis/financial_dashboard.py
 - **API Documentation**: [docs/api/](docs/api/)
 - **Testing Guide**: [scripts/testing/README.md](scripts/testing/README.md)
 - **Microservices Plan**: [docs/microservices_architecture_plan.md](docs/microservices_architecture_plan.md)
+- **Story-015 Week 1 Report**: [docs/story-015-week1-completion-report.md](docs/story-015-week1-completion-report.md)
+- **Financial Analysis Service**: [services/financial-analysis-service/README.md](services/financial-analysis-service/README.md)
 
 ---
 
@@ -158,5 +174,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Status**: 🚧 **Active Development** - Phase 4: Microservices Implementation
-**Last Updated**: 2025-01-27
-**Next Milestone**: ETL Service Extraction (Tech-021)
+**Last Updated**: December 2024
+**Next Milestone**: Story-015 Week 2 - Strategy Framework Integration

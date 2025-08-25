@@ -92,9 +92,10 @@ PostgreSQL ← ETL Service
 - **Features**: Batch processing, retry logic, data transformation
 
 ### **Financial Analysis Service (Port 8001)**
-- **Purpose**: Financial calculations and analysis
+- **Purpose**: Investment strategy management and backtesting
 - **Dependencies**: PostgreSQL, Redis
-- **Features**: Financial ratios, trend analysis, visualization
+- **Features**: Strategy management, backtesting engine, results analysis, 21 API endpoints
+- **Status**: ✅ Week 1 Complete - Production-ready microservice foundation
 
 ### **Data Service (Port 8002)**
 - **Purpose**: Database operations and management
@@ -267,6 +268,12 @@ docker-compose up -d --scale data-service=2
 2. **Service Dockerfiles** - Multi-stage container builds
 3. **Service Orchestration** - Docker Compose orchestration
 
+### **🔄 Current Phase (Story-015: Investment Strategy Module)**
+- **Week 1**: ✅ **COMPLETED** - Service Foundation & API Setup
+- **Week 2**: 🔄 **IN PROGRESS** - Strategy Framework Integration
+- **Week 3**: ⏳ **PENDING** - User Interface & Management
+- **Week 4**: ⏳ **PENDING** - Production Readiness
+
 ### **🔄 Next Phase (Tech-021 to Tech-024)**
 - **Tech-021**: ETL Service Extraction
 - **Tech-022**: Financial Analysis Service Extraction
@@ -311,7 +318,8 @@ With **Tech-020: Microservices Foundation** complete, you're ready to:
 
 ---
 
-**Last Updated**: August 24, 2025
+**Last Updated**: December 2024
 **Tech-020 Progress**: 3/3 tasks completed ✅
-**Status**: **COMPLETED** 🎉
-**Next Phase**: Service Extraction (Tech-021 to Tech-024)
+**Story-015 Progress**: Week 1/4 completed ✅
+**Status**: **ACTIVE DEVELOPMENT** 🚧
+**Current Focus**: Story-015 Week 2 - Strategy Framework Integration
