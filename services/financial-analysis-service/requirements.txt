@@ -1,42 +1,43 @@
-# Financial Analysis Service Requirements
-# Tech-020: Microservices Foundation
+# Financial Analysis Service Dependencies
+# FastAPI and ASGI server
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
 
-# Core Financial Dependencies
-financetoolkit>=1.0.0
-pandas>=1.5.0
-numpy>=1.21.0
-python-dotenv>=1.0.0
+# Database and ORM
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9
+alembic==1.12.1
 
-# Data Visualization
-matplotlib>=3.6.0
-seaborn>=0.12.0
-plotly>=5.15.0
+# Configuration and validation
+pydantic==2.5.0
+pydantic-settings==2.1.0
+python-dotenv==1.0.0
 
-# Financial Calculations
-scipy>=1.10.0
-statsmodels>=0.14.0
+# Security and authentication
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
+python-multipart==0.0.6
 
-# Data Storage
-asyncpg>=0.28.0
-redis>=4.5.0
-psycopg2-binary>=2.9.9
+# HTTP client and data processing
+httpx==0.25.2
+pandas==2.1.4
+numpy==1.25.2
 
-# Data Validation
-pydantic>=2.5.2
-structlog>=23.1.0
+# Caching and session management
+redis==5.0.1
 
-# HTTP and API
-requests>=2.31.0
-fastapi>=0.100.0
-uvicorn>=0.23.0
+# Logging and monitoring
+structlog==23.2.0
 
-# Testing (Development only)
-pytest>=7.4.0
-pytest-asyncio>=0.21.0
-pytest-mock>=3.11.0
+# Testing and development
+pytest==7.4.3
+pytest-asyncio==0.21.1
 
-# Code Quality (Development only)
-black>=23.7.0
-flake8>=6.0.0
-mypy>=1.5.0
-isort>=5.12.0
+# Code quality and formatting
+black==23.11.0
+isort==5.12.0
+flake8==6.1.0
+
+# Documentation
+mkdocs==1.5.3
+mkdocs-material==9.4.8
