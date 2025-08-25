@@ -1,6 +1,6 @@
 # 📚 InvestByYourself Documentation
 
-*Last Updated: 2025-01-27*
+*Last Updated: August 25, 2025*
 
 ## 🎯 **Documentation Overview**
 
@@ -22,6 +22,7 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 ### **🏗️ Technical Implementation**
 - **[🏗️ TECH-009 ETL Pipeline Implementation](TECH-009-ETL-Pipeline-Implementation-Complete.md)** - Complete ETL pipeline implementation documentation
 - **[🏗️ Microservices Architecture Plan](microservices_architecture_plan.md)** - Strategic plan for microservices transformation
+- **[🏗️ Story-015 Week 1 Report](story-015-week1-completion-report.md)** - Investment Strategy Module implementation
 - **[📊 Project Organization](project_organization.md)** - Code structure, file organization, and development workflow
 
 ### **📊 Analysis Reports & Examples**
@@ -60,7 +61,7 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 - Code quality checks
 - Project structure reorganization
 
-### **Phase 2: Core Data & Company Analysis** 🚧 **IN PROGRESS (70%)**
+### **Phase 2: Core Data & Company Analysis** ✅ **COMPLETED (100%)**
 - Financial data validation framework
 - Company profile collection enhancements
 - Basic analysis tools development
@@ -71,12 +72,12 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 - Database schema and connection management ready
 - ETL pipeline fully implemented across all phases
 
-### **Phase 4: Advanced Analysis & Dashboards** ⏳ **PLANNED**
-- Enhanced financial analysis engine
-- Sector analysis and screening tools
-- Interactive dashboards
+### **Phase 4: Microservices Architecture** 🔄 **IN PROGRESS (75%)**
+- ✅ **Tech-020: Microservices Foundation** - COMPLETED
+- 🔄 **Story-015: Investment Strategy Module** - Week 1 Complete, Week 2 In Progress
+- ⏳ **Tech-021 to Tech-024**: Service Extraction - PLANNED
 
-### **Phase 4: Advanced Features & Intelligence** ⏳ **PLANNED**
+### **Phase 5: Advanced Features & Intelligence** ⏳ **PLANNED**
 - Backtesting engine
 - Risk analysis tools
 - Market intelligence features
@@ -86,13 +87,15 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 ## 🔗 **Quick Links**
 
 ### **📊 Current Focus**
-- ✅ **[Tech-009: ETL Pipeline Implementation](../MASTER_TODO.md#tech-009-etl-pipeline-implementation)** - COMPLETED
-- **[Tech-013: Company Analysis Infrastructure](../MASTER_TODO.md#tech-013-company-analysis-infrastructure)** - Next development priority
+- ✅ **[Tech-020: Microservices Foundation](../MASTER_TODO.md#tech-020-microservices-foundation--structure)** - COMPLETED
+- 🔄 **[Story-015: Investment Strategy Module](../MASTER_TODO.md#story-015-investment-strategy-module)** - Week 1 Complete, Week 2 In Progress
+- ⏳ **[Tech-021: ETL Service Extraction](../MASTER_TODO.md#tech-021-etl-service-extraction)** - Next Priority
 
 ### **🎯 Next Milestones**
-- ✅ **Week 5-6**: ETL Pipeline Implementation (Tech-009) - COMPLETED
-- **Week 6-7**: Data Models & Schema Design (Tech-010)
-- **Week 7-8**: Company Analysis Infrastructure (Tech-013)
+- ✅ **Week 1**: Story-015 Service Foundation - COMPLETED
+- 🔄 **Week 2**: Story-015 Strategy Framework Integration - IN PROGRESS
+- ⏳ **Week 3**: Story-015 User Interface & Management
+- ⏳ **Week 4**: Story-015 Production Readiness
 
 ### **📈 Success Metrics**
 - Company profile completeness >95%
