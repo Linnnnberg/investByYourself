@@ -1,0 +1,39 @@
+# Environment files with sensitive data
+.env
+.env.local
+.env.production
+.env.staging
+.env.development
+
+# Docker volumes and data
+postgres_data/
+redis_data/
+minio_data/
+prometheus_data/
+grafana_data/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp

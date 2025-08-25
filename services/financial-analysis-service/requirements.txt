@@ -1,27 +1,34 @@
-# ETL Service Requirements
+# Financial Analysis Service Requirements
 # Tech-020: Microservices Foundation
 
-# Core ETL Dependencies
+# Core Financial Dependencies
+financetoolkit>=1.0.0
 pandas>=1.5.0
 numpy>=1.21.0
 python-dotenv>=1.0.0
 
-# Data Collection APIs
-yfinance>=0.2.55
-fredapi>=0.5.0
-requests>=2.31.0
-httpx>=0.24.0
-aiohttp>=3.8.0
+# Data Visualization
+matplotlib>=3.6.0
+seaborn>=0.12.0
+plotly>=5.15.0
+
+# Financial Calculations
+scipy>=1.10.0
+statsmodels>=0.14.0
 
 # Data Storage
 asyncpg>=0.28.0
 redis>=4.5.0
 psycopg2-binary>=2.9.9
-minio>=7.2.0
 
-# Data Processing
-structlog>=23.1.0
+# Data Validation
 pydantic>=2.5.2
+structlog>=23.1.0
+
+# HTTP and API
+requests>=2.31.0
+fastapi>=0.100.0
+uvicorn>=0.23.0
 
 # Testing (Development only)
 pytest>=7.4.0

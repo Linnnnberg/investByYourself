@@ -1,0 +1,100 @@
+# Development Override for Docker Compose
+# Tech-020: Microservices Foundation
+
+# This file overrides docker-compose.yml for development
+# Run with: docker-compose -f docker-compose.yml -f docker-compose.override.yml up
+
+version: '3.8'
+
+services:
+  # Development-specific overrides
+  postgres:
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"  # Expose for local development tools
+
+  redis:
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    ports:
+      - "6379:6379"  # Expose for local development tools
+
+  minio:
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    ports:
+      - "9000:9000"  # Expose for local development tools
+      - "9001:9001"  # Expose console for local development
+
+  etl-service:
+    build:
+      target: development
+    environment:
+      - ENVIRONMENT=development
+      - DEBUG=true
+      - ETL_BATCH_SIZE=50
+      - ETL_RETRY_ATTEMPTS=2
+    volumes:
+      - ./etl-service:/app
+      - /app/__pycache__
+      - /app/.pytest_cache
+    ports:
+      - "8000:8000"
+
+  financial-analysis-service:
+    build:
+      target: development
+    environment:
+      - ENVIRONMENT=development
+      - DEBUG=true
+      - ANALYSIS_CACHE_TTL=1800
+      - ANALYSIS_MAX_WORKERS=2
+    volumes:
+      - ./financial-analysis-service:/app
+      - /app/__pycache__
+      - /app/.pytest_cache
+    ports:
+      - "8001:8001"
+
+  data-service:
+    build:
+      target: development
+    environment:
+      - ENVIRONMENT=development
+      - DEBUG=true
+      - DB_POOL_SIZE=10
+      - DB_CONNECTION_TIMEOUT=15
+    volumes:
+      - ./data-service:/app
+      - /app/__pycache__
+      - /app/.pytest_cache
+    ports:
+      - "8002:8002"
+
+  # Development tools
+  adminer:
+    image: adminer:latest
+    container_name: investbyyourself-adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - investbyyourself-network
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: investbyyourself-redis-commander
+    environment:
+      - REDIS_HOSTS=local:redis:6379:0:${REDIS_PASSWORD}
+    ports:
+      - "8081:8081"
+    networks:
+      - investbyyourself-network
+    depends_on:
+      - redis
+    restart: unless-stopped
