@@ -85,9 +85,27 @@ def latest_value(series_or_dict, key):
 
 
 def compute_eps_growth(tkr):
-    """Compute CAGR of earnings (yfinance .earnings) over available years."""
+    """Compute CAGR of earnings using modern yfinance income_stmt API."""
     try:
-        earn = tkr.earnings  # columns: Revenue, Earnings, index: Year
+        # Try modern income statement first
+        income = tkr.income_stmt
+        if (
+            isinstance(income, pd.DataFrame)
+            and "Net Income" in income.index
+            and len(income.columns) >= 2
+        ):
+            # Get the last 2 years of data (most recent first in yfinance)
+            net_income = income.loc["Net Income"].dropna()
+            if len(net_income) >= 2:
+                first = float(net_income.iloc[-1])  # Oldest (last column)
+                last = float(net_income.iloc[0])  # Newest (first column)
+                years = len(net_income) - 1
+                if first > 0 and last > 0 and years > 0:
+                    cagr = (last / first) ** (1 / years) - 1
+                    return float(cagr)
+
+        # Fallback to deprecated earnings method (for backward compatibility)
+        earn = tkr.earnings
         if (
             isinstance(earn, pd.DataFrame)
             and "Earnings" in earn.columns
@@ -105,8 +123,27 @@ def compute_eps_growth(tkr):
 
 
 def compute_revenue_cagr(tkr):
+    """Compute CAGR of revenue using modern yfinance income_stmt API."""
     try:
-        earn = tkr.earnings  # revenue in same df
+        # Try modern income statement first
+        income = tkr.income_stmt
+        if (
+            isinstance(income, pd.DataFrame)
+            and "Total Revenue" in income.index
+            and len(income.columns) >= 2
+        ):
+            # Get the last 2 years of data (most recent first in yfinance)
+            revenue = income.loc["Total Revenue"].dropna()
+            if len(revenue) >= 2:
+                first = float(revenue.iloc[-1])  # Oldest (last column)
+                last = float(revenue.iloc[0])  # Newest (first column)
+                years = len(revenue) - 1
+                if first > 0 and last > 0 and years > 0:
+                    cagr = (last / first) ** (1 / years) - 1
+                    return float(cagr)
+
+        # Fallback to deprecated earnings method (for backward compatibility)
+        earn = tkr.earnings
         if (
             isinstance(earn, pd.DataFrame)
             and "Revenue" in earn.columns
@@ -550,9 +587,7 @@ def main():
     lines = []
     title = f"# Stock-Picking Framework Report – {args.ticker}\n"
     lines.append(title)
-    lines.append(
-        f"*Generated on:* {datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}\n"
-    )
+    lines.append(f"*Generated on:* {datetime.now().strftime('%Y-%m-%d %H:%M UTC')}\n")
     lines.append("---\n")
 
     # Company header
