@@ -32,25 +32,28 @@ streamlit run scripts/financial_analysis/financial_dashboard.py
 ### **3. Full Documentation**
 - **Team Setup Guide**: [docs/TEAM_ENVIRONMENT_SETUP.md](docs/TEAM_ENVIRONMENT_SETUP.md)
 - **Database Reference**: [docs/database_quick_reference.md](docs/database_quick_reference.md)
-- **Project Status**: [docs/current_status_summary.md](docs/current_status_summary.md)
+- **Project Status**: [MASTER_TODO.md](MASTER_TODO.md) *(Single Source of Truth)*
 
 ---
 
 ## 📊 **Current Status**
 
-- **Overall Progress**: 75% Complete (24/31 tasks)
+> **📋 For the most up-to-date project status, see [MASTER_TODO.md](MASTER_TODO.md) - Single Source of Truth**
+
+- **Overall Progress**: 75%+ Complete (25+/31 tasks)
 - **Phase 3**: ✅ **100% Complete** (Database & ETL Infrastructure)
 - **Phase 4**: 🔄 **In Progress** (Microservices Architecture Implementation)
-- **Current Focus**: Story-015 Investment Strategy Module (Week 2)
+- **Current Focus**: Tech-014 Yahoo Finance CAGR Fix ✅ **COMPLETED** + Next: Story-005 Enhanced Company Analysis
 
 ### **Recent Achievements**
 - ✅ **Complete Database Infrastructure** with 13 tables
 - ✅ **ETL Pipeline** with data collectors and processors
 - ✅ **Financial Data Exploration System** with interactive dashboard
 - ✅ **Sample Data Population** for testing and development
-- ✅ **Story-015 Week 1 Complete** - Financial Analysis Service Foundation
+- ✅ **Story-015 Complete** - Investment Strategy Module (100%)
 - ✅ **21 API Endpoints** implemented for strategy management and backtesting
 - ✅ **Production-ready microservice** with FastAPI, SQLAlchemy, and JWT auth
+- ✅ **Tech-014 Complete** - Yahoo Finance CAGR data fix for momentum strategies
 
 ---
 
@@ -156,7 +159,7 @@ streamlit run scripts/financial_analysis/financial_dashboard.py
 
 ### **Team Resources**
 - **Team Setup Guide**: [docs/TEAM_ENVIRONMENT_SETUP.md](docs/TEAM_ENVIRONMENT_SETUP.md)
-- **Current Status**: [docs/current_status_summary.md](docs/current_status_summary.md)
+- **Current Status**: [MASTER_TODO.md](MASTER_TODO.md) *(Single Source of Truth)*
 - **Master TODO**: [MASTER_TODO.md](MASTER_TODO.md)
 
 ### **Getting Help**
@@ -174,5 +177,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Status**: 🚧 **Active Development** - Phase 4: Microservices Implementation
-**Last Updated**: December 2024
-**Next Milestone**: Story-015 Week 2 - Strategy Framework Integration
+**Last Updated**: August 26, 2025
+**Next Milestone**: Story-005 - Enhanced Company Analysis with working CAGR data
