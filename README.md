@@ -150,7 +150,7 @@ streamlit run scripts/financial_analysis/financial_dashboard.py
 - **API Documentation**: [docs/api/](docs/api/)
 - **Testing Guide**: [scripts/testing/README.md](scripts/testing/README.md)
 - **Microservices Plan**: [docs/microservices_architecture_plan.md](docs/microservices_architecture_plan.md)
-- **Story-015 Week 1 Report**: [docs/story-015-week1-completion-report.md](docs/story-015-week1-completion-report.md)
+- **Story-015 Complete Report**: [docs/story-015-completion-report.md](docs/story-015-completion-report.md)
 - **Financial Analysis Service**: [services/financial-analysis-service/README.md](services/financial-analysis-service/README.md)
 
 ---
