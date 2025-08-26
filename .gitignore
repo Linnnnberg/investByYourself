@@ -98,6 +98,22 @@ dmypy.json
 .Spotlight-V100
 .Trashes
 ehthumbs.db
+
+# Large files and charts
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+*.svg
+charts/*.png
+charts/*.jpg
+charts/*.jpeg
+charts/*.gif
+charts/*.bmp
+charts/*.tiff
+charts/*.svg
 Thumbs.db
 
 # Temporary files
