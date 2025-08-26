@@ -139,6 +139,7 @@
 - **Tech-011**: Multi-Environment Deployment
 - **Tech-012**: Advanced Security Features
 - **Tech-013**: Company Analysis Infrastructure *(NEW)*
+- **Tech-014**: Fix Yahoo Finance CAGR Data Issues *(NEW)*
 - **Tech-020**: Microservices Foundation & Structure *(IN PROGRESS)*
 - **Tech-021**: ETL Service Extraction
 - **Tech-022**: Financial Analysis Service Extraction
@@ -418,6 +419,31 @@
   - Handle 1000+ financial ratios and metrics efficiently
   - Real-time data refresh <15 minutes for market data
   - 99.9% uptime for data collection and analysis services
+
+### **<Tech-014> Fix Yahoo Finance CAGR Data Issues**
+- [ ] **Identify Data Source Issues**
+  - Fix deprecated `tkr.earnings` method usage
+  - Update to use modern `tkr.income_stmt` API
+  - Implement fallback data collection methods
+  - Add error handling for data availability
+- [ ] **Implement Alternative Data Sources**
+  - Add Financial Modeling Prep (FMP) API integration
+  - Implement hybrid data collection with fallbacks
+  - Create data quality scoring system
+  - Add data source health monitoring
+- [ ] **Enhance CAGR Calculations**
+  - Fix revenue and earnings CAGR calculations
+  - Add multiple time period CAGR options (3Y, 5Y, 10Y)
+  - Implement peer comparison CAGR analysis
+  - Add CAGR momentum strategy support
+- **Priority**: High
+- **Dependencies**: None (blocks Story-005 and momentum strategies)
+- **ETA**: M (Medium)
+- **Success Criteria**:
+  - CAGR data available for 95%+ of companies
+  - Data collection reliability >99%
+  - Support for momentum strategies with fundamental growth
+  - Fallback data sources working for all companies
 
 ### **<Story-006> Local vs Web App Architecture Decision**
 - [ ] **Architecture Analysis**
