@@ -91,7 +91,8 @@ This directory contains comprehensive documentation for the InvestByYourself pro
 - ✅ **[Tech-020: Microservices Foundation](../MASTER_TODO.md#tech-020-microservices-foundation--structure)** - COMPLETED
 - ✅ **[Story-015: Investment Strategy Module](../MASTER_TODO.md#story-015-investment-strategy-module)** - COMPLETED (100%)
 - ✅ **[Infrastructure Setup: Docker & Redis](docker-redis-setup-completion-report.md)** - COMPLETED (100%)
-- ⏳ **[Tech-021: ETL Service Extraction](../MASTER_TODO.md#tech-021-etl-service-extraction)** - Next Priority
+- ✅ **[Tech-021: ETL Service Extraction](../MASTER_TODO.md#tech-021-etl-service-extraction)** - COMPLETED
+- 🚀 **[Story-026: Frontend MVP Development](../MASTER_TODO.md#story-026-frontend-mvp-development)** - IMMEDIATE PRIORITY
 
 ### **🎯 Next Milestones**
 - ✅ **Story-015: Investment Strategy Module** - COMPLETED (100%)
