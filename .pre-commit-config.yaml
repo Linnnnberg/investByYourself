@@ -44,7 +44,7 @@ repos:
   #       args: [-r, scripts/]
   #       types: [python]
 
-  # Custom security scanning hook
+  # Custom security scanning hooks
   - repo: local
     hooks:
       - id: security-scan
@@ -56,6 +56,16 @@ repos:
         always_run: true
         stages: [commit]
         description: "Fast security scan for hardcoded credentials"
+
+      - id: env-security-scan
+        name: Environment Security Scan
+        entry: python config/scripts/scan_env_security.py --all
+        language: python
+        files: ^(\.env.*|config/.*\.env\.template|config/environments/.*\.template|config/services/.*\.template)$
+        pass_filenames: false
+        always_run: true
+        stages: [commit]
+        description: "Security scan for environment configuration files"
 
   # General hooks
   - repo: https://github.com/pre-commit/pre-commit-hooks

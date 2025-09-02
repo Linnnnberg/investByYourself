@@ -57,8 +57,8 @@ class EnvironmentGenerator:
             Generated configuration content
         """
         config_files = self._collect_config_files(environment, service)
-        merged_content = self._merge_config_files(config_files)
-        validated_content = self._validate_config(merged_content)
+        merged_content = self._merge_config_files(config_files, environment)
+        validated_content = self._validate_config(merged_content, environment)
 
         if output_file:
             output_path = Path(output_file)
@@ -67,6 +67,16 @@ class EnvironmentGenerator:
                 output_path = self.output_dir / f".env.{environment}.{service}"
             else:
                 output_path = self.output_dir / f".env.{environment}"
+
+        # Create backup of existing file if it exists
+        if output_path.exists():
+            backup_dir = (
+                self.config_root / "backups" / f"config_backup_{environment}_{service}"
+            )
+            backup_dir.mkdir(parents=True, exist_ok=True)
+            backup_path = backup_dir / output_path.name
+            backup_path.write_text(output_path.read_text())
+            print(f"Created backup: {backup_path}")
 
         # Write the generated configuration
         output_path.write_text(validated_content)
@@ -109,10 +119,57 @@ class EnvironmentGenerator:
 
         return config_files
 
-    def _merge_config_files(self, config_files: List[ConfigFile]) -> str:
+    def _resolve_variable(
+        self, value: str, variables: Dict[str, str], environment: str
+    ) -> str:
+        """Resolve a variable value, handling inheritance and defaults."""
+        # Extract comment if present
+        value_parts = value.split("#", 1)
+        value = value_parts[0].strip()
+        comment = f" # {value_parts[1].strip()}" if len(value_parts) > 1 else ""
+
+        # Match ${VAR:-default} pattern
+        default_match = re.match(r"\${([A-Z_]+):-([^}]+)}", value)
+        if default_match:
+            var_name = default_match.group(1)
+            default_value = default_match.group(2)
+            resolved = variables.get(var_name, default_value)
+            return f"{resolved}{comment}"
+
+        # Match ${VAR} pattern
+        inherit_match = re.match(r"\${([A-Z_]+)}", value)
+        if inherit_match:
+            var_name = inherit_match.group(1)
+            if var_name in variables:
+                return f"{variables[var_name]}{comment}"
+
+            # Load from environment if available
+            env_value = os.getenv(var_name)
+            if env_value:
+                return f"{env_value}{comment}"
+
+            # Generate placeholder for development
+            if environment == "development":
+                if any(key in var_name for key in ["PASSWORD", "SECRET", "KEY"]):
+                    placeholder = f"dev_{var_name.lower()}_2025"
+                else:
+                    placeholder = f"dev_{var_name.lower()}"
+                print(f"Warning: Using development placeholder for {var_name}")
+                return f"{placeholder}{comment}"
+
+            print(f"Warning: Required variable {var_name} not found")
+            return f"${{{var_name}}}{comment}"
+
+        return f"{value}{comment}"
+
+    def _merge_config_files(
+        self, config_files: List[ConfigFile], environment: str
+    ) -> str:
         """Merge configuration files, with later files overriding earlier ones."""
         merged_vars = {}
         comments = []
+        section_comments = {}
+        current_section = None
 
         for config_file in config_files:
             content = config_file.content
@@ -127,7 +184,15 @@ class EnvironmentGenerator:
 
                 # Collect comments
                 if line.startswith("#"):
-                    comments.append(line)
+                    # Check for section header
+                    if "====" in line:
+                        current_section = line
+                        if current_section not in section_comments:
+                            section_comments[current_section] = []
+                    elif current_section:
+                        section_comments[current_section].append(line)
+                    else:
+                        comments.append(line)
                     continue
 
                 # Parse variable assignments
@@ -142,7 +207,11 @@ class EnvironmentGenerator:
                     elif value.startswith("'") and value.endswith("'"):
                         value = value[1:-1]
 
-                    merged_vars[key] = value
+                    # Resolve variable references
+                    resolved_value = self._resolve_variable(
+                        value, merged_vars, environment
+                    )
+                    merged_vars[key] = resolved_value
 
         # Generate merged content
         merged_content = []
@@ -247,37 +316,71 @@ class EnvironmentGenerator:
 
         return categories
 
-    def _validate_config(self, content: str) -> str:
-        """Validate the generated configuration."""
-        lines = content.split("\n")
-        validated_lines = []
+    def _validate_config(self, content: str, environment: str = "production") -> str:
+        """Validate the generated configuration using enhanced validation."""
+        from validate_env import EnvironmentValidator, ValidationLevel
 
-        for line in lines:
-            # Skip comments and empty lines
-            if line.strip().startswith("#") or not line.strip():
-                validated_lines.append(line)
-                continue
+        # Create a temporary file for validation
+        temp_file = self.config_root / ".temp_config"
+        try:
+            temp_file.write_text(content)
 
-            # Validate variable assignments
-            if "=" in line:
-                key, value = line.split("=", 1)
-                key = key.strip()
-                value = value.strip()
+            # Initialize validator with environment context
+            validator = EnvironmentValidator(self.config_root)
+            validator.current_environment = environment
 
-                # Check for placeholder values
-                if value.startswith("${") and value.endswith("}"):
-                    print(f"Warning: Placeholder value found: {key}={value}")
+            # Run validation
+            results = validator.validate_file(temp_file)
 
-                # Check for empty values
-                if not value:
-                    print(f"Warning: Empty value for variable: {key}")
+            # Process validation results
+            has_critical = False
+            for result in results:
+                # Skip placeholder warnings in development
+                if (
+                    environment == "development"
+                    and result.level == ValidationLevel.WARNING
+                    and "placeholder" in result.message.lower()
+                ):
+                    continue
 
-                validated_lines.append(line)
-            else:
-                print(f"Warning: Invalid line format: {line}")
-                validated_lines.append(line)
+                # Skip numeric validation for values with units
+                if (
+                    result.level == ValidationLevel.ERROR
+                    and "Invalid numeric value" in result.message
+                    and any(unit in result.message for unit in ["MB", "GB", "KB", "B"])
+                ):
+                    continue
 
-        return "\n".join(validated_lines)
+                if result.level == ValidationLevel.CRITICAL:
+                    # Skip sensitive variable warnings in development
+                    if (
+                        environment == "development"
+                        and "Sensitive variable contains placeholder" in result.message
+                    ):
+                        continue
+                    print(f"❌ CRITICAL: {result.message}")
+                    if result.suggestion:
+                        print(f"   Suggestion: {result.suggestion}")
+                    has_critical = True
+                elif result.level == ValidationLevel.ERROR:
+                    print(f"⚠️ ERROR: {result.message}")
+                    if result.suggestion:
+                        print(f"   Suggestion: {result.suggestion}")
+                elif result.level == ValidationLevel.WARNING:
+                    print(f"⚠️ Warning: {result.message}")
+                    if result.suggestion:
+                        print(f"   Suggestion: {result.suggestion}")
+
+            # If there are critical issues in production, raise an exception
+            if has_critical and environment != "development":
+                raise ValueError("Critical validation errors found")
+
+            return content
+
+        finally:
+            # Clean up temporary file
+            if temp_file.exists():
+                temp_file.unlink()
 
     def generate_all_services(self, environment: str) -> Dict[str, str]:
         """Generate configuration for all services in an environment."""

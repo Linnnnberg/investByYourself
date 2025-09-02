@@ -499,6 +499,42 @@ class EnvironmentValidator:
         """Check if a value is inherited from another variable."""
         return bool(re.match(r"\${[A-Z_]+}", value))
 
+    def _parse_numeric_with_units(self, value: str) -> Optional[float]:
+        """Parse a numeric value that may include units."""
+        # Remove comments
+        value = value.split("#")[0].strip()
+
+        # Match number with optional unit
+        match = re.match(r"^(\d+(?:\.\d+)?)\s*([A-Za-z]+)?$", value)
+        if not match:
+            return None
+
+        number = float(match.group(1))
+        unit = match.group(2)
+
+        if unit:
+            # Size units
+            if unit.upper() in ["B", "KB", "MB", "GB", "TB"]:
+                multipliers = {
+                    "B": 1,
+                    "KB": 1024,
+                    "MB": 1024**2,
+                    "GB": 1024**3,
+                    "TB": 1024**4,
+                }
+                return number * multipliers[unit.upper()]
+            # Time units
+            elif unit.lower() in ["s", "sec", "second", "seconds"]:
+                return number
+            elif unit.lower() in ["m", "min", "minute", "minutes"]:
+                return number * 60
+            elif unit.lower() in ["h", "hr", "hour", "hours"]:
+                return number * 3600
+            elif unit.lower() in ["d", "day", "days"]:
+                return number * 86400
+
+        return number
+
     def _validate_variable_type(self, key: str, value: str) -> List[ValidationResult]:
         """Validate variable types and formats."""
         results = []
@@ -508,21 +544,52 @@ class EnvironmentValidator:
         # Validate numeric variables
         if key.endswith("_PORT") or key.endswith("_TIMEOUT") or key.endswith("_SIZE"):
             if not is_inherited:
-                try:
-                    # Handle float values for _DELAY suffixes
-                    if key.endswith("_DELAY"):
-                        float(actual_value)
-                    else:
-                        int(actual_value)
-                except ValueError:
-                    results.append(
-                        ValidationResult(
-                            ValidationLevel.ERROR,
-                            f"Invalid numeric value: {key}={actual_value}",
-                            variable=key,
-                            suggestion="Use a valid numeric value",
+                # Try parsing with units
+                parsed_value = self._parse_numeric_with_units(actual_value)
+                if parsed_value is None:
+                    try:
+                        # Handle float values for _DELAY suffixes
+                        if key.endswith("_DELAY"):
+                            float(actual_value)
+                        else:
+                            int(actual_value)
+                    except ValueError:
+                        results.append(
+                            ValidationResult(
+                                ValidationLevel.ERROR,
+                                f"Invalid numeric value: {key}={actual_value}",
+                                variable=key,
+                                suggestion="Use a valid numeric value with optional units (e.g., 100MB, 30s, 1h)",
+                            )
                         )
-                    )
+
+        # Parse boolean value
+        def is_valid_boolean(val: str) -> bool:
+            val = val.lower().strip()
+            return val in [
+                "true",
+                "false",
+                "1",
+                "0",
+                "yes",
+                "no",
+                "on",
+                "off",
+                "enabled",
+                "disabled",
+                "t",
+                "f",
+                "y",
+                "n",
+            ]
+
+        def normalize_boolean(val: str) -> str:
+            val = val.lower().strip()
+            if val in ["1", "yes", "on", "enabled", "t", "y"]:
+                return "true"
+            elif val in ["0", "no", "off", "disabled", "f", "n"]:
+                return "false"
+            return val
 
         # Validate boolean variables
         if (
@@ -530,14 +597,16 @@ class EnvironmentValidator:
             or key.startswith("DEBUG_")
             or key.startswith("AUTO_")
             or key.endswith("_ENABLED")
+            or key.endswith("_DISABLED")
+            or key.endswith("_FLAG")
         ):
-            if actual_value.lower() not in ["true", "false", "1", "0"]:
+            if not is_valid_boolean(actual_value):
                 results.append(
                     ValidationResult(
                         ValidationLevel.WARNING,
                         f"Invalid boolean value: {key}={actual_value}",
                         variable=key,
-                        suggestion="Use 'true' or 'false'",
+                        suggestion="Use 'true'/'false', 'yes'/'no', '1'/'0', or 'on'/'off'",
                     )
                 )
 
@@ -552,6 +621,10 @@ class EnvironmentValidator:
                 "lz4",
                 "snappy",
                 "zstd",
+                "bzip2",
+                "xz",
+                "none",
+                "disabled",
             ]
             if actual_value.lower() not in valid_compression:
                 results.append(

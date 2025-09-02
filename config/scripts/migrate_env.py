@@ -220,23 +220,74 @@ class EnvironmentMigrator:
 
     def _extract_variables_from_configs(
         self, config_files: List[Path]
-    ) -> Dict[str, str]:
+    ) -> Dict[str, Dict[str, str]]:
         """Extract variables from existing configuration files."""
-        all_variables = {}
+        # Structure: { service: { environment: { variable: value } } }
+        variables = {
+            "base": {"development": {}, "staging": {}, "production": {}},
+            "backend": {"development": {}, "staging": {}, "production": {}},
+            "frontend": {"development": {}, "staging": {}, "production": {}},
+            "etl": {"development": {}, "staging": {}, "production": {}},
+        }
+
+        # Define service and environment patterns
+        service_patterns = {
+            "backend": re.compile(r"backend|api|server", re.IGNORECASE),
+            "frontend": re.compile(r"frontend|client|ui", re.IGNORECASE),
+            "etl": re.compile(r"etl|data|pipeline", re.IGNORECASE),
+        }
+
+        env_patterns = {
+            "development": re.compile(r"development|dev|local", re.IGNORECASE),
+            "staging": re.compile(r"staging|test|qa", re.IGNORECASE),
+            "production": re.compile(r"production|prod", re.IGNORECASE),
+        }
 
         for config_file in config_files:
             try:
                 content = config_file.read_text()
-                variables = self._parse_env_file(content)
+                file_vars = self._parse_env_file(content)
 
-                # Merge variables (later files override earlier ones)
-                for key, value in variables.items():
-                    all_variables[key] = value
+                # Determine service and environment from file path and name
+                service = "base"
+                environment = "development"
+
+                file_str = str(config_file).lower()
+
+                # Determine environment
+                for env, pattern in env_patterns.items():
+                    if pattern.search(file_str):
+                        environment = env
+                        break
+
+                # Determine service
+                for svc, pattern in service_patterns.items():
+                    if pattern.search(file_str):
+                        service = svc
+                        break
+
+                # Categorize variables
+                for key, value in file_vars.items():
+                    # Check if variable belongs to a specific service
+                    assigned_service = service
+                    for svc, pattern in service_patterns.items():
+                        if pattern.search(key):
+                            assigned_service = svc
+                            break
+
+                    # Store variable
+                    variables[assigned_service][environment][key] = value
+
+                    # If it's a common variable, also store in base
+                    if not any(
+                        pattern.search(key) for pattern in service_patterns.values()
+                    ):
+                        variables["base"][environment][key] = value
 
             except Exception as e:
                 print(f"Warning: Error reading {config_file}: {e}")
 
-        return all_variables
+        return variables
 
     def _parse_env_file(self, content: str) -> Dict[str, str]:
         """Parse environment file content."""
@@ -266,29 +317,191 @@ class EnvironmentMigrator:
         return variables
 
     def _generate_new_configs(
-        self, environment: str, variables: Dict[str, str]
+        self, environment: str, variables: Dict[str, Dict[str, Dict[str, str]]]
     ) -> bool:
         """Generate new configuration files."""
         try:
-            # Import the generator
-            sys.path.append(str(self.config_root / "scripts"))
-            from generate_env import EnvironmentGenerator
+            # Create environment-specific templates
+            env_dir = self.config_root / "environments"
+            env_dir.mkdir(parents=True, exist_ok=True)
 
-            generator = EnvironmentGenerator(self.config_root)
+            # Generate base template
+            base_template = env_dir / "base.env.template"
+            base_vars = variables["base"][environment]
+            self._generate_template(base_template, base_vars, is_base=True)
 
-            # Generate base configuration
-            base_content = generator.generate_config(environment, None)
+            # Generate environment-specific template
+            env_template = env_dir / f"{environment}.env.template"
+            env_vars = {}
+            for service in variables:
+                env_vars.update(variables[service][environment])
+            self._generate_template(env_template, env_vars, is_base=False)
 
-            # Generate service-specific configurations
-            services = ["backend", "frontend", "etl"]
-            for service in services:
-                service_content = generator.generate_config(environment, service)
+            # Generate service-specific templates
+            service_dir = self.config_root / "services"
+            service_dir.mkdir(parents=True, exist_ok=True)
+
+            for service in ["backend", "frontend", "etl"]:
+                service_template = service_dir / f"{service}.env.template"
+                service_vars = variables[service][environment]
+                self._generate_template(service_template, service_vars, is_service=True)
 
             return True
 
         except Exception as e:
             print(f"Error generating new configurations: {e}")
             return False
+
+    def _generate_template(
+        self,
+        template_path: Path,
+        variables: Dict[str, str],
+        is_base: bool = False,
+        is_service: bool = False,
+    ) -> None:
+        """Generate a configuration template file."""
+        # Sort variables by category
+        categories = {
+            "Core Settings": [],
+            "Database Configuration": [],
+            "Cache Configuration": [],
+            "API Configuration": [],
+            "Security Settings": [],
+            "Service Settings": [],
+            "Monitoring": [],
+            "Other": [],
+        }
+
+        # Define category patterns
+        category_patterns = {
+            "Database Configuration": re.compile(
+                r"(DB|DATABASE|POSTGRES|MYSQL)", re.IGNORECASE
+            ),
+            "Cache Configuration": re.compile(
+                r"(CACHE|REDIS|MEMCACHED)", re.IGNORECASE
+            ),
+            "API Configuration": re.compile(
+                r"(API|ENDPOINT|URL|TIMEOUT)", re.IGNORECASE
+            ),
+            "Security Settings": re.compile(
+                r"(KEY|SECRET|TOKEN|PASSWORD|ENCRYPTION)", re.IGNORECASE
+            ),
+            "Service Settings": re.compile(
+                r"(SERVICE|WORKER|QUEUE|JOB)", re.IGNORECASE
+            ),
+            "Monitoring": re.compile(r"(LOG|MONITOR|TRACE|DEBUG)", re.IGNORECASE),
+            "Core Settings": re.compile(r"(ENV|ENVIRONMENT|MODE|DEBUG)", re.IGNORECASE),
+        }
+
+        # Categorize variables
+        for key, value in variables.items():
+            assigned = False
+            for category, pattern in category_patterns.items():
+                if pattern.search(key):
+                    categories[category].append((key, value))
+                    assigned = True
+                    break
+            if not assigned:
+                categories["Other"].append((key, value))
+
+        # Generate template content
+        content = []
+        content.append("#" + "=" * 78)
+        if is_base:
+            content.append("# Base Environment Configuration")
+            content.append("# Common settings across all environments")
+        elif is_service:
+            service_name = template_path.stem.split(".")[0].capitalize()
+            content.append(f"# {service_name} Service Configuration")
+            content.append(
+                f"# Environment-specific settings for {service_name} service"
+            )
+        else:
+            env_name = template_path.stem.split(".")[0].capitalize()
+            content.append(f"# {env_name} Environment Configuration")
+            content.append(f"# Environment-specific overrides for {env_name}")
+        content.append("#" + "=" * 78)
+        content.append("")
+
+        # Add variables by category
+        for category, vars in categories.items():
+            if vars:
+                content.append("#" + "-" * 76)
+                content.append(f"# {category}")
+                content.append("#" + "-" * 76)
+                content.append("")
+
+                for key, value in sorted(vars):
+                    # Add comment for the variable
+                    comment = self._generate_variable_comment(key, value)
+                    if comment:
+                        content.append(comment)
+
+                    # Generate variable line
+                    if is_base:
+                        # Base template uses direct values or defaults
+                        if self._is_sensitive(key):
+                            content.append(f"{key}=${{key}}")
+                        else:
+                            content.append(f"{key}={value}")
+                    else:
+                        # Environment and service templates use inheritance
+                        content.append(f"{key}=${{key}}")
+
+                    content.append("")
+
+        # Write template
+        template_path.write_text("\n".join(content))
+
+    def _generate_variable_comment(self, key: str, value: str) -> Optional[str]:
+        """Generate a helpful comment for a variable."""
+        comments = []
+
+        # Add description based on variable name
+        if "URL" in key:
+            comments.append("URL endpoint")
+        elif "PORT" in key:
+            comments.append("Port number")
+        elif "TIMEOUT" in key:
+            comments.append("Timeout in seconds")
+        elif "PASSWORD" in key or "SECRET" in key or "KEY" in key:
+            comments.append("Sensitive credential - use environment variable")
+        elif "ENABLED" in key or key.startswith("ENABLE_"):
+            comments.append("Feature flag (true/false)")
+        elif "DEBUG" in key:
+            comments.append("Debug mode flag (true/false)")
+        elif "PATH" in key:
+            comments.append("File system path")
+        elif "MAX_" in key:
+            comments.append("Maximum limit")
+        elif "MIN_" in key:
+            comments.append("Minimum limit")
+
+        # Add type information
+        if value.lower() in ["true", "false", "yes", "no", "0", "1"]:
+            comments.append("Boolean value")
+        elif value.isdigit():
+            comments.append("Numeric value")
+        elif "://" in value:
+            comments.append("URL value")
+
+        if comments:
+            return "# " + " - ".join(comments)
+        return None
+
+    def _is_sensitive(self, key: str) -> bool:
+        """Check if a variable is sensitive."""
+        sensitive_patterns = [
+            "password",
+            "secret",
+            "key",
+            "token",
+            "credential",
+            "auth",
+            "private",
+        ]
+        key_lower = key.lower()
+        return any(pattern in key_lower for pattern in sensitive_patterns)
 
     def show_migration_guide(self):
         """Show migration guide to user."""

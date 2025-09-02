@@ -81,42 +81,309 @@ python config/scripts/migrate_env.py --migrate --environment development
 python config/scripts/migrate_env.py --cleanup
 ```
 
-## 📋 Configuration Hierarchy
+## 📋 Configuration System Architecture
 
-The configuration system uses a hierarchical approach where later configurations override earlier ones:
+### 1. Configuration Hierarchy
+
+The configuration system uses a layered inheritance model where each level can override values from previous levels:
+
+```mermaid
+graph TD
+    A[Base Configuration] --> B[Environment Configuration]
+    B --> C[Service Configuration]
+    C --> D[Final .env File]
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+    style D fill:#feb,stroke:#333,stroke-width:2px
+```
 
 1. **Base Configuration** (`base.env.template`)
    - Common variables across all environments
    - Default values and placeholders
    - Documentation and examples
+   - Core service settings
+   - API configurations
+   - Database defaults
 
 2. **Environment Overrides** (`{environment}.env.template`)
    - Environment-specific values
    - Security settings
    - Performance tuning
+   - Resource limits
+   - Debug settings
+   - Logging levels
 
 3. **Service Overrides** (`{service}.env.template`)
    - Service-specific configurations
    - Port numbers and timeouts
    - Feature flags
+   - Service dependencies
+   - Resource allocations
+   - API endpoints
 
-## 🔒 Security Features
+### 2. Variable Resolution
 
-### No Hardcoded Secrets
-- All sensitive data uses environment variables
-- Templates contain placeholders, not actual values
-- Validation prevents hardcoded secrets
+The system uses shell-style variable substitution with defaults:
 
-### Secure Defaults
-- Strong password requirements
-- Secure connection settings
-- Proper CORS configuration
+```bash
+# Simple inheritance
+API_URL=${API_URL}
 
-### Validation
-- Automated security checks
-- Placeholder detection
-- Weak password detection
-- Insecure default detection
+# Inheritance with default
+DEBUG=${DEBUG:-false}
+
+# Conditional default with prefix
+DB_PASSWORD=${DB_PASSWORD:-${ENV_PREFIX:-dev}_db_$(date +%Y%m%d)}
+
+# Required variable (fails if not set)
+JWT_SECRET=${JWT_SECRET:?Required for production}
+```
+
+#### Resolution Order:
+1. Explicit environment variable
+2. Inherited from previous layer
+3. Default value if provided
+4. Fail or placeholder based on environment
+
+### 3. Template Structure
+
+Each template follows a standardized structure:
+
+```bash
+#==============================================================================
+# Service: ETL
+# Environment: Development
+# Last Updated: 2024-03-21
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# Core Settings
+#------------------------------------------------------------------------------
+SERVICE_NAME=etl
+ENVIRONMENT=${ENVIRONMENT:-development}
+DEBUG=${DEBUG:-true}
+
+#------------------------------------------------------------------------------
+# Database Configuration
+#------------------------------------------------------------------------------
+DB_HOST=${DB_HOST:-localhost}
+DB_PORT=${DB_PORT:-5432}
+...
+```
+
+### 4. Configuration Categories
+
+#### Core Settings
+- `ENVIRONMENT`: Runtime environment
+- `DEBUG`: Debug mode toggle
+- `LOG_LEVEL`: Logging verbosity
+- `SERVICE_NAME`: Service identifier
+
+#### Security Settings
+- `JWT_SECRET`: Token signing key
+- `ENCRYPTION_KEY`: Data encryption
+- `API_KEYS`: External service auth
+- `CORS_ORIGINS`: Allowed origins
+
+#### Database Settings
+- Connection parameters
+- Pool configuration
+- Credentials
+- Backup settings
+
+#### Cache Settings
+- Redis configuration
+- Cache timeouts
+- Compression options
+- Key prefixes
+
+#### API Settings
+- Endpoints
+- Rate limits
+- Timeouts
+- Retry policies
+
+#### Service-Specific
+- ETL intervals
+- Queue settings
+- Worker counts
+- Batch sizes
+
+### 5. Environment Types
+
+#### Development
+- Local development settings
+- Debug enabled
+- Verbose logging
+- Mock external services
+- Auto-generated secrets
+
+#### Staging
+- Production-like environment
+- Reduced resource limits
+- Test data
+- Monitoring enabled
+- Separate credentials
+
+#### Production
+- Production settings
+- Maximum security
+- Optimized performance
+- Real external services
+- Required explicit secrets
+
+### 6. Configuration Flow
+
+```mermaid
+sequenceDiagram
+    participant Base as base.env.template
+    participant Env as {env}.env.template
+    participant Service as {service}.env.template
+    participant Generator as generate_env.py
+    participant Validator as validate_env.py
+    participant Security as scan_env_security.py
+    participant Final as .env.{env}.{service}
+
+    Base->>Generator: Load base config
+    Env->>Generator: Apply env overrides
+    Service->>Generator: Apply service overrides
+    Generator->>Validator: Validate combined config
+    Validator->>Security: Security scan
+    Security->>Generator: Security report
+    Generator->>Final: Generate if valid
+```
+
+### 7. File Organization
+
+```
+config/
+├── environments/           # Environment templates
+│   ├── base.env.template          # Base configuration
+│   ├── development.env.template   # Development overrides
+│   ├── staging.env.template       # Staging overrides
+│   └── production.env.template    # Production overrides
+├── services/              # Service templates
+│   ├── backend.env.template       # Backend service
+│   ├── frontend.env.template      # Frontend service
+│   └── etl.env.template          # ETL service
+└── scripts/              # Management tools
+    ├── generate_env.py           # Config generator
+    ├── validate_env.py           # Config validator
+    └── scan_env_security.py      # Security scanner
+```
+
+## 🔒 Security Features & Best Practices
+
+### 1. Variable Inheritance & Defaults
+```bash
+# Good: Use variable inheritance with secure defaults
+POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-${RANDOM_PREFIX:-dev}_pg_${RANDOM_SUFFIX:-$(date +%Y%m%d%H%M%S)}}
+
+# Bad: Hardcoded default or no default
+POSTGRES_PASSWORD=${POSTGRES_PASSWORD}  # No default, fails if not set
+POSTGRES_PASSWORD=hardcoded_password    # Insecure hardcoded value
+```
+
+### 2. Secure Random Generation
+```bash
+# Good: Use OpenSSL for cryptographic randomness
+ENCRYPTION_KEY=${ENCRYPTION_KEY:-${RANDOM_PREFIX:-dev}_encryption_$(openssl rand -hex 16)}
+
+# Bad: Predictable patterns
+ENCRYPTION_KEY=${ENCRYPTION_KEY:-dev_key_2025}
+```
+
+### 3. Environment-Specific Security
+```bash
+# Development: Allow secure defaults with random generation
+SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:-${RANDOM_PREFIX:-dev}_supabase_$(date +%Y%m%d%H%M%S)}
+
+# Production: Require explicit values
+SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:?Production requires SUPABASE_ANON_KEY}
+```
+
+### 4. Sensitive Data Handling
+- **Never commit `.env` files**: Add to `.gitignore`
+- **Use environment references**: `${VAR}` instead of values
+- **Secure defaults**: Use random generation with timestamps
+- **Production values**: Always require explicit setting
+- **Backup securely**: Encrypt or exclude from backups
+- **Rotate regularly**: Implement key rotation policy
+
+### 5. Security Validation
+```bash
+# Run security scan before commits
+python config/scripts/scan_env_security.py --all
+
+# Validate production configuration
+python config/scripts/validate_env.py --environment production
+
+# Check for exposed secrets
+ggshield secret scan path .
+```
+
+### 6. Access Control
+- **Least Privilege**: Minimize access scope
+- **Service Isolation**: Separate credentials per service
+- **Role-Based Access**: Use service-specific roles
+- **Key Rotation**: Regular credential rotation
+- **Audit Trail**: Log configuration changes
+
+### 7. Security Tools Integration
+```yaml
+# Pre-commit hooks for security
+- repo: local
+  hooks:
+    - id: env-security-scan
+      name: Environment Security Scan
+      entry: python config/scripts/scan_env_security.py --all
+      language: python
+      files: ^(\.env.*|config/.*\.template)$
+      stages: [commit]
+```
+
+### 8. Secure Development Workflow
+1. **Template Updates**:
+   ```bash
+   # Update template
+   vim config/services/etl.env.template
+
+   # Validate changes
+   python config/scripts/validate_env.py --file config/services/etl.env.template
+
+   # Security scan
+   python config/scripts/scan_env_security.py --file config/services/etl.env.template
+   ```
+
+2. **Environment Generation**:
+   ```bash
+   # Generate with validation
+   python config/scripts/generate_env.py --environment development --service etl
+
+   # Verify security
+   python config/scripts/scan_env_security.py --environment development
+   ```
+
+3. **Production Deployment**:
+   ```bash
+   # Validate production config
+   python config/scripts/validate_env.py --environment production
+
+   # Security scan
+   python config/scripts/scan_env_security.py --environment production
+
+   # Generate with strict mode
+   python config/scripts/generate_env.py --environment production --strict
+   ```
+
+### 9. Security Monitoring
+- **Regular Scans**: Automated security scanning
+- **Validation Reports**: Track validation results
+- **Compliance Checks**: Meet security standards
+- **Incident Response**: Plan for security issues
+- **Documentation**: Keep security docs updated
 
 ## 🛠️ Configuration Categories
 
