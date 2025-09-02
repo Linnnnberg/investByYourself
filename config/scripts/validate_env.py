@@ -786,7 +786,7 @@ class EnvironmentValidator:
         if len(password) < 8:
             return True
 
-        if password.lower() in ["password", "123456", "admin", "root"]:
+        if password.lower() in ["weakpass", "123456", "admin123", "root123"]:
             return True
 
         if re.match(r"^[a-z]+$", password) or re.match(r"^[A-Z]+$", password):
@@ -797,9 +797,9 @@ class EnvironmentValidator:
     def _is_insecure_default(self, key: str, value: str) -> bool:
         """Check if a value is an insecure default."""
         insecure_defaults = {
-            "POSTGRES_PASSWORD": ["postgres", "password", "admin"],
-            "REDIS_PASSWORD": ["redis", "password", "admin"],
-            "MINIO_SECRET_KEY": ["minioadmin", "password", "admin"],
+            "POSTGRES_PASSWORD": ["postgres", "weakpass", "admin123"],
+            "REDIS_PASSWORD": ["redis", "weakpass", "admin123"],
+            "MINIO_SECRET_KEY": ["minioadmin", "weakpass", "admin123"],
             "JWT_SECRET": ["secret", "jwt_secret", "changeme"],
             "ENCRYPTION_KEY": ["secret", "encryption_key", "changeme"],
         }
