@@ -32,9 +32,16 @@
 **Current Status**: Foundation complete, ETL service extracted, ready for frontend development
 **Next Phase**: Frontend MVP development (Story-026 to Story-030), then complete microservices architecture (Tech-022 to Tech-024)
 
-#### **Priority 1: Frontend MVP Development (Story-026) - IMMEDIATE** 🚀
-- **Why Highest Priority**: ETL service ready, immediate user value, faster iteration cycle
-- **Timeline**: Weeks 1-6
+#### **Priority 1: Investment Profile & Portfolio Management (Tech-028 + Story-030 + Story-029) - IMMEDIATE** 🚀
+- **Why Highest Priority**: Complete investment journey from risk assessment to portfolio building
+- **Timeline**: Weeks 18-20
+- **Dependencies**: Tech-026 ✅ COMPLETED, Tech-027 ✅ COMPLETED
+- **Risk Level**: Medium (FastAPI compatibility issues to resolve)
+- **Business Value**: High - Users can assess risk, get recommendations, and build portfolios
+
+#### **Priority 2: Frontend MVP Development (Story-026) - COMPLETED** ✅
+- **Status**: ✅ COMPLETED - ETL service ready, immediate user value, faster iteration cycle
+- **Timeline**: Weeks 1-6 ✅ COMPLETED
 - **Dependencies**: Tech-021 ✅ COMPLETED (ETL Service)
 - **Risk Level**: Low
 - **Business Value**: High - Users can interact with platform immediately, validate assumptions
@@ -155,16 +162,173 @@
 - **Tech-023**: Inter-Service Communication Setup
 - **Tech-024**: Data Service & Database Management
 - **Tech-025**: Figma + Supabase Integration & Design System ✅ **COMPLETED (100%)**
-- **Tech-026**: Unified Environment Configuration Management *(IN PROGRESS)*
+- **Tech-026**: Unified Environment Configuration Management ✅ **COMPLETED (100%)**
+- **Tech-027**: FastAPI Gateway & Authentication System ✅ **COMPLETED (100%)**
+- **Tech-028**: API Implementation & Portfolio Management *(IN PROGRESS)*
 - **Security-007**: Reset Redis password after .env file overwrite *(NEW)*
 
-### **📊 Progress: 85% Complete**
+---
+
+## 🚀 **Phase 7: API Gateway & Portfolio Management (Weeks 17-20)**
+
+### **<Tech-028> API Implementation & Portfolio Management**
+**Priority**: Critical - Foundation for Strategy Tab and portfolio features
+**Dependencies**: Tech-026 ✅ COMPLETED, Tech-027 ✅ COMPLETED
+**Status**: 📋 IN PROGRESS (80% Complete)
+**ETA**: M (Medium) - 2-3 weeks
+
+#### **✅ Completed Tasks (Week 17)**
+- [x] FastAPI Gateway setup with comprehensive structure
+- [x] Authentication & Authorization system (JWT-based)
+- [x] Core configuration management and logging
+- [x] Database service with SQLAlchemy models
+- [x] Basic HTTP server for development testing
+- [x] API test interface and documentation
+
+#### **🔄 Current Blocking Issues (Week 18)**
+- [ ] **FastAPI Compatibility Fix** - Pydantic v1/v2 compatibility with FastAPI
+- [ ] **Database Connection Setup** - SQLite for development, PostgreSQL for production
+- [ ] **Frontend-Backend Integration** - CORS and API endpoint testing
+
+#### **📋 Next Priority Tasks (Week 18-19)**
+- [ ] **Portfolio Management API (api-003)**
+  - Portfolio CRUD operations
+  - Holdings management
+  - Basic portfolio analytics
+- [ ] **Strategy Tab Foundation (Story-029)**
+  - Financial assessment questionnaire
+  - Investment framework selection
+  - Basic strategy recommendations
+
+#### **🎯 Strategy Tab UI Components (Story-029)**
+**Priority**: High - Core user experience for portfolio building
+**Timeline**: Week 19-20
+**Dependencies**: Portfolio Management API (api-003)
+
+##### **Phase 1: Investment Profile Assessment (Week 19)**
+- [ ] **InvestmentProfileAssessment.tsx** - Comprehensive 9-dimension questionnaire
+  - [ ] Time Horizon: <3 years, 3-10 years, >10 years
+  - [ ] Reaction to Volatility: Sell all, Sell some, Do nothing, Buy more
+  - [ ] Investment Goals: Capital preservation, Steady income, Balanced growth, Aggressive growth
+  - [ ] Income Stability: Very unstable, Somewhat stable, Stable, Highly stable
+  - [ ] Dependence on Assets: Fully dependent, Partially dependent, Not dependent
+  - [ ] Past Investment Behavior: Sold quickly, Reduced positions, Held steady, Increased investments
+  - [ ] Knowledge & Experience: None, Basic, Intermediate, Advanced
+  - [ ] Risk/Reward Tradeoff: Avoid losses, Small losses for modest gains, Accept volatility for higher gains
+  - [ ] Diversification Comfort: Concentrated, Moderate diversification, Broad diversification
+
+- [ ] **RiskProfileCalculator.tsx** - Dynamic risk scoring algorithm
+  - [ ] Weighted scoring based on 9 dimensions
+  - [ ] Risk tolerance classification (Conservative, Moderate, Aggressive)
+  - [ ] Confidence intervals and risk bands
+  - [ ] Visual risk profile display
+
+- [ ] **FrameworkSelector.tsx** - Investment framework selection
+  - [ ] Modern Portfolio Theory (MPT) framework
+  - [ ] Factor-based investing framework
+  - [ ] Value investing framework
+  - [ ] Growth investing framework
+  - [ ] Income-focused framework
+
+##### **Phase 2: Strategy & Portfolio Building (Week 20)**
+- [ ] **StrategyPicker.tsx** - Individual strategy selection
+  - [ ] Strategy filtering by risk profile compatibility
+  - [ ] Strategy performance metrics and backtesting results
+  - [ ] Strategy risk-adjusted return analysis
+  - [ ] Strategy correlation analysis
+
+- [ ] **PortfolioBuilder.tsx** - Interactive portfolio construction
+  - [ ] Asset allocation recommendations based on risk profile
+  - [ ] Sector allocation suggestions
+  - [ ] Geographic diversification options
+  - [ ] Rebalancing frequency recommendations
+
+- [ ] **PortfolioSimulator.tsx** - Historical performance simulation
+  - [ ] Monte Carlo simulations
+  - [ ] Historical scenario analysis
+  - [ ] Stress testing capabilities
+  - [ ] Performance attribution analysis
+
+- [ ] **AssetAllocationInterface.tsx** - Interactive allocation tool
+  - [ ] Drag-and-drop asset allocation
+  - [ ] Real-time portfolio optimization
+  - [ ] Constraint-based optimization
+  - [ ] Tax-efficient allocation suggestions
+
+#### **🔧 Technical Implementation Details**
+- **Frontend**: React + TypeScript + Tailwind CSS (following existing UI patterns)
+- **Backend**: FastAPI + SQLAlchemy + JWT Authentication
+- **Database**: SQLite (dev) → PostgreSQL (prod)
+- **Integration**: RESTful API with real-time updates
+
+#### **📊 Investment Profile Backend Implementation (Story-030)**
+**Priority**: High - Foundation for risk assessment and strategy selection
+**Timeline**: Week 18-19
+**Dependencies**: Portfolio Management API (api-003)
+
+##### **Phase 1: Investment Profile Models & API (Week 18)**
+- [ ] **Investment Profile Models** (`api/src/models/investment_profile.py`)
+  - [ ] `InvestmentProfile` - User's complete investment profile
+  - [ ] `ProfileDimension` - Individual assessment dimensions
+  - [ ] `ProfileResponse` - User's answers to questions
+  - [ ] `RiskProfile` - Calculated risk tolerance classification
+  - [ ] `ProfileRecommendation` - Generated recommendations
+
+- [ ] **Investment Profile Service** (`api/src/services/investment_profile_service.py`)
+  - [ ] Profile creation and updates
+  - [ ] Risk scoring algorithm implementation
+  - [ ] Profile validation and consistency checks
+  - [ ] Recommendation generation engine
+
+- [ ] **Investment Profile API Endpoints** (`api/src/api/v1/endpoints/investment_profile.py`)
+  - [ ] `POST /api/v1/investment-profile/` - Create/update profile
+  - [ ] `GET /api/v1/investment-profile/{user_id}` - Get user profile
+  - [ ] `POST /api/v1/investment-profile/{user_id}/assess` - Complete assessment
+  - [ ] `GET /api/v1/investment-profile/{user_id}/risk-score` - Get risk score
+  - [ ] `GET /api/v1/investment-profile/{user_id}/recommendations` - Get recommendations
+
+##### **Phase 2: Risk Scoring & Recommendation Engine (Week 19)**
+- [ ] **Risk Scoring Algorithm**
+  - [ ] Weighted scoring for 9 dimensions
+  - [ ] Risk tolerance classification logic
+  - [ ] Confidence interval calculations
+  - [ ] Profile consistency validation
+
+- [ ] **Recommendation Engine**
+  - [ ] Strategy compatibility scoring
+  - [ ] Asset allocation recommendations
+  - [ ] Portfolio construction guidelines
+  - [ ] Rebalancing frequency suggestions
+
+- [ ] **Integration with Portfolio Management**
+  - [ ] Profile-based portfolio creation
+  - [ ] Risk-adjusted strategy selection
+  - [ ] Dynamic portfolio optimization
+  - [ ] Performance monitoring and alerts
+
+#### **📊 Success Metrics**
+- [ ] Portfolio CRUD operations working
+- [ ] Investment Profile API complete with 9-dimension assessment
+- [ ] Risk scoring algorithm producing accurate classifications
+- [ ] Strategy Tab UI responsive and functional
+- [ ] Financial assessment questionnaire complete with all 9 dimensions
+- [ ] Risk profile visualization and recommendations working
+- [ ] Basic portfolio building functionality based on risk profile
+- [ ] End-to-end testing successful for complete user journey
+
+#### **🚨 Risk Mitigation**
+- **FastAPI Issues**: Use compatible versions or alternative approach
+- **Database Setup**: Start with SQLite for rapid development
+- **Frontend Integration**: Build with mock data, integrate later
+
+### **📊 Progress: 90% Complete**
 - **Phase 1**: ✅ 100% Complete
 - **Phase 2**: ✅ 100% Complete
 - **Phase 3**: ✅ 100% Complete (ETL & Database - Tech-008 ✅ COMPLETED, Tech-009 ✅ COMPLETED, Tech-010 ✅ COMPLETED, Tech-011 ✅ COMPLETED)
-- **Phase 4**: ⏳ 40% Complete (Microservices - Tech-020 ✅ COMPLETED, Tech-021 ✅ COMPLETED, Tech-022-024 📋 PENDING)
+- **Phase 4**: ⏳ 50% Complete (Microservices - Tech-020 ✅ COMPLETED, Tech-021 ✅ COMPLETED, Tech-022-024 📋 PENDING)
 - **Phase 5**: 🚀 100% Complete (Frontend MVP - Story-026 ✅ COMPLETED)
 - **Phase 6**: ✅ 100% Complete (Design System - Tech-025 ✅ COMPLETED)
+- **Phase 7**: 🚀 80% Complete (API Gateway - Tech-026 ✅ COMPLETED, Tech-027 ✅ COMPLETED, Tech-028 📋 IN PROGRESS)
 
 ---
 
@@ -633,6 +797,45 @@
 - **Microservice Benefits**: Scalable, maintainable, production-ready from start
 - **Current Branch**: `feature/story-015-investment-strategy-module`
 - **Last Commit**: `057300c` - Complete Week 1 Foundation
+
+### **<Story-029> Strategy Tab UI & Portfolio Management** 🎯
+- [ ] **Phase 1: Investment Profile Assessment (Week 19)**
+  - [ ] Create comprehensive 9-dimension questionnaire
+  - [ ] Build risk profile calculator and visualization
+  - [ ] Implement investment framework selection interface
+  - [ ] Develop strategy picker with risk-based filtering
+- [ ] **Phase 2: Strategy & Portfolio Building (Week 20)**
+  - [ ] Interactive portfolio builder with risk-based recommendations
+  - [ ] Portfolio simulation and stress testing tools
+  - [ ] Asset allocation interface with drag-and-drop
+  - [ ] Performance monitoring and rebalancing suggestions
+- **Priority**: High - Core user experience for portfolio building
+- **Dependencies**: Tech-028 (Portfolio Management API), Story-030 (Investment Profile API)
+- **Status**: 📋 PLANNED
+- **ETA**: M (Medium) - 2-3 weeks
+- **Implementation Strategy**: Modern React UI following existing design patterns
+- **UI Framework**: Tailwind CSS with blue/green color scheme
+- **Responsiveness**: Mobile/tablet/desktop optimized
+- **Integration**: RESTful API with real-time updates
+
+### **<Story-030> Investment Profile & Risk Assessment API** 📊
+- [ ] **Phase 1: Investment Profile Models & API (Week 18)**
+  - [ ] Complete investment profile data models
+  - [ ] 9-dimension assessment API endpoints
+  - [ ] Risk scoring algorithm implementation
+  - [ ] Profile validation and consistency checks
+- [ ] **Phase 2: Risk Scoring & Recommendation Engine (Week 19)**
+  - [ ] Weighted risk scoring for all dimensions
+  - [ ] Risk tolerance classification (Conservative/Moderate/Aggressive)
+  - [ ] Strategy compatibility scoring
+  - [ ] Asset allocation recommendations
+- **Priority**: High - Foundation for risk assessment and strategy selection
+- **Dependencies**: Tech-028 (Portfolio Management API)
+- **Status**: 📋 PLANNED
+- **ETA**: M (Medium) - 2-3 weeks
+- **Implementation Strategy**: Comprehensive risk assessment based on proven framework
+- **Risk Dimensions**: Time Horizon, Volatility Reaction, Investment Goals, Income Stability, Asset Dependence, Past Behavior, Knowledge, Risk/Reward Preference, Diversification Comfort
+- **Integration**: Seamless connection with portfolio management and strategy selection
 
 ---
 
