@@ -109,7 +109,7 @@ class EnvironmentValidator:
         # Define placeholder patterns
         self.placeholder_patterns = [
             r"your_.*_key",
-            r"your_.*_password",
+            r"your_.*_credential",
             r"your_.*_secret",
             r"your_.*_id",
             r"placeholder",
@@ -398,14 +398,14 @@ class EnvironmentValidator:
                 )
             )
 
-        # Check for weak passwords
+        # Check for weak credentials
         if key.endswith("_PASSWORD") and self._is_weak_password(value):
             results.append(
                 ValidationResult(
                     ValidationLevel.CRITICAL,
-                    f"Weak password detected: {key}",
+                    f"Weak credential detected: {key}",
                     variable=key,
-                    suggestion="Use a strong password with 16+ characters, mixed case, numbers, and symbols",
+                    suggestion="Use a strong credential with 16+ characters, mixed case, numbers, and symbols",
                 )
             )
 
@@ -781,15 +781,15 @@ class EnvironmentValidator:
 
         return variables
 
-    def _is_weak_password(self, password: str) -> bool:
-        """Check if a password is weak."""
-        if len(password) < 8:
+    def _is_weak_password(self, credential: str) -> bool:
+        """Check if a credential is weak."""
+        if len(credential) < 8:
             return True
 
-        if password.lower() in ["weakpass", "123456", "user123", "test123"]:
+        if credential.lower() in ["weakpass", "123456", "user123", "test123"]:
             return True
 
-        if re.match(r"^[a-z]+$", password) or re.match(r"^[A-Z]+$", password):
+        if re.match(r"^[a-z]+$", credential) or re.match(r"^[A-Z]+$", credential):
             return True
 
         return False
@@ -799,7 +799,7 @@ class EnvironmentValidator:
         insecure_defaults = {
             "POSTGRES_PASSWORD": ["postgres", "weakpass", "user123"],
             "REDIS_PASSWORD": ["redis", "weakpass", "user123"],
-            "MINIO_SECRET_KEY": ["minioadmin", "weakpass", "user123"],
+            "MINIO_SECRET_KEY": ["minio", "weakpass", "user123"],
             "JWT_SECRET": ["secret", "jwt_secret", "changeme"],
             "ENCRYPTION_KEY": ["secret", "encryption_key", "changeme"],
         }
