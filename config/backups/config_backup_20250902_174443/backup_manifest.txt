@@ -1,0 +1,11 @@
+Configuration Backup - 2025-09-02T17:44:43.347131
+==================================================
+
+Backed up files:
+  - .env
+  - env.template
+  - frontend/.env.local
+  - frontend/env.example
+  - frontend/frontend-vite/env.example
+
+Failed files:
