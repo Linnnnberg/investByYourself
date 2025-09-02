@@ -1,0 +1,104 @@
+# InvestByYourself - Cursor AI Rules
+# Tech-028: API Implementation Security Guidelines
+
+## 🚫 STRICT NO SECRETS POLICY
+
+### NEVER INCLUDE IN CODE:
+- Real passwords, API keys, tokens, or secrets
+- Database credentials or connection strings
+- Private keys, certificates, or encryption keys
+- OAuth secrets, JWT secrets, or session keys
+- Any hardcoded credentials or sensitive data
+
+### BANNED PATTERNS:
+- `password=`, `secret=`, `key=`, `token=`
+- `admin123`, `password123`, `changeme`, `default`
+- Real API keys (even if they look like examples)
+- Database URLs with credentials
+- Any string that looks like a real secret
+
+### REQUIRED PATTERNS:
+- Use `${VARIABLE_NAME}` for environment variables
+- Use placeholder values like `your_api_key_here`
+- Use generic examples like `example_key_123`
+- Always use variable inheritance in templates
+
+## 📁 BANNED FILES & PATTERNS
+
+### NEVER CREATE OR MODIFY:
+- `.env` files (any environment files)
+- `*.key`, `*.pem`, `*.p12` (certificate files)
+- `secrets.json`, `credentials.json`
+- `config.json` with real values
+- Any file containing actual secrets
+
+### ALWAYS USE TEMPLATES:
+- `.env.template` files only
+- `*.example` files for configuration
+- Template files with `${VARIABLE}` placeholders
+- Documentation with placeholder values
+
+## 🔒 SECURITY VALIDATION
+
+### BEFORE ANY COMMIT:
+- Scan for hardcoded secrets
+- Verify all sensitive values use variables
+- Check that templates use `${VAR}` syntax
+- Ensure no real credentials in code
+
+### TEMPLATE REQUIREMENTS:
+- All sensitive variables must use `${VARIABLE_NAME}`
+- No hardcoded passwords or keys
+- Use descriptive placeholder names
+- Include comments explaining variable usage
+
+## 🛠️ DEVELOPMENT GUIDELINES
+
+### ENVIRONMENT CONFIGURATION:
+- Use unified environment configuration system
+- Follow Tech-026 environment management patterns
+- Validate configurations with provided scripts
+- Never commit actual `.env` files
+
+### API DEVELOPMENT:
+- Use environment variables for all configuration
+- Implement proper authentication patterns
+- Follow security best practices
+- Use placeholder values in documentation
+
+### CODE QUALITY:
+- Run pre-commit hooks before committing
+- Use security scanning tools
+- Follow established patterns from Tech-026
+- Maintain clean, secure codebase
+
+## 📋 VALIDATION CHECKLIST
+
+Before any commit, verify:
+- [ ] No hardcoded secrets or credentials
+- [ ] All sensitive values use environment variables
+- [ ] Template files use `${VAR}` syntax
+- [ ] No real API keys or passwords
+- [ ] Security scanning passes
+- [ ] Pre-commit hooks pass
+
+## 🚨 EMERGENCY PROCEDURES
+
+If secrets are accidentally committed:
+1. Immediately remove from code
+2. Rotate any exposed credentials
+3. Update environment variables
+4. Clean git history if necessary
+5. Notify team of potential exposure
+
+## 📚 REFERENCE DOCUMENTATION
+
+- Tech-026: Unified Environment Configuration Management
+- API Design Plan: `docs/api-design-plan.md`
+- Implementation Roadmap: `docs/api-implementation-roadmap.md`
+- Environment Templates: `config/environments/`
+- Validation Scripts: `config/scripts/`
+
+---
+
+**Remember: Security is everyone's responsibility. When in doubt, use environment variables and placeholder values.**
