@@ -19,7 +19,6 @@ aioredis==2.0.1
 # Authentication & Security
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
-python-multipart==0.0.6
 
 # HTTP client
 httpx==0.25.2
@@ -39,9 +38,6 @@ sentry-sdk[fastapi]==1.38.0
 # Rate limiting
 slowapi==0.1.9
 
-# CORS
-python-cors==1.7.0
-
 # Development
 pytest==7.4.3
 pytest-asyncio==0.21.1
@@ -52,6 +48,5 @@ flake8==6.1.0
 mypy==1.7.1
 
 # Testing
-httpx==0.25.2
 factory-boy==3.3.0
 faker==20.1.0
