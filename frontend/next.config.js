@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
   images: {
     domains: ['localhost', 'vercel.app'],
   },
@@ -26,7 +23,7 @@ const nextConfig = {
     return [
       {
         source: '/api/etl/:path*',
-        destination: `${process.env.NEXT_PUBLIC_ETL_SERVICE_URL}/api/v1/etl/:path*`,
+        destination: 'http://localhost:8001/api/v1/etl/:path*',
       },
     ];
   },
