@@ -20,6 +20,7 @@ from fastapi.responses import JSONResponse
 
 from src.api.v1.router import api_router
 from src.core.config import settings
+from src.core.database_init import close_database, init_database
 from src.core.exceptions import APIException
 from src.core.logging import setup_logging
 
@@ -37,7 +38,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     logger.info(f"Debug mode: {settings.DEBUG}")
 
     # Initialize services here (database connections, etc.)
-    # await init_database()
+    await init_database()
     # await init_redis()
 
     yield
@@ -45,7 +46,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     # Shutdown
     logger.info("Shutting down InvestByYourself API Gateway...")
     # Cleanup resources here
-    # await close_database()
+    await close_database()
     # await close_redis()
 
 
