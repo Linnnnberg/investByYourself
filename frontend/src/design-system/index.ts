@@ -3,13 +3,15 @@
  * Central export point for all design tokens and utilities
  */
 
+// Import token values for use in designSystem object
+import colors from './tokens/colors';
+import typography from './tokens/typography';
+import spacing from './tokens/spacing';
+
 // Design Tokens
 export { default as colors, type ColorToken, type ColorKey, type ColorShade } from './tokens/colors';
 export { default as typography, type TypographyToken, type TextStyle } from './tokens/typography';
 export { default as spacing, type SpacingToken, type SpacingSize } from './tokens/spacing';
-
-// Re-export specific token values for convenience
-export { colors, typography, spacing } from './tokens';
 
 // Design System Configuration
 export const designSystem = {
@@ -151,8 +153,10 @@ export const designSystemUtils = {
     });
 
     // Spacing variables
-    Object.entries(spacingCSS).forEach(([key, value]) => {
-      variables[key] = value;
+    Object.entries(spacing).forEach(([key, value]) => {
+      if (typeof value === 'string') {
+        variables[`--spacing-${key}`] = value;
+      }
     });
 
     // Typography variables
