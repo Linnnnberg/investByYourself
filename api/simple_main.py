@@ -15,6 +15,16 @@ from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from src.api.v1.endpoints.portfolio import router as portfolio_router
+
+# Import portfolio models and endpoints
+from src.models.portfolio import (
+    HoldingCreate,
+    PortfolioCreate,
+    PortfolioUpdate,
+    TransactionCreate,
+)
+
 # Setup basic logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -60,6 +70,11 @@ def create_application() -> FastAPI:
         allow_headers=["*"],
     )
 
+    # Include portfolio router
+    app.include_router(
+        portfolio_router, prefix="/api/v1/portfolio", tags=["Portfolio Management"]
+    )
+
     # Add health check endpoint
     @app.get("/health")
     async def health_check():
@@ -80,6 +95,7 @@ def create_application() -> FastAPI:
             "version": "1.0.0",
             "docs": "/docs",
             "health": "/health",
+            "portfolio_api": "/api/v1/portfolio",
         }
 
     # Add simple auth endpoints for testing
@@ -99,12 +115,19 @@ def create_application() -> FastAPI:
             "status": "placeholder",
         }
 
-    @app.get("/api/v1/auth/profile")
-    async def get_profile():
-        """Simple profile endpoint."""
+    # Add portfolio test endpoints
+    @app.get("/api/v1/portfolio/test")
+    async def portfolio_test():
+        """Test portfolio endpoint."""
         return {
-            "message": "Profile endpoint - not implemented yet",
-            "status": "placeholder",
+            "message": "Portfolio API is working!",
+            "endpoints": [
+                "POST /api/v1/portfolio/ - Create portfolio",
+                "GET /api/v1/portfolio/ - List portfolios",
+                "GET /api/v1/portfolio/{id} - Get portfolio details",
+                "POST /api/v1/portfolio/{id}/holdings - Add holding",
+                "GET /api/v1/portfolio/{id}/analytics - Get analytics",
+            ],
         }
 
     return app
