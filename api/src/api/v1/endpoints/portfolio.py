@@ -103,7 +103,7 @@ async def create_portfolio(portfolio_data: PortfolioCreate):
         # Mock portfolio creation
         new_portfolio = {
             "id": len(mock_portfolios) + 1,
-            **portfolio_data.dict(),
+            **portfolio_data.model_dump(),
             "user_id": 1,
             "created_at": datetime.utcnow(),
             "updated_at": datetime.utcnow(),
@@ -202,7 +202,7 @@ async def update_portfolio(
 
         # Update fields
         if portfolio_data:
-            update_data = portfolio_data.dict(exclude_unset=True)
+            update_data = portfolio_data.model_dump(exclude_unset=True)
             for field, value in update_data.items():
                 portfolio[field] = value
 
@@ -259,7 +259,7 @@ async def add_holding(
         # Mock holding creation
         new_holding = {
             "id": len(mock_holdings) + 1,
-            **holding_data.dict(),
+            **holding_data.model_dump(),
             "portfolio_id": portfolio_id,
             "created_at": datetime.utcnow(),
             "updated_at": datetime.utcnow(),
@@ -331,7 +331,7 @@ async def update_holding(
 
         # Update fields
         if holding_data:
-            update_data = holding_data.dict(exclude_unset=True)
+            update_data = holding_data.model_dump(exclude_unset=True)
             for field, value in update_data.items():
                 holding[field] = value
 

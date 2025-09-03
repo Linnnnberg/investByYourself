@@ -9,7 +9,8 @@ Centralized configuration management using environment variables.
 import os
 from typing import List, Optional
 
-from pydantic import BaseSettings, validator
+from pydantic import BaseModel, field_validator
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
@@ -71,21 +72,24 @@ class Settings(BaseSettings):
     PROMETHEUS_ENABLED: bool = False
     PROMETHEUS_PORT: int = 8001
 
-    @validator("CORS_ORIGINS", pre=True)
+    @field_validator("CORS_ORIGINS", mode="before")
+    @classmethod
     def parse_cors_origins(cls, v):
         """Parse CORS origins from string or list."""
         if isinstance(v, str):
             return [origin.strip() for origin in v.split(",")]
         return v
 
-    @validator("ALLOWED_HOSTS", pre=True)
+    @field_validator("ALLOWED_HOSTS", mode="before")
+    @classmethod
     def parse_allowed_hosts(cls, v):
         """Parse allowed hosts from string or list."""
         if isinstance(v, str):
             return [host.strip() for host in v.split(",")]
         return v
 
-    @validator("ENVIRONMENT")
+    @field_validator("ENVIRONMENT")
+    @classmethod
     def validate_environment(cls, v):
         """Validate environment setting."""
         allowed_envs = ["development", "staging", "production"]

@@ -11,7 +11,7 @@ from decimal import Decimal
 from enum import Enum
 from typing import List, Optional
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 
 
 class AssetType(str, Enum):
@@ -142,17 +142,19 @@ class Holding(HoldingBase):
     gain_loss: Decimal = Field(..., description="Unrealized gain/loss")
     gain_loss_pct: Decimal = Field(..., description="Gain/loss percentage")
 
-    @validator("market_value", "gain_loss", "gain_loss_pct", pre=True, always=True)
-    def calculate_derived_fields(cls, v, values):
+    @field_validator("market_value", "gain_loss", "gain_loss_pct", mode="before")
+    @classmethod
+    def calculate_derived_fields(cls, v, info):
         """Calculate derived fields if not provided."""
         if (
-            "quantity" in values
-            and "current_price" in values
-            and values["current_price"]
+            info.data
+            and "quantity" in info.data
+            and "current_price" in info.data
+            and info.data["current_price"]
         ):
-            quantity = values["quantity"]
-            current_price = values["current_price"]
-            cost_basis = values.get("cost_basis", 0)
+            quantity = info.data["quantity"]
+            current_price = info.data["current_price"]
+            cost_basis = info.data.get("cost_basis", 0)
 
             market_value = quantity * current_price
             gain_loss = market_value - (quantity * cost_basis)
@@ -160,11 +162,14 @@ class Holding(HoldingBase):
                 (gain_loss / (quantity * cost_basis)) * 100 if cost_basis > 0 else 0
             )
 
-            return {
-                "market_value": market_value,
-                "gain_loss": gain_loss,
-                "gain_loss_pct": gain_loss_pct,
-            }
+            # Return the appropriate field value based on which field is being validated
+            field_name = info.field_name
+            if field_name == "market_value":
+                return market_value
+            elif field_name == "gain_loss":
+                return gain_loss
+            elif field_name == "gain_loss_pct":
+                return gain_loss_pct
         return v
 
     class Config:
@@ -202,13 +207,14 @@ class Transaction(TransactionBase):
     updated_at: datetime = Field(..., description="Last update timestamp")
     total_amount: Decimal = Field(..., description="Total transaction amount")
 
-    @validator("total_amount", pre=True, always=True)
-    def calculate_total_amount(cls, v, values):
+    @field_validator("total_amount", mode="before")
+    @classmethod
+    def calculate_total_amount(cls, v, info):
         """Calculate total transaction amount."""
-        if "quantity" in values and "price" in values:
-            quantity = values["quantity"]
-            price = values["price"]
-            fees = values.get("fees", 0)
+        if info.data and "quantity" in info.data and "price" in info.data:
+            quantity = info.data["quantity"]
+            price = info.data["price"]
+            fees = info.data.get("fees", 0)
             return (quantity * price) + fees
         return v
 
