@@ -12,6 +12,7 @@ from src.api.v1.endpoints import (
     analysis,
     auth,
     etl,
+    investment_profile,
     market_data,
     notifications,
     portfolio,
@@ -27,6 +28,10 @@ api_router.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 
 api_router.include_router(
     portfolio.router, prefix="/portfolio", tags=["Portfolio Management"]
+)
+
+api_router.include_router(
+    investment_profile.router, prefix="/investment-profile", tags=["Investment Profile"]
 )
 
 api_router.include_router(market_data.router, prefix="/market", tags=["Market Data"])

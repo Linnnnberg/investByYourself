@@ -93,6 +93,16 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               </Link>
 
               <Link
+                href="/dashboard/investment-profile"
+                className="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors"
+              >
+                <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Investment Profile
+              </Link>
+
+              <Link
                 href="/dashboard/analysis"
                 className="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors"
               >

@@ -16,6 +16,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from src.api.v1.endpoints.portfolio import router as portfolio_router
+from src.api.v1.endpoints.investment_profile import router as investment_profile_router
 from src.middleware.rate_limiting import limiter, setup_rate_limiting
 
 # Import portfolio models and endpoints
@@ -86,6 +87,11 @@ def create_application() -> FastAPI:
     # Include portfolio router
     app.include_router(
         portfolio_router, prefix="/api/v1/portfolio", tags=["Portfolio Management"]
+    )
+
+    # Include investment profile router
+    app.include_router(
+        investment_profile_router, prefix="/api/v1/investment-profile", tags=["Investment Profile"]
     )
 
     # Add health check endpoint
