@@ -40,6 +40,100 @@
 - **Risk Level**: Low - API is working, just need frontend integration
 - **Business Value**: Critical - Enable full portfolio management functionality
 
+#### **🎯 Tech-028.1 Implementation Plan**
+
+**Phase 1: Service Layer Creation (Day 1)**
+- [ ] Create `frontend/src/lib/api-client.ts` - FastAPI service layer
+- [ ] Map portfolio endpoints: `/api/v1/portfolio/` → `getPortfolios()`
+- [ ] Map investment profile endpoints: `/api/v1/investment-profile/` → `getProfiles()`
+- [ ] Implement error handling and response parsing
+- [ ] Add TypeScript interfaces for API responses
+
+**Phase 2: Frontend Integration (Day 1-2)**
+- [ ] Replace Supabase calls in `dashboard/page.tsx`
+- [ ] Replace Supabase calls in `portfolio/page.tsx`
+- [ ] Replace Supabase calls in `investment-profile/page.tsx`
+- [ ] Update state management to use FastAPI responses
+- [ ] Test all CRUD operations
+
+**Phase 3: Authentication Integration (Day 2)**
+- [ ] Keep Supabase Auth for user management (free tier)
+- [ ] Pass JWT tokens to FastAPI endpoints
+- [ ] Implement token refresh logic
+- [ ] Add user context to API calls
+
+**Phase 4: Testing & Validation (Day 2)**
+- [ ] Test portfolio creation, reading, updating, deletion
+- [ ] Test investment profile assessment flow
+- [ ] Test error handling and edge cases
+- [ ] Validate data consistency between frontend and backend
+
+**Architecture Decision: Hybrid Approach**
+- **FastAPI Backend**: Core business logic, portfolio management, analysis
+- **Supabase Auth**: User authentication and session management
+- **SQLite Database**: Development and production data storage
+- **Cost**: $0 development, $10-20/month production (vs $25+/month Supabase Pro)
+
+#### **🔧 Technical Implementation Details**
+
+**API Endpoint Mapping:**
+```typescript
+// Current (Broken): Supabase calls
+const portfolios = await supabase.from('portfolios').select('*')
+
+// New (Working): FastAPI calls
+const portfolios = await apiClient.getPortfolios()
+// → GET http://localhost:8000/api/v1/portfolio/
+```
+
+**Service Layer Structure:**
+```typescript
+// frontend/src/lib/api-client.ts
+class ApiClient {
+  private baseURL = 'http://localhost:8000/api/v1'
+  
+  // Portfolio endpoints
+  async getPortfolios(): Promise<Portfolio[]>
+  async createPortfolio(data: PortfolioCreate): Promise<Portfolio>
+  async updatePortfolio(id: number, data: PortfolioUpdate): Promise<Portfolio>
+  async deletePortfolio(id: number): Promise<void>
+  
+  // Investment Profile endpoints
+  async getProfiles(): Promise<InvestmentProfile[]>
+  async createProfile(data: ProfileCreate): Promise<InvestmentProfile>
+  async getAssessment(): Promise<ProfileQuestion[]>
+  async calculateRiskScore(answers: ProfileAnswer[]): Promise<RiskScore>
+}
+```
+
+**Authentication Flow:**
+```typescript
+// Keep Supabase Auth, pass JWT to FastAPI
+const token = await supabase.auth.getSession()
+const apiClient = new ApiClient(token.access_token)
+
+// FastAPI validates JWT and extracts user_id
+@router.get("/portfolio/")
+async def get_portfolios(current_user: User = Depends(get_current_user)):
+    return await portfolio_service.get_user_portfolios(current_user.id)
+```
+
+**Error Handling Strategy:**
+```typescript
+// Centralized error handling
+try {
+  const portfolios = await apiClient.getPortfolios()
+} catch (error) {
+  if (error.status === 401) {
+    // Redirect to login
+  } else if (error.status === 404) {
+    // Show empty state
+  } else {
+    // Show generic error
+  }
+}
+```
+
 #### **Priority 1: Investment Profile & Portfolio Management (Tech-028 + Story-030 + Story-029) - ✅ COMPLETED** 🎉
 - **Why Highest Priority**: Complete investment journey from risk assessment to portfolio building
 - **Timeline**: Weeks 18-20 ✅ COMPLETED
