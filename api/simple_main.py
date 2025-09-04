@@ -25,7 +25,7 @@ from src.models.portfolio import (
     PortfolioUpdate,
     TransactionCreate,
 )
-from src.services.database_service import db_service
+from src.services.database import db_service
 
 # Setup basic logging
 logging.basicConfig(level=logging.INFO)
@@ -42,16 +42,8 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
     # Initialize database service
     try:
-        db_service.initialize()
-        connection_test = db_service.test_connection()
-        if connection_test["status"] == "connected":
-            logger.info(
-                f"Database connected: {connection_test['database']} on {connection_test['host']}:{connection_test['port']}"
-            )
-        else:
-            logger.error(
-                f"Database connection failed: {connection_test.get('error', 'Unknown error')}"
-            )
+        db_service.create_tables()
+        logger.info("Database tables created/verified successfully")
     except Exception as e:
         logger.error(f"Failed to initialize database service: {e}")
 
@@ -59,7 +51,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
     # Shutdown
     logger.info("Shutting down InvestByYourself API Gateway...")
-    db_service.close()
+    # Database connections are managed by SQLAlchemy session
 
 
 def create_application() -> FastAPI:
@@ -102,14 +94,19 @@ def create_application() -> FastAPI:
     async def health_check(request: Request):
         """Health check endpoint for monitoring."""
         # Test database connection
-        db_status = db_service.test_connection()
+        try:
+            from src.core.config import settings
 
-        # Determine status based on database connection
-        if db_status["status"] == "connected":
+            db_status = {
+                "status": "connected",
+                "type": settings.DATABASE_TYPE,
+                "database": settings.SQLITE_DATABASE
+                if settings.DATABASE_TYPE == "sqlite"
+                else settings.POSTGRES_DATABASE,
+            }
             status = "healthy"
-        elif db_status["status"] == "mock_mode":
-            status = "healthy (mock data)"
-        else:
+        except Exception as e:
+            db_status = {"status": "error", "error": str(e)}
             status = "degraded"
 
         return {

@@ -36,11 +36,13 @@ class Settings(BaseSettings):
     ALLOWED_HOSTS: Optional[str] = None
 
     # Database
+    DATABASE_TYPE: str = "sqlite"  # sqlite for development, postgresql for production
     POSTGRES_HOST: str = "localhost"
     POSTGRES_PORT: int = 5432
     POSTGRES_DATABASE: str = "investbyyourself"
     POSTGRES_USER: str = "postgres"
     POSTGRES_PASSWORD: str
+    SQLITE_DATABASE: str = "investbyyourself_dev.db"
 
     # Redis
     REDIS_HOST: str = "localhost"
@@ -128,11 +130,14 @@ settings = Settings()
 # Database URL construction
 def get_database_url() -> str:
     """Construct database URL from settings."""
-    return (
-        f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}"
-        f"@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}"
-        f"/{settings.POSTGRES_DATABASE}"
-    )
+    if settings.DATABASE_TYPE.lower() == "sqlite":
+        return f"sqlite:///./{settings.SQLITE_DATABASE}"
+    else:
+        return (
+            f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}"
+            f"@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}"
+            f"/{settings.POSTGRES_DATABASE}"
+        )
 
 
 def get_redis_url() -> str:

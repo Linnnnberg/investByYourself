@@ -13,6 +13,7 @@ from sqlalchemy import Boolean, Column, DateTime, String, Text, create_engine
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.pool import StaticPool
 
 from src.core.config import get_database_url, settings
 from src.core.exceptions import DatabaseError
@@ -20,8 +21,33 @@ from src.core.logging import get_logger
 
 logger = get_logger(__name__)
 
+
 # Database setup
-engine = create_engine(get_database_url())
+def create_database_engine():
+    """Create database engine with appropriate configuration."""
+    database_url = get_database_url()
+
+    if settings.DATABASE_TYPE.lower() == "sqlite":
+        # SQLite configuration for development
+        return create_engine(
+            database_url,
+            connect_args={"check_same_thread": False},
+            poolclass=StaticPool,
+            echo=settings.DEBUG,  # Log SQL queries in debug mode
+        )
+    else:
+        # PostgreSQL configuration for production
+        return create_engine(
+            database_url,
+            pool_size=5,
+            max_overflow=10,
+            pool_pre_ping=True,
+            pool_recycle=3600,
+            echo=settings.DEBUG,
+        )
+
+
+engine = create_database_engine()
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
