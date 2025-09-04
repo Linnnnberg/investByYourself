@@ -797,9 +797,9 @@ class EnvironmentValidator:
     def _is_insecure_default(self, key: str, value: str) -> bool:
         """Check if a value is an insecure default."""
         insecure_defaults = {
-            "POSTGRES_PASSWORD": ["postgres", "weakpass", "user123"],
-            "REDIS_PASSWORD": ["redis", "weakpass", "user123"],
-            "MINIO_SECRET_KEY": ["minio", "weakpass", "user123"],
+            "POSTGRES_PASSWORD": ["example_password", "fake_password", "test_password"],
+            "REDIS_PASSWORD": ["example_redis", "fake_redis", "test_redis"],
+            "MINIO_SECRET_KEY": ["example_minio", "fake_minio", "test_minio"],
             "JWT_SECRET": ["secret", "jwt_secret", "changeme"],
             "ENCRYPTION_KEY": ["secret", "encryption_key", "changeme"],
         }
