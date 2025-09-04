@@ -32,8 +32,8 @@ class Settings(BaseSettings):
     JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
     # CORS
-    CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:8000"]
-    ALLOWED_HOSTS: Optional[List[str]] = None
+    CORS_ORIGINS: str = "http://localhost:3000,http://localhost:8000"
+    ALLOWED_HOSTS: Optional[str] = None
 
     # Database
     POSTGRES_HOST: str = "localhost"
@@ -77,7 +77,10 @@ class Settings(BaseSettings):
     def parse_cors_origins(cls, v):
         """Parse CORS origins from string or list."""
         if isinstance(v, str):
-            return [origin.strip() for origin in v.split(",")]
+            # Handle empty string case
+            if not v.strip():
+                return "http://localhost:3000,http://localhost:8000"
+            return v
         return v
 
     @field_validator("ALLOWED_HOSTS", mode="before")
@@ -85,8 +88,24 @@ class Settings(BaseSettings):
     def parse_allowed_hosts(cls, v):
         """Parse allowed hosts from string or list."""
         if isinstance(v, str):
-            return [host.strip() for host in v.split(",")]
+            return v
         return v
+
+    @property
+    def cors_origins_list(self) -> List[str]:
+        """Get CORS origins as a list."""
+        if not self.CORS_ORIGINS.strip():
+            return ["http://localhost:3000", "http://localhost:8000"]
+        return [
+            origin.strip() for origin in self.CORS_ORIGINS.split(",") if origin.strip()
+        ]
+
+    @property
+    def allowed_hosts_list(self) -> Optional[List[str]]:
+        """Get allowed hosts as a list."""
+        if not self.ALLOWED_HOSTS:
+            return None
+        return [host.strip() for host in self.ALLOWED_HOSTS.split(",") if host.strip()]
 
     @field_validator("ENVIRONMENT")
     @classmethod

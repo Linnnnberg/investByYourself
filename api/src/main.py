@@ -8,6 +8,7 @@ Main FastAPI application entry point with comprehensive API structure.
 
 import logging
 import os
+import time
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
@@ -105,15 +106,17 @@ def setup_middleware(app: FastAPI) -> None:
     # CORS middleware
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.CORS_ORIGINS,
+        allow_origins=settings.cors_origins_list,
         allow_credentials=True,
         allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
         allow_headers=["*"],
     )
 
     # Trusted host middleware
-    if settings.ALLOWED_HOSTS:
-        app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.ALLOWED_HOSTS)
+    if settings.allowed_hosts_list:
+        app.add_middleware(
+            TrustedHostMiddleware, allowed_hosts=settings.allowed_hosts_list
+        )
 
     # Request logging middleware
     @app.middleware("http")
