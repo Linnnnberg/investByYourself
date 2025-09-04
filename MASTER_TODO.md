@@ -30,7 +30,15 @@
 ### **🚀 FUNCTIONALITY-FIRST PRIORITY PLAN**
 
 **Current Status**: ✅ **Investment Profile & Portfolio Management COMPLETED** - Full risk assessment and portfolio building system operational
-**Next Phase**: Company Analysis & Sector Benchmarking (Story-005), then complete microservices architecture (Tech-022 to Tech-024)
+**Next Phase**: Fix frontend API integration, then Company Analysis & Sector Benchmarking (Story-005)
+**Immediate Priority**: Frontend-Backend API Integration Fix (Tech-028.1)
+
+#### **Priority 0: Frontend-Backend API Integration Fix (Tech-028.1) - IMMEDIATE** 🚨
+- **Why Immediate Priority**: Frontend not connected to working FastAPI backend
+- **Timeline**: 1-2 days
+- **Dependencies**: Tech-028 ✅ COMPLETED (API working)
+- **Risk Level**: Low - API is working, just need frontend integration
+- **Business Value**: Critical - Enable full portfolio management functionality
 
 #### **Priority 1: Investment Profile & Portfolio Management (Tech-028 + Story-030 + Story-029) - ✅ COMPLETED** 🎉
 - **Why Highest Priority**: Complete investment journey from risk assessment to portfolio building
@@ -205,6 +213,17 @@
 - **Investment Profile Assessment**: 9-dimension questionnaire functional
 - **Dashboard Navigation**: All routes working
 - **API Integration**: Frontend-backend communication established
+
+#### **🔧 Current Issues Identified (September 4, 2025):**
+1. **❌ Frontend API Integration Issue**
+   - **Problem**: Frontend using Supabase services instead of FastAPI backend
+   - **Impact**: 404 errors for `/api/portfolios` (should be `/api/v1/portfolio/`)
+   - **Status**: Needs immediate fix for full functionality
+
+2. **❌ API Endpoint Mismatch**
+   - **Problem**: Frontend calling `/api/portfolios` but API serves `/api/v1/portfolio/`
+   - **Impact**: Portfolio data not loading in dashboard
+   - **Status**: Needs frontend service layer update
 
 ### **<Tech-028> API Implementation & Portfolio Management** ✅ **COMPLETED**
 **Priority**: Critical - Foundation for Strategy Tab and portfolio features
