@@ -6,7 +6,7 @@ Tech-028: API Implementation
 Portfolio management endpoints for CRUD operations.
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
 from typing import List, Optional
 
@@ -30,6 +30,17 @@ from src.models.portfolio import (
 
 router = APIRouter()
 
+# Health Check for Portfolio Service
+@router.get("/health", summary="Portfolio Service Health")
+async def portfolio_health():
+    """Health check for portfolio service."""
+    return {
+        "status": "healthy",
+        "service": "portfolio",
+        "version": "1.0.0",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
+
 # Mock data for testing
 mock_portfolios = [
     {
@@ -38,8 +49,8 @@ mock_portfolios = [
         "description": "Aggressive growth focused portfolio",
         "risk_profile": RiskProfile.AGGRESSIVE,
         "user_id": 1,
-        "created_at": datetime.utcnow(),
-        "updated_at": datetime.utcnow(),
+        "created_at": datetime.now(timezone.utc),
+        "updated_at": datetime.now(timezone.utc),
         "total_value": Decimal("50000.00"),
         "total_cost": Decimal("45000.00"),
         "total_gain_loss": Decimal("5000.00"),
@@ -52,8 +63,8 @@ mock_portfolios = [
         "description": "Low-risk income focused portfolio",
         "risk_profile": RiskProfile.CONSERVATIVE,
         "user_id": 1,
-        "created_at": datetime.utcnow(),
-        "updated_at": datetime.utcnow(),
+        "created_at": datetime.now(timezone.utc),
+        "updated_at": datetime.now(timezone.utc),
         "total_value": Decimal("75000.00"),
         "total_cost": Decimal("70000.00"),
         "total_gain_loss": Decimal("5000.00"),
@@ -72,8 +83,8 @@ mock_holdings = [
         "cost_basis": Decimal("150.00"),
         "current_price": Decimal("155.00"),
         "notes": "Tech growth stock",
-        "created_at": datetime.utcnow(),
-        "updated_at": datetime.utcnow(),
+        "created_at": datetime.now(timezone.utc),
+        "updated_at": datetime.now(timezone.utc),
         "market_value": Decimal("15500.00"),
         "gain_loss": Decimal("500.00"),
         "gain_loss_pct": Decimal("3.33"),
@@ -87,8 +98,8 @@ mock_holdings = [
         "cost_basis": Decimal("200.00"),
         "current_price": Decimal("220.00"),
         "notes": "EV leader",
-        "created_at": datetime.utcnow(),
-        "updated_at": datetime.utcnow(),
+        "created_at": datetime.now(timezone.utc),
+        "updated_at": datetime.now(timezone.utc),
         "market_value": Decimal("11000.00"),
         "gain_loss": Decimal("1000.00"),
         "gain_loss_pct": Decimal("10.00"),
@@ -105,8 +116,8 @@ async def create_portfolio(portfolio_data: PortfolioCreate):
             "id": len(mock_portfolios) + 1,
             **portfolio_data.model_dump(),
             "user_id": 1,
-            "created_at": datetime.utcnow(),
-            "updated_at": datetime.utcnow(),
+            "created_at": datetime.now(timezone.utc),
+            "updated_at": datetime.now(timezone.utc),
             "total_value": Decimal("0.00"),
             "total_cost": Decimal("0.00"),
             "total_gain_loss": Decimal("0.00"),
@@ -206,7 +217,7 @@ async def update_portfolio(
             for field, value in update_data.items():
                 portfolio[field] = value
 
-        portfolio["updated_at"] = datetime.utcnow()
+        portfolio["updated_at"] = datetime.now(timezone.utc)
 
         return Portfolio(**portfolio)
     except HTTPException:
@@ -227,7 +238,7 @@ async def delete_portfolio(portfolio_id: int = Path(..., description="Portfolio 
             raise HTTPException(status_code=404, detail="Portfolio not found")
 
         portfolio["is_active"] = False
-        portfolio["updated_at"] = datetime.utcnow()
+        portfolio["updated_at"] = datetime.now(timezone.utc)
 
         return {"message": "Portfolio deleted successfully"}
     except HTTPException:
@@ -261,8 +272,8 @@ async def add_holding(
             "id": len(mock_holdings) + 1,
             **holding_data.model_dump(),
             "portfolio_id": portfolio_id,
-            "created_at": datetime.utcnow(),
-            "updated_at": datetime.utcnow(),
+            "created_at": datetime.now(timezone.utc),
+            "updated_at": datetime.now(timezone.utc),
             "market_value": holding_data.quantity
             * (holding_data.current_price or holding_data.cost_basis),
             "gain_loss": Decimal("0.00"),
@@ -335,7 +346,7 @@ async def update_holding(
             for field, value in update_data.items():
                 holding[field] = value
 
-        holding["updated_at"] = datetime.utcnow()
+        holding["updated_at"] = datetime.now(timezone.utc)
 
         return Holding(**holding)
     except HTTPException:

@@ -171,6 +171,41 @@
 
 ## 🚀 **Phase 7: API Gateway & Portfolio Management (Weeks 17-20)**
 
+### **🔧 Server Startup Issues & Fixes (September 4, 2025)** ✅ **RESOLVED**
+
+#### **Issues Identified & Fixed:**
+1. **✅ API Health Endpoint Routing Issue**
+   - **Problem**: `/health` endpoint being parsed as `portfolio_id` parameter
+   - **Solution**: Moved health endpoint to top of router before parameterized routes
+   - **Status**: ✅ **FIXED** - API health endpoints now working
+
+2. **✅ Frontend 404 Route Errors**
+   - **Problem**: Missing dashboard route files causing 404 errors
+   - **Solution**: Created missing route files:
+     - `frontend/src/app/(dashboard)/watchlist/page.tsx` ✅
+     - `frontend/src/app/(dashboard)/reports/page.tsx` ✅  
+     - `frontend/src/app/(dashboard)/analysis/page.tsx` ✅
+   - **Status**: ✅ **FIXED** - All dashboard routes now functional
+
+3. **✅ API Server Startup Issues**
+   - **Problem**: Server not starting from correct directory
+   - **Solution**: Started server from `api/` directory with proper configuration
+   - **Status**: ✅ **FIXED** - API server running on localhost:8000
+
+#### **Current Server Status:**
+- **✅ API Server**: Running on `http://localhost:8000`
+  - Portfolio API: ✅ Healthy
+  - Investment Profile API: ✅ Healthy
+- **✅ Frontend Server**: Running on `http://localhost:3000`
+  - Dashboard routes: ✅ All functional
+  - Investment Profile UI: ✅ Accessible
+
+#### **Ready for Testing:**
+- **Portfolio Management**: Full CRUD operations available
+- **Investment Profile Assessment**: 9-dimension questionnaire functional
+- **Dashboard Navigation**: All routes working
+- **API Integration**: Frontend-backend communication established
+
 ### **<Tech-028> API Implementation & Portfolio Management** ✅ **COMPLETED**
 **Priority**: Critical - Foundation for Strategy Tab and portfolio features
 **Dependencies**: Tech-026 ✅ COMPLETED, Tech-027 ✅ COMPLETED
