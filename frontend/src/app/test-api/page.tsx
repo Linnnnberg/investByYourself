@@ -5,11 +5,20 @@ import { useApiClient } from '@/hooks/useApiClient';
 import { Portfolio } from '@/lib/api-client';
 
 export default function TestApiPage() {
-  const { client, isAuthenticated, isLoading } = useApiClient();
+  const { client, isAuthenticated } = useApiClient();
   const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [healthStatus, setHealthStatus] = useState<any>(null);
+  const [healthStatus, setHealthStatus] = useState<{
+    status: string;
+    service: string;
+    version: string;
+    environment: string;
+    database: {
+      status: string;
+      type: string;
+    };
+  } | null>(null);
 
   const testApiConnection = async () => {
     try {
@@ -33,7 +42,7 @@ export default function TestApiPage() {
 
   useEffect(() => {
     testApiConnection();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">

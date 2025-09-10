@@ -12,23 +12,14 @@ from typing import List, Optional
 
 from fastapi import APIRouter, HTTPException, Path, Query
 
-from src.models.portfolio import (
-    AssetType,
-    Holding,
-    HoldingCreate,
-    HoldingUpdate,
-    Portfolio,
-    PortfolioCreate,
-    PortfolioDetail,
-    PortfolioSummary,
-    PortfolioUpdate,
-    RiskProfile,
-    Transaction,
-    TransactionCreate,
-    TransactionType,
-)
+from src.models.portfolio import (AssetType, Holding, HoldingCreate,
+                                  HoldingUpdate, Portfolio, PortfolioCreate,
+                                  PortfolioDetail, PortfolioSummary,
+                                  PortfolioUpdate, RiskProfile, Transaction,
+                                  TransactionCreate, TransactionType)
 
 router = APIRouter()
+
 
 # Health Check for Portfolio Service
 @router.get("/health", summary="Portfolio Service Health")
@@ -40,6 +31,7 @@ async def portfolio_health():
         "version": "1.0.0",
         "timestamp": datetime.now(timezone.utc).isoformat(),
     }
+
 
 # Mock data for testing
 mock_portfolios = [

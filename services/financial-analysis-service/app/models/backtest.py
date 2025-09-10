@@ -8,18 +8,8 @@ SQLAlchemy model for backtest executions.
 from datetime import datetime
 
 from app.core.database import Base
-from sqlalchemy import (
-    JSON,
-    Boolean,
-    Column,
-    Date,
-    DateTime,
-    ForeignKey,
-    Integer,
-    Numeric,
-    String,
-    Text,
-)
+from sqlalchemy import (JSON, Boolean, Column, Date, DateTime, ForeignKey,
+                        Integer, Numeric, String, Text)
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -60,9 +50,9 @@ class Backtest(Base):
             "user_id": self.user_id,
             "start_date": self.start_date.isoformat() if self.start_date else None,
             "end_date": self.end_date.isoformat() if self.end_date else None,
-            "initial_investment": float(self.initial_investment)
-            if self.initial_investment
-            else None,
+            "initial_investment": (
+                float(self.initial_investment) if self.initial_investment else None
+            ),
             "parameters": self.parameters,
             "status": self.status,
             "progress": float(self.progress) if self.progress else None,
@@ -70,8 +60,8 @@ class Backtest(Base):
             "results": self.results,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "started_at": self.started_at.isoformat() if self.started_at else None,
-            "completed_at": self.completed_at.isoformat()
-            if self.completed_at
-            else None,
+            "completed_at": (
+                self.completed_at.isoformat() if self.completed_at else None
+            ),
             "error_message": self.error_message,
         }

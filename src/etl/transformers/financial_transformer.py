@@ -18,12 +18,8 @@ from typing import Any, Dict, List, Optional, Union
 
 import structlog
 
-from .base_transformer import (
-    BaseDataTransformer,
-    DataQualityMetrics,
-    TransformationResult,
-    TransformationRule,
-)
+from .base_transformer import (BaseDataTransformer, DataQualityMetrics,
+                               TransformationResult, TransformationRule)
 
 logger = structlog.get_logger(__name__)
 

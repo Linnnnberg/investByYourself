@@ -24,9 +24,8 @@ async def test_core_etl_components():
 
         print("✅ BaseDataCollector imported successfully")
 
-        from src.etl.collectors.collection_orchestrator import (
-            DataCollectionOrchestrator,
-        )
+        from src.etl.collectors.collection_orchestrator import \
+            DataCollectionOrchestrator
 
         print("✅ DataCollectionOrchestrator imported successfully")
 
@@ -35,7 +34,8 @@ async def test_core_etl_components():
 
         print("✅ BaseDataTransformer imported successfully")
 
-        from src.etl.transformers.financial_transformer import FinancialDataTransformer
+        from src.etl.transformers.financial_transformer import \
+            FinancialDataTransformer
 
         print("✅ FinancialDataTransformer imported successfully")
 
@@ -100,7 +100,8 @@ async def test_data_transformation():
     print("-" * 50)
 
     try:
-        from src.etl.transformers.financial_transformer import FinancialDataTransformer
+        from src.etl.transformers.financial_transformer import \
+            FinancialDataTransformer
 
         # Create transformer
         transformer = FinancialDataTransformer()
@@ -134,7 +135,8 @@ async def test_file_operations():
     print("-" * 50)
 
     try:
-        from src.etl.loaders.file_loader import CompressionType, FileFormat, FileLoader
+        from src.etl.loaders.file_loader import (CompressionType, FileFormat,
+                                                 FileLoader)
 
         # Test configuration
         print("✅ FileLoader components imported successfully")

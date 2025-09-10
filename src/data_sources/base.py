@@ -239,9 +239,11 @@ class BaseDataSource(ABC):
             "api_key_configured": bool(self.api_key),
             "connection_status": self.test_connection(),
             "rate_limit": f"{self.requests_per_minute} requests per minute",
-            "last_request": datetime.fromtimestamp(self.last_request_time).isoformat()
-            if self.last_request_time > 0
-            else "Never",
+            "last_request": (
+                datetime.fromtimestamp(self.last_request_time).isoformat()
+                if self.last_request_time > 0
+                else "Never"
+            ),
         }
 
 

@@ -442,24 +442,28 @@ class CompanyProfile:
                     "founded_year": company["founded_year"],
                 },
                 "market_data": {
-                    "current_price": latest_market["close_price"]
-                    if latest_market is not None
-                    else None,
-                    "pe_ratio": latest_market["pe_ratio"]
-                    if latest_market is not None
-                    else None,
-                    "pb_ratio": latest_market["pb_ratio"]
-                    if latest_market is not None
-                    else None,
-                    "ps_ratio": latest_market["ps_ratio"]
-                    if latest_market is not None
-                    else None,
-                    "dividend_yield": latest_market["dividend_yield"]
-                    if latest_market is not None
-                    else None,
-                    "beta": latest_market["beta"]
-                    if latest_market is not None
-                    else None,
+                    "current_price": (
+                        latest_market["close_price"]
+                        if latest_market is not None
+                        else None
+                    ),
+                    "pe_ratio": (
+                        latest_market["pe_ratio"] if latest_market is not None else None
+                    ),
+                    "pb_ratio": (
+                        latest_market["pb_ratio"] if latest_market is not None else None
+                    ),
+                    "ps_ratio": (
+                        latest_market["ps_ratio"] if latest_market is not None else None
+                    ),
+                    "dividend_yield": (
+                        latest_market["dividend_yield"]
+                        if latest_market is not None
+                        else None
+                    ),
+                    "beta": (
+                        latest_market["beta"] if latest_market is not None else None
+                    ),
                 },
                 "peers": peers.to_dict("records") if not peers.empty else [],
                 "pe_trend": pe_trend.to_dict("records") if not pe_trend.empty else [],

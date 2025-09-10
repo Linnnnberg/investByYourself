@@ -8,17 +8,9 @@ Main API router that includes all endpoint modules.
 
 from fastapi import APIRouter
 
-from src.api.v1.endpoints import (
-    analysis,
-    auth,
-    etl,
-    investment_profile,
-    market_data,
-    notifications,
-    portfolio,
-    watchlist,
-    websocket,
-)
+from src.api.v1.endpoints import (analysis, auth, etl, investment_profile,
+                                  market_data, notifications, portfolio,
+                                  watchlist, websocket)
 
 # Create main API router
 api_router = APIRouter()

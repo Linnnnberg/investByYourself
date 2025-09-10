@@ -31,9 +31,7 @@ try:
         load_dotenv()
         print("✅ .env file loaded successfully")
     except ImportError:
-        print(
-            "⚠️  python-dotenv not installed. Install with: pip install python-dotenv"
-        )
+        print("⚠️  python-dotenv not installed. Install with: pip install python-dotenv")
     except FileNotFoundError:
         print("⚠️  .env file not found. Create one with your FRED_API_KEY")
     except UnicodeDecodeError:

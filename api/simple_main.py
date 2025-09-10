@@ -15,17 +15,13 @@ from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from src.api.v1.endpoints.investment_profile import \
+    router as investment_profile_router
 from src.api.v1.endpoints.portfolio import router as portfolio_router
-from src.api.v1.endpoints.investment_profile import router as investment_profile_router
 from src.middleware.rate_limiting import limiter, setup_rate_limiting
-
 # Import portfolio models and endpoints
-from src.models.portfolio import (
-    HoldingCreate,
-    PortfolioCreate,
-    PortfolioUpdate,
-    TransactionCreate,
-)
+from src.models.portfolio import (HoldingCreate, PortfolioCreate,
+                                  PortfolioUpdate, TransactionCreate)
 from src.services.database import db_service
 
 # Setup basic logging
@@ -91,7 +87,9 @@ def create_application() -> FastAPI:
 
     # Include investment profile router
     app.include_router(
-        investment_profile_router, prefix="/api/v1/investment-profile", tags=["Investment Profile"]
+        investment_profile_router,
+        prefix="/api/v1/investment-profile",
+        tags=["Investment Profile"],
     )
 
     # Add health check endpoint
@@ -106,9 +104,11 @@ def create_application() -> FastAPI:
             db_status = {
                 "status": "connected",
                 "type": settings.DATABASE_TYPE,
-                "database": settings.SQLITE_DATABASE
-                if settings.DATABASE_TYPE == "sqlite"
-                else settings.POSTGRES_DATABASE,
+                "database": (
+                    settings.SQLITE_DATABASE
+                    if settings.DATABASE_TYPE == "sqlite"
+                    else settings.POSTGRES_DATABASE
+                ),
             }
             status = "healthy"
         except Exception as e:

@@ -29,12 +29,8 @@ import seaborn as sns
 warnings.filterwarnings("ignore")
 
 try:
-    from pypfopt import (
-        EfficientFrontier,
-        expected_returns,
-        objective_functions,
-        risk_models,
-    )
+    from pypfopt import (EfficientFrontier, expected_returns,
+                         objective_functions, risk_models)
     from pypfopt.hierarchical_portfolio import HRPOpt
     from pypfopt.risk_models import CovarianceShrinkage
 

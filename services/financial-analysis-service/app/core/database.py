@@ -117,11 +117,13 @@ def get_database_status() -> dict:
                 "status": "connected",
                 "version": version,
                 "pool_status": pool_status,
-                "url": get_database_url().replace(
-                    get_database_url().split("@")[0].split("//")[1], "***:***"
-                )
-                if "@" in get_database_url()
-                else get_database_url(),
+                "url": (
+                    get_database_url().replace(
+                        get_database_url().split("@")[0].split("//")[1], "***:***"
+                    )
+                    if "@" in get_database_url()
+                    else get_database_url()
+                ),
             }
     except Exception as e:
         return {"status": "error", "error": str(e), "url": get_database_url()}

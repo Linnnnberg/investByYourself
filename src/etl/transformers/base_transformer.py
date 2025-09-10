@@ -336,10 +336,10 @@ class BaseDataTransformer(ABC):
             "successful_transformations": self.successful_transformations,
             "failed_transformations": self.failed_transformations,
             "success_rate": (
-                self.successful_transformations / self.total_transformations * 100
-            )
-            if self.total_transformations > 0
-            else 0.0,
+                (self.successful_transformations / self.total_transformations * 100)
+                if self.total_transformations > 0
+                else 0.0
+            ),
             "total_processing_time": self.total_processing_time,
             "average_processing_time": self.average_processing_time,
             "current_quality_score": self.current_quality_score,

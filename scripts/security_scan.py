@@ -225,7 +225,9 @@ class SecurityScanner:
         for severity in ["CRITICAL", "HIGH", "MEDIUM", "LOW"]:
             if severity in issues_by_severity:
                 issues = issues_by_severity[severity]
-                report_lines.extend([f"🔴 {severity} Issues ({len(issues)}):", "-" * 40])
+                report_lines.extend(
+                    [f"🔴 {severity} Issues ({len(issues)}):", "-" * 40]
+                )
 
                 for issue in issues:
                     report_lines.extend(
@@ -310,9 +312,7 @@ class SecurityScanner:
                             )
 
                 if git_issues:
-                    print(
-                        f"⚠️  Found {len(git_issues)} potential issues in git history"
-                    )
+                    print(f"⚠️  Found {len(git_issues)} potential issues in git history")
                     return git_issues
                 else:
                     print("✅ No obvious secrets found in git history")

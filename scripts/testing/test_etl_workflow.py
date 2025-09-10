@@ -61,7 +61,8 @@ async def test_complete_etl_workflow():
         print("\n🔄 Phase 2: Data Transformation")
         print("-" * 40)
 
-        from src.etl.transformers.financial_transformer import FinancialDataTransformer
+        from src.etl.transformers.financial_transformer import \
+            FinancialDataTransformer
 
         transformer = FinancialDataTransformer()
         print("✅ FinancialDataTransformer initialized")
@@ -77,9 +78,7 @@ async def test_complete_etl_workflow():
             transformed_record["price_category"] = (
                 "High"
                 if record["price"] > 200
-                else "Medium"
-                if record["price"] > 100
-                else "Low"
+                else "Medium" if record["price"] > 100 else "Low"
             )
             transformed_record["processed_at"] = datetime.now().isoformat()
 

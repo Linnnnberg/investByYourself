@@ -85,12 +85,8 @@ except ImportError:
 # Import our core modules
 try:
     from src.core.portfolio import Asset, Portfolio, PortfolioManager
-    from src.core.strategy import (
-        MomentumStrategy,
-        StrategyManager,
-        StrategyParameters,
-        StrategyType,
-    )
+    from src.core.strategy import (MomentumStrategy, StrategyManager,
+                                   StrategyParameters, StrategyType)
 
     CORE_AVAILABLE = True
 except ImportError:

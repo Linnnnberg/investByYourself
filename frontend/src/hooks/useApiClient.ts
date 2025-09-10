@@ -10,7 +10,6 @@ import { supabase } from '@/lib/supabase';
 import { apiClient, ApiClient } from '@/lib/api-client';
 
 export function useApiClient() {
-  const [client, setClient] = useState<ApiClient>(apiClient);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -58,7 +57,7 @@ export function useApiClient() {
   }, []);
 
   return {
-    client,
+    client: apiClient,
     isAuthenticated,
     isLoading,
   };
@@ -90,7 +89,7 @@ export function useApiCall<T>(
 
   useEffect(() => {
     execute();
-  }, dependencies);
+  }, dependencies); // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
     data,

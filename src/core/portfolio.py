@@ -90,9 +90,9 @@ class Portfolio:
                 asset=asset,
                 quantity=total_quantity,
                 cost_basis=avg_cost_basis,
-                current_price=asset.current_price
-                if hasattr(asset, "current_price")
-                else 0.0,
+                current_price=(
+                    asset.current_price if hasattr(asset, "current_price") else 0.0
+                ),
             )
         else:
             # Create new position
@@ -219,9 +219,11 @@ class Portfolio:
                     "Market Value": position.market_value,
                     "Unrealized PnL": position.unrealized_pnl,
                     "Unrealized PnL %": position.unrealized_pnl_pct,
-                    "Weight": position.market_value / self.total_market_value
-                    if self.total_market_value > 0
-                    else 0,
+                    "Weight": (
+                        position.market_value / self.total_market_value
+                        if self.total_market_value > 0
+                        else 0
+                    ),
                 }
             )
 
@@ -237,9 +239,11 @@ class Portfolio:
             "Total Unrealized PnL": self.total_unrealized_pnl,
             "Total Unrealized PnL %": self.total_unrealized_pnl_pct,
             "Cash": self.cash,
-            "Cash %": (self.cash / self.total_market_value * 100)
-            if self.total_market_value > 0
-            else 0,
+            "Cash %": (
+                (self.cash / self.total_market_value * 100)
+                if self.total_market_value > 0
+                else 0
+            ),
             "Last Updated": self.last_updated.strftime("%Y-%m-%d %H:%M:%S"),
         }
 

@@ -449,15 +449,17 @@ class DataCollectionOrchestrator:
             "total_tasks_executed": self.total_tasks_executed,
             "successful_tasks": self.successful_tasks,
             "failed_tasks": self.failed_tasks,
-            "success_rate": (self.successful_tasks / self.total_tasks_executed * 100)
-            if self.total_tasks_executed > 0
-            else 0.0,
+            "success_rate": (
+                (self.successful_tasks / self.total_tasks_executed * 100)
+                if self.total_tasks_executed > 0
+                else 0.0
+            ),
             "total_execution_time": self.total_execution_time,
             "average_execution_time": (
-                self.total_execution_time / self.total_tasks_executed
-            )
-            if self.total_tasks_executed > 0
-            else 0.0,
+                (self.total_execution_time / self.total_tasks_executed)
+                if self.total_tasks_executed > 0
+                else 0.0
+            ),
             "pending_tasks": len(self.pending_tasks),
             "running_tasks": len(self.running_tasks),
             "completed_tasks": len(self.completed_tasks),

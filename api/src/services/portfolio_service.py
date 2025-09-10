@@ -15,18 +15,10 @@ from sqlalchemy import and_, func
 from sqlalchemy.orm import Session
 
 from src.core.database import get_db
-from src.models.portfolio import (
-    Holding,
-    HoldingCreate,
-    HoldingUpdate,
-    Portfolio,
-    PortfolioCreate,
-    PortfolioDetail,
-    PortfolioSummary,
-    PortfolioUpdate,
-    Transaction,
-    TransactionCreate,
-)
+from src.models.portfolio import (Holding, HoldingCreate, HoldingUpdate,
+                                  Portfolio, PortfolioCreate, PortfolioDetail,
+                                  PortfolioSummary, PortfolioUpdate,
+                                  Transaction, TransactionCreate)
 
 logger = logging.getLogger(__name__)
 

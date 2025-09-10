@@ -211,9 +211,11 @@ async def generate_report(report_request: ReportRequest):
         "format": report_request.format,
         "content": report_content,
         "generated_at": datetime.utcnow(),
-        "download_url": f"/api/v1/reports/{report_id}/download"
-        if report_request.format != "json"
-        else None,
+        "download_url": (
+            f"/api/v1/reports/{report_id}/download"
+            if report_request.format != "json"
+            else None
+        ),
     }
 
     reports_db[report_id] = report_data
@@ -281,9 +283,11 @@ def generate_report_content(
                 "portfolio_composition": {
                     "total_periods": len(results.weights_history),
                     "rebalancing_frequency": "quarterly",  # This would come from strategy
-                    "asset_count": len(results.weights_history[0]["weights"])
-                    if results.weights_history
-                    else 0,
+                    "asset_count": (
+                        len(results.weights_history[0]["weights"])
+                        if results.weights_history
+                        else 0
+                    ),
                 },
             }
         )

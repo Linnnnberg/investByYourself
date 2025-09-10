@@ -13,27 +13,15 @@ This package contains data collectors for various financial APIs:
 from typing import List
 
 from .alpha_vantage_collector import AlphaVantageCollector
-
 # Import base classes and configurations
-from .base_collector import (
-    BaseDataCollector,
-    CollectionMetrics,
-    DataCollectionError,
-    DataQualityLevel,
-    DataValidationError,
-    RateLimitConfig,
-    RateLimitExceededError,
-    RetryConfig,
-)
-
+from .base_collector import (BaseDataCollector, CollectionMetrics,
+                             DataCollectionError, DataQualityLevel,
+                             DataValidationError, RateLimitConfig,
+                             RateLimitExceededError, RetryConfig)
 # Import orchestrator
-from .collection_orchestrator import (
-    CollectionResult,
-    CollectionTask,
-    DataCollectionOrchestrator,
-)
+from .collection_orchestrator import (CollectionResult, CollectionTask,
+                                      DataCollectionOrchestrator)
 from .fred_collector import FREDCollector
-
 # Import specific collectors
 from .yahoo_finance_collector import YahooFinanceCollector
 

@@ -28,17 +28,9 @@ sys.path.append(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 )
 
-from src.etl.loaders import (
-    CacheConfig,
-    CacheLoader,
-    CompressionType,
-    DatabaseConfig,
-    DatabaseLoader,
-    FileFormat,
-    FileLoader,
-    LoadingStrategy,
-    SerializationFormat,
-)
+from src.etl.loaders import (CacheConfig, CacheLoader, CompressionType,
+                             DatabaseConfig, DatabaseLoader, FileFormat,
+                             FileLoader, LoadingStrategy, SerializationFormat)
 
 
 async def test_database_loader():

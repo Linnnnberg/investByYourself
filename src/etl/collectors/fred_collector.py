@@ -22,13 +22,8 @@ import aiohttp
 import pandas as pd
 import structlog
 
-from .base_collector import (
-    BaseDataCollector,
-    DataCollectionError,
-    DataValidationError,
-    RateLimitConfig,
-    RetryConfig,
-)
+from .base_collector import (BaseDataCollector, DataCollectionError,
+                             DataValidationError, RateLimitConfig, RetryConfig)
 
 logger = structlog.get_logger(__name__)
 
@@ -345,12 +340,12 @@ class FREDCollector(BaseDataCollector):
                         "series_id": series_id,
                         "observations": transformed_data,
                         "data_points": len(transformed_data),
-                        "start_date": transformed_data[-1]["date"]
-                        if transformed_data
-                        else None,
-                        "end_date": transformed_data[0]["date"]
-                        if transformed_data
-                        else None,
+                        "start_date": (
+                            transformed_data[-1]["date"] if transformed_data else None
+                        ),
+                        "end_date": (
+                            transformed_data[0]["date"] if transformed_data else None
+                        ),
                         "frequency": frequency,
                     },
                     "errors": [],

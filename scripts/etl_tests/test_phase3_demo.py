@@ -21,14 +21,9 @@ sys.path.append(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 )
 
-from src.etl.loaders.base_loader import (
-    BaseDataLoader,
-    DataVersion,
-    LoadingError,
-    LoadingMetrics,
-    LoadingResult,
-    LoadingStrategy,
-)
+from src.etl.loaders.base_loader import (BaseDataLoader, DataVersion,
+                                         LoadingError, LoadingMetrics,
+                                         LoadingResult, LoadingStrategy)
 from src.etl.loaders.file_loader import CompressionType, FileFormat, FileLoader
 
 
@@ -553,7 +548,9 @@ async def run_phase3_demo():
     """Run comprehensive Phase 3 demonstration."""
     print("🚀 Phase 3 Data Loading Framework Demo")
     print("=" * 60)
-    print("🎯 Demonstrating TECH-009 Phase 3 capabilities without external dependencies")
+    print(
+        "🎯 Demonstrating TECH-009 Phase 3 capabilities without external dependencies"
+    )
 
     start_time = datetime.now()
 

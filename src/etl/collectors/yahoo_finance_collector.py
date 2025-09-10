@@ -23,13 +23,8 @@ import pandas as pd
 import structlog
 import yfinance as yf
 
-from .base_collector import (
-    BaseDataCollector,
-    DataCollectionError,
-    DataValidationError,
-    RateLimitConfig,
-    RetryConfig,
-)
+from .base_collector import (BaseDataCollector, DataCollectionError,
+                             DataValidationError, RateLimitConfig, RetryConfig)
 
 logger = structlog.get_logger(__name__)
 
@@ -311,9 +306,9 @@ class YahooFinanceCollector(BaseDataCollector):
                 "symbol": symbol,
                 "dividends_count": len(dividends_list),
                 "dividends_data": dividends_list,
-                "total_dividends": float(dividends.sum())
-                if dividends.sum() is not None
-                else 0.0,
+                "total_dividends": (
+                    float(dividends.sum()) if dividends.sum() is not None else 0.0
+                ),
             }
 
         except Exception as e:

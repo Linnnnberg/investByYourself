@@ -23,11 +23,9 @@ import streamlit as st
 # Add the project root to the path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
-from scripts.financial_analysis.data_explorer import (
-    CompanyProfile,
-    FinancialCharts,
-    FinancialDataExplorer,
-)
+from scripts.financial_analysis.data_explorer import (CompanyProfile,
+                                                      FinancialCharts,
+                                                      FinancialDataExplorer)
 
 # Page configuration
 st.set_page_config(
@@ -203,14 +201,16 @@ def show_market_analysis():
     with col2:
         sector_filter = st.selectbox(
             "Filter by sector:",
-            ["All Sectors"]
-            + list(
-                st.session_state.data_explorer.get_sector_performance()[
-                    "sector"
-                ].unique()
-            )
-            if "sector_perf" in locals()
-            else [],
+            (
+                ["All Sectors"]
+                + list(
+                    st.session_state.data_explorer.get_sector_performance()[
+                        "sector"
+                    ].unique()
+                )
+                if "sector_perf" in locals()
+                else []
+            ),
         )
 
     with col3:
@@ -380,30 +380,38 @@ def show_company_profiles():
                     with col1:
                         st.metric(
                             "P/E Ratio",
-                            f"{profile['market_data']['pe_ratio']:.2f}"
-                            if profile["market_data"]["pe_ratio"]
-                            else "N/A",
+                            (
+                                f"{profile['market_data']['pe_ratio']:.2f}"
+                                if profile["market_data"]["pe_ratio"]
+                                else "N/A"
+                            ),
                         )
                     with col2:
                         st.metric(
                             "P/B Ratio",
-                            f"{profile['market_data']['pb_ratio']:.2f}"
-                            if profile["market_data"]["pb_ratio"]
-                            else "N/A",
+                            (
+                                f"{profile['market_data']['pb_ratio']:.2f}"
+                                if profile["market_data"]["pb_ratio"]
+                                else "N/A"
+                            ),
                         )
                     with col3:
                         st.metric(
                             "P/S Ratio",
-                            f"{profile['market_data']['ps_ratio']:.2f}"
-                            if profile["market_data"]["ps_ratio"]
-                            else "N/A",
+                            (
+                                f"{profile['market_data']['ps_ratio']:.2f}"
+                                if profile["market_data"]["ps_ratio"]
+                                else "N/A"
+                            ),
                         )
                     with col4:
                         st.metric(
                             "Dividend Yield",
-                            f"{profile['market_data']['dividend_yield']:.2%}"
-                            if profile["market_data"]["dividend_yield"]
-                            else "N/A",
+                            (
+                                f"{profile['market_data']['dividend_yield']:.2%}"
+                                if profile["market_data"]["dividend_yield"]
+                                else "N/A"
+                            ),
                         )
 
                 # Price history chart

@@ -9,7 +9,6 @@ import os
 from datetime import datetime
 
 import uvicorn
-
 # Import API routers
 from app.api import backtesting, results, strategies
 from fastapi import FastAPI, HTTPException

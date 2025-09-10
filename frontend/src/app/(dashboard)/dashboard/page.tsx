@@ -5,10 +5,7 @@ import Link from 'next/link';
 import { Card, CardHeader, CardContent, CardFooter } from '@/design-system/components/Card';
 import { Button } from '@/design-system/components/Button';
 import { useApiClient, useApiCall } from '@/hooks/useApiClient';
-import { Portfolio, PortfolioAnalytics } from '@/lib/api-client';
-
-// Mock user ID for demo (in real app, this would come from auth)
-const DEMO_USER_ID = 'demo-user-123';
+import { Portfolio } from '@/lib/api-client';
 
 export default function DashboardPage() {
   const { client, isAuthenticated, isLoading: authLoading } = useApiClient();
@@ -45,12 +42,6 @@ export default function DashboardPage() {
 
   // Mock watchlist data for demo
   const watchlist = companies.slice(0, 3);
-
-  // Handle adding to watchlist (mock for now)
-  const handleAddToWatchlist = async (symbol: string) => {
-    console.log('Adding to watchlist:', symbol);
-    // TODO: Implement watchlist API
-  };
 
   // Handle removing from watchlist (mock for now)
   const handleRemoveFromWatchlist = async (id: string) => {
@@ -230,7 +221,7 @@ export default function DashboardPage() {
       <Card>
         <CardHeader>
           <h2 className="text-xl font-semibold">Watchlist</h2>
-          <p className="text-gray-600">Companies you're monitoring</p>
+          <p className="text-gray-600">Companies you&apos;re monitoring</p>
         </CardHeader>
         <CardContent>
           {watchlist.length > 0 ? (

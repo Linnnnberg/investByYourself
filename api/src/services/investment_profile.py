@@ -7,23 +7,16 @@ from datetime import datetime
 from typing import Dict, List, Optional
 from uuid import UUID, uuid4
 
-from ..models.investment_profile import (
-    Diversification,
-    FinancialGoals,
-    IncomeNeeds,
-    InvestmentExperience,
-    InvestmentProfile,
-    InvestmentProfileCreate,
-    InvestmentProfileSummary,
-    InvestmentProfileUpdate,
-    InvestmentRecommendation,
-    LiquidityNeeds,
-    MarketVolatility,
-    Rebalancing,
-    RiskScore,
-    RiskTolerance,
-    TimeHorizon,
-)
+from ..models.investment_profile import (Diversification, FinancialGoals,
+                                         IncomeNeeds, InvestmentExperience,
+                                         InvestmentProfile,
+                                         InvestmentProfileCreate,
+                                         InvestmentProfileSummary,
+                                         InvestmentProfileUpdate,
+                                         InvestmentRecommendation,
+                                         LiquidityNeeds, MarketVolatility,
+                                         Rebalancing, RiskScore, RiskTolerance,
+                                         TimeHorizon)
 
 
 class InvestmentProfileService:
@@ -37,14 +30,22 @@ class InvestmentProfileService:
         """Calculate risk score based on profile data."""
         # Risk scoring weights (1-3 scale)
         scores = {
-            "risk_tolerance": self._get_risk_tolerance_score(profile_data.risk_tolerance),
+            "risk_tolerance": self._get_risk_tolerance_score(
+                profile_data.risk_tolerance
+            ),
             "time_horizon": self._get_time_horizon_score(profile_data.time_horizon),
-            "investment_experience": self._get_experience_score(profile_data.investment_experience),
+            "investment_experience": self._get_experience_score(
+                profile_data.investment_experience
+            ),
             "financial_goals": self._get_goals_score(profile_data.financial_goals),
             "liquidity_needs": self._get_liquidity_score(profile_data.liquidity_needs),
             "income_needs": self._get_income_score(profile_data.income_needs),
-            "market_volatility": self._get_volatility_score(profile_data.market_volatility),
-            "diversification": self._get_diversification_score(profile_data.diversification),
+            "market_volatility": self._get_volatility_score(
+                profile_data.market_volatility
+            ),
+            "diversification": self._get_diversification_score(
+                profile_data.diversification
+            ),
             "rebalancing": self._get_rebalancing_score(profile_data.rebalancing),
         }
 
@@ -66,101 +67,111 @@ class InvestmentProfileService:
             component_scores=scores,
         )
 
-    def generate_recommendations(self, risk_score: RiskScore) -> List[InvestmentRecommendation]:
+    def generate_recommendations(
+        self, risk_score: RiskScore
+    ) -> List[InvestmentRecommendation]:
         """Generate investment recommendations based on risk score."""
         recommendations = []
 
         if risk_score.total_score <= 12:
             # Conservative recommendations
-            recommendations.extend([
-                InvestmentRecommendation(
-                    strategy_name="Conservative Portfolio",
-                    description="Low-risk portfolio focused on capital preservation and steady income",
-                    asset_allocation={
-                        "Bonds": 60.0,
-                        "Large-cap Stocks": 30.0,
-                        "Cash": 10.0,
-                    },
-                    expected_return=4.5,
-                    expected_volatility=8.0,
-                    suitability_score=95.0,
-                ),
-                InvestmentRecommendation(
-                    strategy_name="Income Focus",
-                    description="Dividend-focused strategy for regular income generation",
-                    asset_allocation={
-                        "Dividend Stocks": 50.0,
-                        "Bond Funds": 40.0,
-                        "REITs": 10.0,
-                    },
-                    expected_return=5.2,
-                    expected_volatility=10.0,
-                    suitability_score=85.0,
-                ),
-            ])
+            recommendations.extend(
+                [
+                    InvestmentRecommendation(
+                        strategy_name="Conservative Portfolio",
+                        description="Low-risk portfolio focused on capital preservation and steady income",
+                        asset_allocation={
+                            "Bonds": 60.0,
+                            "Large-cap Stocks": 30.0,
+                            "Cash": 10.0,
+                        },
+                        expected_return=4.5,
+                        expected_volatility=8.0,
+                        suitability_score=95.0,
+                    ),
+                    InvestmentRecommendation(
+                        strategy_name="Income Focus",
+                        description="Dividend-focused strategy for regular income generation",
+                        asset_allocation={
+                            "Dividend Stocks": 50.0,
+                            "Bond Funds": 40.0,
+                            "REITs": 10.0,
+                        },
+                        expected_return=5.2,
+                        expected_volatility=10.0,
+                        suitability_score=85.0,
+                    ),
+                ]
+            )
         elif risk_score.total_score <= 18:
             # Moderate recommendations
-            recommendations.extend([
-                InvestmentRecommendation(
-                    strategy_name="Balanced Portfolio",
-                    description="Balanced approach with growth and income components",
-                    asset_allocation={
-                        "Stocks": 50.0,
-                        "Bonds": 40.0,
-                        "Alternatives": 10.0,
-                    },
-                    expected_return=7.0,
-                    expected_volatility=12.0,
-                    suitability_score=90.0,
-                ),
-                InvestmentRecommendation(
-                    strategy_name="Growth & Income",
-                    description="Mix of growth stocks and dividend payers for balanced returns",
-                    asset_allocation={
-                        "Growth Stocks": 40.0,
-                        "Dividend Stocks": 30.0,
-                        "Bonds": 20.0,
-                        "International": 10.0,
-                    },
-                    expected_return=7.5,
-                    expected_volatility=14.0,
-                    suitability_score=80.0,
-                ),
-            ])
+            recommendations.extend(
+                [
+                    InvestmentRecommendation(
+                        strategy_name="Balanced Portfolio",
+                        description="Balanced approach with growth and income components",
+                        asset_allocation={
+                            "Stocks": 50.0,
+                            "Bonds": 40.0,
+                            "Alternatives": 10.0,
+                        },
+                        expected_return=7.0,
+                        expected_volatility=12.0,
+                        suitability_score=90.0,
+                    ),
+                    InvestmentRecommendation(
+                        strategy_name="Growth & Income",
+                        description="Mix of growth stocks and dividend payers for balanced returns",
+                        asset_allocation={
+                            "Growth Stocks": 40.0,
+                            "Dividend Stocks": 30.0,
+                            "Bonds": 20.0,
+                            "International": 10.0,
+                        },
+                        expected_return=7.5,
+                        expected_volatility=14.0,
+                        suitability_score=80.0,
+                    ),
+                ]
+            )
         else:
             # Aggressive recommendations
-            recommendations.extend([
-                InvestmentRecommendation(
-                    strategy_name="Growth Portfolio",
-                    description="High-growth strategy with higher risk tolerance",
-                    asset_allocation={
-                        "Stocks": 70.0,
-                        "Alternatives": 20.0,
-                        "Bonds": 10.0,
-                    },
-                    expected_return=9.5,
-                    expected_volatility=18.0,
-                    suitability_score=95.0,
-                ),
-                InvestmentRecommendation(
-                    strategy_name="Aggressive Growth",
-                    description="Maximum growth potential with small-cap and international exposure",
-                    asset_allocation={
-                        "Small-cap Stocks": 30.0,
-                        "International Stocks": 25.0,
-                        "Growth Stocks": 25.0,
-                        "Alternatives": 15.0,
-                        "Bonds": 5.0,
-                    },
-                    expected_return=11.0,
-                    expected_volatility=22.0,
-                    suitability_score=85.0,
-                ),
-            ])
+            recommendations.extend(
+                [
+                    InvestmentRecommendation(
+                        strategy_name="Growth Portfolio",
+                        description="High-growth strategy with higher risk tolerance",
+                        asset_allocation={
+                            "Stocks": 70.0,
+                            "Alternatives": 20.0,
+                            "Bonds": 10.0,
+                        },
+                        expected_return=9.5,
+                        expected_volatility=18.0,
+                        suitability_score=95.0,
+                    ),
+                    InvestmentRecommendation(
+                        strategy_name="Aggressive Growth",
+                        description="Maximum growth potential with small-cap and international exposure",
+                        asset_allocation={
+                            "Small-cap Stocks": 30.0,
+                            "International Stocks": 25.0,
+                            "Growth Stocks": 25.0,
+                            "Alternatives": 15.0,
+                            "Bonds": 5.0,
+                        },
+                        expected_return=11.0,
+                        expected_volatility=22.0,
+                        suitability_score=85.0,
+                    ),
+                ]
+            )
 
         return recommendations
 
-    def create_profile(self, profile_data: InvestmentProfileCreate) -> InvestmentProfile:
+    def create_profile(
+        self, profile_data: InvestmentProfileCreate
+    ) -> InvestmentProfile:
         """Create a new investment profile."""
         # Calculate risk score
         risk_score = self.calculate_risk_score(profile_data)
@@ -196,8 +207,7 @@ class InvestmentProfileService:
     def get_user_profiles(self, user_id: str) -> List[InvestmentProfileSummary]:
         """Get all profiles for a user."""
         user_profiles = [
-            profile for profile in self.profiles.values()
-            if profile.user_id == user_id
+            profile for profile in self.profiles.values() if profile.user_id == user_id
         ]
 
         return [
@@ -206,14 +216,20 @@ class InvestmentProfileService:
                 user_id=profile.user_id,
                 risk_level=profile.risk_score.risk_level,
                 risk_score=profile.risk_score.total_score,
-                primary_strategy=profile.recommendations[0].strategy_name if profile.recommendations else "No Strategy",
+                primary_strategy=(
+                    profile.recommendations[0].strategy_name
+                    if profile.recommendations
+                    else "No Strategy"
+                ),
                 created_at=profile.created_at,
                 updated_at=profile.updated_at,
             )
             for profile in user_profiles
         ]
 
-    def update_profile(self, profile_id: str, update_data: InvestmentProfileUpdate) -> Optional[InvestmentProfile]:
+    def update_profile(
+        self, profile_id: str, update_data: InvestmentProfileUpdate
+    ) -> Optional[InvestmentProfile]:
         """Update an investment profile."""
         profile = self.profiles.get(profile_id)
         if not profile:
@@ -512,7 +528,9 @@ class InvestmentProfileService:
 
     def _get_diversification_score(self, diversification: Diversification) -> int:
         """Get diversification score."""
-        return {"concentrated": 1, "balanced": 2, "diversified": 3}[diversification.value]
+        return {"concentrated": 1, "balanced": 2, "diversified": 3}[
+            diversification.value
+        ]
 
     def _get_rebalancing_score(self, rebalancing: Rebalancing) -> int:
         """Get rebalancing score."""

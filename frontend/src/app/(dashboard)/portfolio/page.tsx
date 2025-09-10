@@ -1,55 +1,20 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { Portfolio, apiClient, useApiClient, useApiCall } from '@/lib/api-client';
-import { useApiClient as useApiClientHook } from '@/hooks/useApiClient';
+import { Portfolio } from '@/lib/api-client';
+import { useApiClient as useApiClientHook, useApiCall } from '@/hooks/useApiClient';
 
 export default function PortfolioPage() {
   const { client, isAuthenticated } = useApiClientHook();
   const [showCreateForm, setShowCreateForm] = useState(false);
 
   // Load portfolios using FastAPI
-  const { data: portfolios, loading, error } = useApiCall(
+  const { data: portfolios, loading } = useApiCall(
     () => client.getPortfolios(),
     [isAuthenticated]
   );
 
-  // Mock data for development
-  const mockPortfolios: Portfolio[] = [
-    {
-      id: '1',
-      name: 'Growth Portfolio',
-      description: 'Technology and growth stocks',
-      holdings: [
-        { symbol: 'AAPL', shares: 100, costBasis: 120.00, currentPrice: 150.25, marketValue: 15025, totalReturn: 3025, totalReturnPercent: 25.21, sector: 'Technology', weight: 0.4 },
-        { symbol: 'MSFT', shares: 50, costBasis: 280.00, currentPrice: 320.80, marketValue: 16040, totalReturn: 2040, totalReturnPercent: 14.57, sector: 'Technology', weight: 0.35 },
-        { symbol: 'GOOGL', shares: 75, costBasis: 110.00, currentPrice: 140.50, marketValue: 10537.5, totalReturn: 2287.5, totalReturnPercent: 27.73, sector: 'Technology', weight: 0.25 },
-      ],
-      totalValue: 41602.5,
-      totalCost: 33250,
-      totalReturn: 7352.5,
-      totalReturnPercent: 22.11,
-      createdAt: '2025-01-01T00:00:00Z',
-      updatedAt: '2025-01-27T00:00:00Z',
-    },
-    {
-      id: '2',
-      name: 'Dividend Portfolio',
-      description: 'High-yield dividend stocks',
-      holdings: [
-        { symbol: 'JNJ', shares: 200, costBasis: 150.00, currentPrice: 165.50, marketValue: 33100, totalReturn: 3100, totalReturnPercent: 10.33, sector: 'Healthcare', weight: 0.5 },
-        { symbol: 'PG', shares: 150, costBasis: 140.00, currentPrice: 155.75, marketValue: 23362.5, totalReturn: 2362.5, totalReturnPercent: 11.25, sector: 'Consumer Staples', weight: 0.35 },
-        { symbol: 'KO', shares: 100, costBasis: 50.00, currentPrice: 55.25, marketValue: 5525, totalReturn: 525, totalReturnPercent: 10.5, sector: 'Consumer Staples', weight: 0.15 },
-      ],
-      totalValue: 61987.5,
-      totalCost: 56000,
-      totalReturn: 5987.5,
-      totalReturnPercent: 10.69,
-      createdAt: '2025-01-01T00:00:00Z',
-      updatedAt: '2025-01-27T00:00:00Z',
-    },
-  ];
 
   // Use real data from API or fallback to empty array
   const displayPortfolios = portfolios || [];

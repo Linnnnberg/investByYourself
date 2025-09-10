@@ -23,16 +23,9 @@ from typing import Any, Dict, List, Optional, Union
 
 import structlog
 
-from .base_loader import (
-    BaseDataLoader,
-    DataVersion,
-    LoadingError,
-    LoadingMetrics,
-    LoadingResult,
-    LoadingStrategy,
-    StorageError,
-    ValidationError,
-)
+from .base_loader import (BaseDataLoader, DataVersion, LoadingError,
+                          LoadingMetrics, LoadingResult, LoadingStrategy,
+                          StorageError, ValidationError)
 
 # Configure structured logging
 logger = structlog.get_logger(__name__)

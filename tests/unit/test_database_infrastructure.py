@@ -15,11 +15,8 @@ import pytest
 # Add src to path for imports
 sys.path.append(str(Path(__file__).parent.parent.parent / "src"))
 
-from config.database import (  # type: ignore
-    DatabaseConfig,
-    DatabaseManager,
-    get_db_manager,
-)
+from config.database import (DatabaseConfig, DatabaseManager,  # type: ignore
+                             get_db_manager)
 
 
 class TestDatabaseConfig:

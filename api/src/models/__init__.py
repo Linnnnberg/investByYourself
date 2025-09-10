@@ -6,21 +6,10 @@ Tech-028: API Implementation
 Data models for the API.
 """
 
-from .portfolio import (
-    AssetType,
-    Holding,
-    HoldingCreate,
-    HoldingUpdate,
-    Portfolio,
-    PortfolioCreate,
-    PortfolioDetail,
-    PortfolioSummary,
-    PortfolioUpdate,
-    RiskProfile,
-    Transaction,
-    TransactionCreate,
-    TransactionType,
-)
+from .portfolio import (AssetType, Holding, HoldingCreate, HoldingUpdate,
+                        Portfolio, PortfolioCreate, PortfolioDetail,
+                        PortfolioSummary, PortfolioUpdate, RiskProfile,
+                        Transaction, TransactionCreate, TransactionType)
 
 __all__ = [
     "Portfolio",

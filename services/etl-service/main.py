@@ -22,9 +22,10 @@ from fastapi.responses import JSONResponse
 # Add service directory to path for imports
 sys.path.append(os.path.dirname(__file__))
 
-from api.routes import etl_routes, health_routes
 from models.config import ETLServiceConfig
 from worker.etl_worker import ETLWorker
+
+from api.routes import etl_routes, health_routes
 
 # Configure structured logging
 structlog.configure(

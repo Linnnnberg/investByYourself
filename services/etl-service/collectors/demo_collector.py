@@ -12,7 +12,8 @@ from typing import Any, Dict, List, Optional
 
 import pandas as pd
 import yfinance as yf
-from models.test_universe import UniverseManager, get_stock_info, get_test_symbols
+from models.test_universe import (UniverseManager, get_stock_info,
+                                  get_test_symbols)
 
 
 class DemoDataCollector:
@@ -65,9 +66,11 @@ class DemoDataCollector:
                     "currency": info.get("currency"),
                     "employees": info.get("fullTimeEmployees"),
                     "founded_year": info.get("founded"),
-                    "ceo": info.get("companyOfficers", [{}])[0].get("name")
-                    if info.get("companyOfficers")
-                    else None,
+                    "ceo": (
+                        info.get("companyOfficers", [{}])[0].get("name")
+                        if info.get("companyOfficers")
+                        else None
+                    ),
                     "headquarters": info.get("city", "")
                     + ", "
                     + info.get("state", "")
@@ -158,75 +161,99 @@ class DemoDataCollector:
                 # Add financial statements if available
                 if income_stmt is not None and not income_stmt.empty:
                     financial_data["income_statement"] = {
-                        "total_revenue": income_stmt.loc["Total Revenue"].iloc[0]
-                        if "Total Revenue" in income_stmt.index
-                        else None,
-                        "gross_profit": income_stmt.loc["Gross Profit"].iloc[0]
-                        if "Gross Profit" in income_stmt.index
-                        else None,
-                        "operating_income": income_stmt.loc["Operating Income"].iloc[0]
-                        if "Operating Income" in income_stmt.index
-                        else None,
-                        "net_income": income_stmt.loc["Net Income"].iloc[0]
-                        if "Net Income" in income_stmt.index
-                        else None,
-                        "ebitda": income_stmt.loc["EBITDA"].iloc[0]
-                        if "EBITDA" in income_stmt.index
-                        else None,
-                        "period": income_stmt.columns[0].strftime("%Y-%m-%d")
-                        if not income_stmt.empty
-                        else None,
+                        "total_revenue": (
+                            income_stmt.loc["Total Revenue"].iloc[0]
+                            if "Total Revenue" in income_stmt.index
+                            else None
+                        ),
+                        "gross_profit": (
+                            income_stmt.loc["Gross Profit"].iloc[0]
+                            if "Gross Profit" in income_stmt.index
+                            else None
+                        ),
+                        "operating_income": (
+                            income_stmt.loc["Operating Income"].iloc[0]
+                            if "Operating Income" in income_stmt.index
+                            else None
+                        ),
+                        "net_income": (
+                            income_stmt.loc["Net Income"].iloc[0]
+                            if "Net Income" in income_stmt.index
+                            else None
+                        ),
+                        "ebitda": (
+                            income_stmt.loc["EBITDA"].iloc[0]
+                            if "EBITDA" in income_stmt.index
+                            else None
+                        ),
+                        "period": (
+                            income_stmt.columns[0].strftime("%Y-%m-%d")
+                            if not income_stmt.empty
+                            else None
+                        ),
                     }
 
                 if balance_sheet is not None and not balance_sheet.empty:
                     financial_data["balance_sheet"] = {
-                        "total_assets": balance_sheet.loc["Total Assets"].iloc[0]
-                        if "Total Assets" in balance_sheet.index
-                        else None,
-                        "total_liabilities": balance_sheet.loc[
-                            "Total Liabilities"
-                        ].iloc[0]
-                        if "Total Liabilities" in balance_sheet.index
-                        else None,
-                        "total_equity": balance_sheet.loc["Total Equity"].iloc[0]
-                        if "Total Equity" in balance_sheet.index
-                        else None,
-                        "cash_and_equivalents": balance_sheet.loc[
-                            "Cash and Cash Equivalents"
-                        ].iloc[0]
-                        if "Cash and Cash Equivalents" in balance_sheet.index
-                        else None,
-                        "total_debt": balance_sheet.loc["Total Debt"].iloc[0]
-                        if "Total Debt" in balance_sheet.index
-                        else None,
-                        "period": balance_sheet.columns[0].strftime("%Y-%m-%d")
-                        if not balance_sheet.empty
-                        else None,
+                        "total_assets": (
+                            balance_sheet.loc["Total Assets"].iloc[0]
+                            if "Total Assets" in balance_sheet.index
+                            else None
+                        ),
+                        "total_liabilities": (
+                            balance_sheet.loc["Total Liabilities"].iloc[0]
+                            if "Total Liabilities" in balance_sheet.index
+                            else None
+                        ),
+                        "total_equity": (
+                            balance_sheet.loc["Total Equity"].iloc[0]
+                            if "Total Equity" in balance_sheet.index
+                            else None
+                        ),
+                        "cash_and_equivalents": (
+                            balance_sheet.loc["Cash and Cash Equivalents"].iloc[0]
+                            if "Cash and Cash Equivalents" in balance_sheet.index
+                            else None
+                        ),
+                        "total_debt": (
+                            balance_sheet.loc["Total Debt"].iloc[0]
+                            if "Total Debt" in balance_sheet.index
+                            else None
+                        ),
+                        "period": (
+                            balance_sheet.columns[0].strftime("%Y-%m-%d")
+                            if not balance_sheet.empty
+                            else None
+                        ),
                     }
 
                 if cash_flow is not None and not cash_flow.empty:
                     financial_data["cash_flow"] = {
-                        "operating_cash_flow": cash_flow.loc[
-                            "Operating Cash Flow"
-                        ].iloc[0]
-                        if "Operating Cash Flow" in cash_flow.index
-                        else None,
-                        "investing_cash_flow": cash_flow.loc[
-                            "Investing Cash Flow"
-                        ].iloc[0]
-                        if "Investing Cash Flow" in cash_flow.index
-                        else None,
-                        "financing_cash_flow": cash_flow.loc[
-                            "Financing Cash Flow"
-                        ].iloc[0]
-                        if "Financing Cash Flow" in cash_flow.index
-                        else None,
-                        "free_cash_flow": cash_flow.loc["Free Cash Flow"].iloc[0]
-                        if "Free Cash Flow" in cash_flow.index
-                        else None,
-                        "period": cash_flow.columns[0].strftime("%Y-%m-%d")
-                        if not cash_flow.empty
-                        else None,
+                        "operating_cash_flow": (
+                            cash_flow.loc["Operating Cash Flow"].iloc[0]
+                            if "Operating Cash Flow" in cash_flow.index
+                            else None
+                        ),
+                        "investing_cash_flow": (
+                            cash_flow.loc["Investing Cash Flow"].iloc[0]
+                            if "Investing Cash Flow" in cash_flow.index
+                            else None
+                        ),
+                        "financing_cash_flow": (
+                            cash_flow.loc["Financing Cash Flow"].iloc[0]
+                            if "Financing Cash Flow" in cash_flow.index
+                            else None
+                        ),
+                        "free_cash_flow": (
+                            cash_flow.loc["Free Cash Flow"].iloc[0]
+                            if "Free Cash Flow" in cash_flow.index
+                            else None
+                        ),
+                        "period": (
+                            cash_flow.columns[0].strftime("%Y-%m-%d")
+                            if not cash_flow.empty
+                            else None
+                        ),
                     }
 
                 financials[symbol] = financial_data
@@ -297,34 +324,41 @@ class DemoDataCollector:
                     "52_week_high": info.get("fiftyTwoWeekHigh"),
                     "50_day_average": info.get("fiftyDayAverage"),
                     "200_day_average": info.get("twoHundredDayAverage"),
-                    "price_change": info.get("currentPrice", 0)
-                    - info.get("previousClose", 0)
-                    if info.get("currentPrice") and info.get("previousClose")
-                    else None,
+                    "price_change": (
+                        info.get("currentPrice", 0) - info.get("previousClose", 0)
+                        if info.get("currentPrice") and info.get("previousClose")
+                        else None
+                    ),
                     "price_change_percent": (
-                        (info.get("currentPrice", 0) - info.get("previousClose", 0))
-                        / info.get("previousClose", 1)
-                        * 100
-                    )
-                    if info.get("currentPrice") and info.get("previousClose")
-                    else None,
+                        (
+                            (info.get("currentPrice", 0) - info.get("previousClose", 0))
+                            / info.get("previousClose", 1)
+                            * 100
+                        )
+                        if info.get("currentPrice") and info.get("previousClose")
+                        else None
+                    ),
                     "volatility": volatility,
                     "max_drawdown": max_drawdown,
                     "historical_data": {
                         "period": period,
                         "data_points": len(hist),
-                        "start_date": hist.index[0].strftime("%Y-%m-%d")
-                        if not hist.empty
-                        else None,
-                        "end_date": hist.index[-1].strftime("%Y-%m-%d")
-                        if not hist.empty
-                        else None,
-                        "latest_close": hist["Close"].iloc[-1]
-                        if not hist.empty
-                        else None,
-                        "latest_volume": hist["Volume"].iloc[-1]
-                        if not hist.empty
-                        else None,
+                        "start_date": (
+                            hist.index[0].strftime("%Y-%m-%d")
+                            if not hist.empty
+                            else None
+                        ),
+                        "end_date": (
+                            hist.index[-1].strftime("%Y-%m-%d")
+                            if not hist.empty
+                            else None
+                        ),
+                        "latest_close": (
+                            hist["Close"].iloc[-1] if not hist.empty else None
+                        ),
+                        "latest_volume": (
+                            hist["Volume"].iloc[-1] if not hist.empty else None
+                        ),
                     },
                 }
 
@@ -351,7 +385,9 @@ class DemoDataCollector:
         if symbols is None:
             symbols = get_test_symbols()
 
-        print(f"🚀 Starting comprehensive data collection for {len(symbols)} symbols...")
+        print(
+            f"🚀 Starting comprehensive data collection for {len(symbols)} symbols..."
+        )
         start_time = time.time()
 
         # Collect all data types
@@ -376,17 +412,24 @@ class DemoDataCollector:
                     and "error" not in market_data[symbol],
                     "total_data_points": sum(
                         [
-                            1
-                            if symbol in profiles and "error" not in profiles[symbol]
-                            else 0,
-                            1
-                            if symbol in financials
-                            and "error" not in financials[symbol]
-                            else 0,
-                            1
-                            if symbol in market_data
-                            and "error" not in market_data[symbol]
-                            else 0,
+                            (
+                                1
+                                if symbol in profiles
+                                and "error" not in profiles[symbol]
+                                else 0
+                            ),
+                            (
+                                1
+                                if symbol in financials
+                                and "error" not in financials[symbol]
+                                else 0
+                            ),
+                            (
+                                1
+                                if symbol in market_data
+                                and "error" not in market_data[symbol]
+                                else 0
+                            ),
                         ]
                     ),
                 },

@@ -351,9 +351,11 @@ class BaseDataCollector(abc.ABC):
             "collector_name": self.name,
             "current_collection": {
                 "start_time": self.collection_metrics.start_time.isoformat(),
-                "end_time": self.collection_metrics.end_time.isoformat()
-                if self.collection_metrics.end_time
-                else None,
+                "end_time": (
+                    self.collection_metrics.end_time.isoformat()
+                    if self.collection_metrics.end_time
+                    else None
+                ),
                 "records_collected": self.collection_metrics.records_collected,
                 "records_failed": self.collection_metrics.records_failed,
                 "success_rate": self.collection_metrics.success_rate,

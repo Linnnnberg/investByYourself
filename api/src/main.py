@@ -91,9 +91,11 @@ def create_application() -> FastAPI:
         return {
             "message": "InvestByYourself API Gateway",
             "version": "1.0.0",
-            "docs": "/docs"
-            if settings.DEBUG
-            else "Documentation not available in production",
+            "docs": (
+                "/docs"
+                if settings.DEBUG
+                else "Documentation not available in production"
+            ),
             "health": "/health",
         }
 

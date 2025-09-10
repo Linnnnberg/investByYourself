@@ -9,13 +9,11 @@ from uuid import UUID
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
 
-from ....models.investment_profile import (
-    InvestmentProfile,
-    InvestmentProfileCreate,
-    InvestmentProfileSummary,
-    InvestmentProfileUpdate,
-    ProfileAssessment,
-)
+from ....models.investment_profile import (InvestmentProfile,
+                                           InvestmentProfileCreate,
+                                           InvestmentProfileSummary,
+                                           InvestmentProfileUpdate,
+                                           ProfileAssessment)
 from ....services.investment_profile import investment_profile_service
 
 router = APIRouter()
@@ -39,7 +37,9 @@ async def health_check():
     }
 
 
-@router.get("/assessment", response_model=ProfileAssessment, summary="Get Assessment Questions")
+@router.get(
+    "/assessment", response_model=ProfileAssessment, summary="Get Assessment Questions"
+)
 async def get_assessment_questions():
     """Get investment profile assessment questions."""
     try:
@@ -50,34 +50,52 @@ async def get_assessment_questions():
             estimated_time="5-10 minutes",
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get assessment questions: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to get assessment questions: {str(e)}"
+        )
 
 
-@router.post("/profiles", response_model=InvestmentProfile, summary="Create Investment Profile")
+@router.post(
+    "/profiles", response_model=InvestmentProfile, summary="Create Investment Profile"
+)
 async def create_investment_profile(profile_data: InvestmentProfileCreate):
     """Create a new investment profile."""
     try:
         profile = investment_profile_service.create_profile(profile_data)
         return profile
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to create profile: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to create profile: {str(e)}"
+        )
 
 
-@router.get("/profiles", response_model=List[InvestmentProfileSummary], summary="List User Profiles")
+@router.get(
+    "/profiles",
+    response_model=List[InvestmentProfileSummary],
+    summary="List User Profiles",
+)
 async def list_user_profiles(
     user_id: str = Query(..., description="User ID"),
     skip: int = Query(0, ge=0, description="Number of profiles to skip"),
-    limit: int = Query(100, ge=1, le=1000, description="Maximum number of profiles to return"),
+    limit: int = Query(
+        100, ge=1, le=1000, description="Maximum number of profiles to return"
+    ),
 ):
     """List investment profiles for a user."""
     try:
         profiles = investment_profile_service.get_user_profiles(user_id)
-        return profiles[skip:skip + limit]
+        return profiles[skip : skip + limit]
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to list profiles: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to list profiles: {str(e)}"
+        )
 
 
-@router.get("/profiles/{profile_id}", response_model=InvestmentProfile, summary="Get Profile by ID")
+@router.get(
+    "/profiles/{profile_id}",
+    response_model=InvestmentProfile,
+    summary="Get Profile by ID",
+)
 async def get_investment_profile(profile_id: str):
     """Get investment profile by ID."""
     try:
@@ -91,8 +109,12 @@ async def get_investment_profile(profile_id: str):
         raise HTTPException(status_code=500, detail=f"Failed to get profile: {str(e)}")
 
 
-@router.put("/profiles/{profile_id}", response_model=InvestmentProfile, summary="Update Profile")
-async def update_investment_profile(profile_id: str, update_data: InvestmentProfileUpdate):
+@router.put(
+    "/profiles/{profile_id}", response_model=InvestmentProfile, summary="Update Profile"
+)
+async def update_investment_profile(
+    profile_id: str, update_data: InvestmentProfileUpdate
+):
     """Update an investment profile."""
     try:
         profile = investment_profile_service.update_profile(profile_id, update_data)
@@ -102,7 +124,9 @@ async def update_investment_profile(profile_id: str, update_data: InvestmentProf
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to update profile: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to update profile: {str(e)}"
+        )
 
 
 @router.delete("/profiles/{profile_id}", summary="Delete Profile")
@@ -116,10 +140,16 @@ async def delete_investment_profile(profile_id: str):
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to delete profile: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to delete profile: {str(e)}"
+        )
 
 
-@router.post("/profiles/{profile_id}/recalculate", response_model=InvestmentProfile, summary="Recalculate Profile")
+@router.post(
+    "/profiles/{profile_id}/recalculate",
+    response_model=InvestmentProfile,
+    summary="Recalculate Profile",
+)
 async def recalculate_profile(profile_id: str):
     """Recalculate risk score and recommendations for a profile."""
     try:
@@ -141,15 +171,21 @@ async def recalculate_profile(profile_id: str):
         )
 
         # Update profile (this will recalculate everything)
-        updated_profile = investment_profile_service.update_profile(profile_id, update_data)
+        updated_profile = investment_profile_service.update_profile(
+            profile_id, update_data
+        )
         return updated_profile
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to recalculate profile: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to recalculate profile: {str(e)}"
+        )
 
 
-@router.get("/profiles/{profile_id}/recommendations", summary="Get Profile Recommendations")
+@router.get(
+    "/profiles/{profile_id}/recommendations", summary="Get Profile Recommendations"
+)
 async def get_profile_recommendations(profile_id: str):
     """Get investment recommendations for a profile."""
     try:
@@ -165,7 +201,9 @@ async def get_profile_recommendations(profile_id: str):
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get recommendations: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to get recommendations: {str(e)}"
+        )
 
 
 @router.get("/profiles/{profile_id}/risk-analysis", summary="Get Risk Analysis")
@@ -197,7 +235,9 @@ async def get_risk_analysis(profile_id: str):
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get risk analysis: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to get risk analysis: {str(e)}"
+        )
 
 
 def _get_risk_description(risk_level: str) -> str:

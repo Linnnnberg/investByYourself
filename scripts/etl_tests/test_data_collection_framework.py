@@ -23,12 +23,9 @@ os.environ["FRED_API_KEY"] = "14030930f9b81e23d9ba97aed857ef3b"
 # Add src directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.etl.collectors import (
-    AlphaVantageCollector,
-    DataCollectionOrchestrator,
-    FREDCollector,
-    YahooFinanceCollector,
-)
+from src.etl.collectors import (AlphaVantageCollector,
+                                DataCollectionOrchestrator, FREDCollector,
+                                YahooFinanceCollector)
 
 
 async def test_individual_collectors():

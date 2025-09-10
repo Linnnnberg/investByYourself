@@ -26,16 +26,9 @@ from typing import Any, Dict, List, Optional, Union
 
 import structlog
 
-from .base_loader import (
-    BaseDataLoader,
-    DataVersion,
-    LoadingError,
-    LoadingMetrics,
-    LoadingResult,
-    LoadingStrategy,
-    StorageError,
-    ValidationError,
-)
+from .base_loader import (BaseDataLoader, DataVersion, LoadingError,
+                          LoadingMetrics, LoadingResult, LoadingStrategy,
+                          StorageError, ValidationError)
 
 # Configure structured logging
 logger = structlog.get_logger(__name__)
@@ -517,9 +510,9 @@ class FileLoader(BaseDataLoader):
                 serializable_metadata[path] = {
                     "file_path": metadata.file_path,
                     "file_format": metadata.file_format.value,
-                    "compression": metadata.compression.value
-                    if metadata.compression
-                    else None,
+                    "compression": (
+                        metadata.compression.value if metadata.compression else None
+                    ),
                     "size_bytes": metadata.size_bytes,
                     "checksum": metadata.checksum,
                     "record_count": metadata.record_count,
@@ -553,9 +546,9 @@ class FileLoader(BaseDataLoader):
                 metadata={
                     "file_path": metadata.file_path,
                     "file_format": metadata.file_format.value,
-                    "compression": metadata.compression.value
-                    if metadata.compression
-                    else None,
+                    "compression": (
+                        metadata.compression.value if metadata.compression else None
+                    ),
                     "size_bytes": metadata.size_bytes,
                 },
             )
@@ -599,9 +592,9 @@ class FileLoader(BaseDataLoader):
                     "target": target,
                     "size_bytes": size_bytes,
                     "size_human": f"{size_bytes / 1024 / 1024:.2f} MB",
-                    "compression_recommendation": "gzip"
-                    if size_bytes > 1024 * 1024
-                    else "none",
+                    "compression_recommendation": (
+                        "gzip" if size_bytes > 1024 * 1024 else "none"
+                    ),
                 }
             else:
                 return {"status": "file_not_found", "target": target}
@@ -623,12 +616,14 @@ class FileLoader(BaseDataLoader):
                     "size_human": f"{stat.st_size / 1024 / 1024:.2f} MB",
                     "modified_time": datetime.fromtimestamp(stat.st_mtime).isoformat(),
                     "record_count": metadata.record_count if metadata else "unknown",
-                    "file_format": metadata.file_format.value
-                    if metadata
-                    else "unknown",
-                    "compression": metadata.compression.value
-                    if metadata and metadata.compression
-                    else "none",
+                    "file_format": (
+                        metadata.file_format.value if metadata else "unknown"
+                    ),
+                    "compression": (
+                        metadata.compression.value
+                        if metadata and metadata.compression
+                        else "none"
+                    ),
                 }
             else:
                 return {"status": "file_not_found", "target": target}
