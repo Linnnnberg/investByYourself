@@ -4,100 +4,58 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Card, CardHeader, CardContent, CardFooter } from '@/design-system/components/Card';
 import { Button } from '@/design-system/components/Button';
-import { services } from '@/lib/supabase-service';
-import { useMarketDataRealtime, usePortfolioRealtime, useWatchlistRealtime } from '@/hooks/useSupabaseRealtime';
-import { Tables } from '@/lib/supabase';
+import { useApiClient, useApiCall } from '@/hooks/useApiClient';
+import { Portfolio, PortfolioAnalytics } from '@/lib/api-client';
 
 // Mock user ID for demo (in real app, this would come from auth)
 const DEMO_USER_ID = 'demo-user-123';
 
 export default function DashboardPage() {
-  const [companies, setCompanies] = useState<Tables<'companies'>[]>([]);
-  const [portfolios, setPortfolios] = useState<Tables<'portfolios'>[]>([]);
-  const [watchlist, setWatchlist] = useState<Tables<'watchlist'>[]>([]);
+  const { client, isAuthenticated, isLoading: authLoading } = useApiClient();
+  const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Real-time subscriptions
-  const { data: marketUpdates, isConnected: marketConnected } = useMarketDataRealtime();
-  const { data: portfolioUpdates, isConnected: portfolioConnected } = usePortfolioRealtime(DEMO_USER_ID);
-  const { data: watchlistUpdates, isConnected: watchlistConnected } = useWatchlistRealtime(DEMO_USER_ID);
+  // Load portfolios using FastAPI
+  const { data: portfoliosData, loading: portfoliosLoading, error: portfoliosError } = useApiCall(
+    () => client.getPortfolios(),
+    [isAuthenticated]
+  );
 
-  // Load initial data
+  // Update portfolios when data loads
   useEffect(() => {
-    const loadInitialData = async () => {
-      try {
-        setLoading(true);
-
-        // Load companies
-        const companiesData = await services.companies.getCompanies();
-        setCompanies(companiesData.slice(0, 10)); // Show top 10 for demo
-
-        // Load portfolios
-        const portfoliosData = await services.portfolios.getUserPortfolios(DEMO_USER_ID);
-        setPortfolios(portfoliosData);
-
-        // Load watchlist
-        const watchlistData = await services.watchlist.getUserWatchlist(DEMO_USER_ID);
-        setWatchlist(watchlistData);
-
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load data');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadInitialData();
-  }, []);
-
-  // Update data when real-time updates come in
-  useEffect(() => {
-    if (marketUpdates.length > 0) {
-      setCompanies(prev => {
-        const updated = [...prev];
-        marketUpdates.forEach(update => {
-          const index = updated.findIndex(c => c.id === update.id);
-          if (index >= 0) {
-            updated[index] = { ...updated[index], ...update };
-          }
-        });
-        return updated;
-      });
+    if (portfoliosData) {
+      setPortfolios(portfoliosData);
     }
-  }, [marketUpdates]);
+  }, [portfoliosData]);
 
+  // Set loading and error states
   useEffect(() => {
-    if (portfolioUpdates.length > 0) {
-      setPortfolios(portfolioUpdates);
-    }
-  }, [portfolioUpdates]);
+    setLoading(portfoliosLoading || authLoading);
+    setError(portfoliosError);
+  }, [portfoliosLoading, authLoading, portfoliosError]);
 
-  useEffect(() => {
-    if (watchlistUpdates.length > 0) {
-      setWatchlist(watchlistUpdates);
-    }
-  }, [watchlistUpdates]);
+  // Mock companies data for demo (will be replaced with real market data later)
+  const companies = [
+    { id: 1, symbol: 'AAPL', name: 'Apple Inc.', price: 175.43, change: 2.15, changePercent: 1.24 },
+    { id: 2, symbol: 'GOOGL', name: 'Alphabet Inc.', price: 142.56, change: -1.23, changePercent: -0.86 },
+    { id: 3, symbol: 'MSFT', name: 'Microsoft Corporation', price: 378.85, change: 5.67, changePercent: 1.52 },
+    { id: 4, symbol: 'TSLA', name: 'Tesla, Inc.', price: 248.42, change: -3.21, changePercent: -1.27 },
+  ];
 
-  // Handle adding to watchlist
+  // Mock watchlist data for demo
+  const watchlist = companies.slice(0, 3);
+
+  // Handle adding to watchlist (mock for now)
   const handleAddToWatchlist = async (symbol: string) => {
-    try {
-      await services.watchlist.addToWatchlist({
-        user_id: DEMO_USER_ID,
-        company_symbol: symbol,
-      });
-    } catch (err) {
-      console.error('Failed to add to watchlist:', err);
-    }
+    console.log('Adding to watchlist:', symbol);
+    // TODO: Implement watchlist API
   };
 
-  // Handle removing from watchlist
+  // Handle removing from watchlist (mock for now)
   const handleRemoveFromWatchlist = async (id: string) => {
-    try {
-      await services.watchlist.removeFromWatchlist(id);
-    } catch (err) {
-      console.error('Failed to remove from watchlist:', err);
-    }
+    console.log('Removing from watchlist:', id);
+    // TODO: Implement watchlist API
   };
 
   if (loading) {
@@ -134,12 +92,12 @@ export default function DashboardPage() {
         </div>
         <div className="flex items-center space-x-4">
           <div className="text-sm text-gray-500">
-            <span className={`inline-block w-2 h-2 rounded-full mr-2 ${marketConnected ? 'bg-green-500' : 'bg-red-500'}`}></span>
-            Market Data: {marketConnected ? 'Connected' : 'Disconnected'}
+            <span className={`inline-block w-2 h-2 rounded-full mr-2 ${isAuthenticated ? 'bg-green-500' : 'bg-yellow-500'}`}></span>
+            API: {isAuthenticated ? 'Connected' : 'Demo Mode'}
           </div>
           <div className="text-sm text-gray-500">
-            <span className={`inline-block w-2 h-2 rounded-full mr-2 ${portfolioConnected ? 'bg-green-500' : 'bg-red-500'}`}></span>
-            Portfolio: {portfolioConnected ? 'Connected' : 'Disconnected'}
+            <span className="inline-block w-2 h-2 rounded-full mr-2 bg-blue-500"></span>
+            Backend: FastAPI
           </div>
         </div>
       </div>
@@ -232,8 +190,20 @@ export default function DashboardPage() {
                       <h3 className="font-semibold">{portfolio.name}</h3>
                       <span className="text-sm text-gray-500">{portfolio.description}</span>
                     </div>
-                    <div className="text-2xl font-bold text-green-600">
-                      ${portfolio.total_value.toLocaleString()}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <div className="text-sm text-gray-600">Total Value</div>
+                        <div className="text-xl font-bold">{portfolio.total_value}</div>
+                      </div>
+                      <div>
+                        <div className="text-sm text-gray-600">Gain/Loss</div>
+                        <div className={`text-xl font-bold ${portfolio.total_gain_loss.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
+                          {portfolio.total_gain_loss} ({portfolio.total_gain_loss_pct})
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-2 text-sm text-gray-500">
+                      {portfolio.holdings_count} holdings • Risk: {portfolio.risk_profile}
                     </div>
                   </div>
                 ))}

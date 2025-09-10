@@ -2,29 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Portfolio, apiClient } from '@/lib/api';
+import { Portfolio, apiClient, useApiClient, useApiCall } from '@/lib/api-client';
+import { useApiClient as useApiClientHook } from '@/hooks/useApiClient';
 
 export default function PortfolioPage() {
-  const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { client, isAuthenticated } = useApiClientHook();
   const [showCreateForm, setShowCreateForm] = useState(false);
 
-  useEffect(() => {
-    const fetchPortfolios = async () => {
-      try {
-        const response = await apiClient.getPortfolios();
-        if (response.success) {
-          setPortfolios(response.data || []);
-        }
-      } catch (error) {
-        console.error('Failed to fetch portfolios:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPortfolios();
-  }, []);
+  // Load portfolios using FastAPI
+  const { data: portfolios, loading, error } = useApiCall(
+    () => client.getPortfolios(),
+    [isAuthenticated]
+  );
 
   // Mock data for development
   const mockPortfolios: Portfolio[] = [
@@ -62,8 +51,8 @@ export default function PortfolioPage() {
     },
   ];
 
-  // Use mock data for now
-  const displayPortfolios = portfolios.length > 0 ? portfolios : mockPortfolios;
+  // Use real data from API or fallback to empty array
+  const displayPortfolios = portfolios || [];
 
   if (loading) {
     return (
