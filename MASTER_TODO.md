@@ -42,18 +42,18 @@
 
 #### **🎯 Tech-028.1 Implementation Plan**
 
-**Phase 1: Service Layer Creation (Day 1)**
-- [ ] Create `frontend/src/lib/api-client.ts` - FastAPI service layer
-- [ ] Map portfolio endpoints: `/api/v1/portfolio/` → `getPortfolios()`
-- [ ] Map investment profile endpoints: `/api/v1/investment-profile/` → `getProfiles()`
-- [ ] Implement error handling and response parsing
-- [ ] Add TypeScript interfaces for API responses
+**Phase 1: Service Layer Creation (Day 1)** ✅ COMPLETED
+- [x] Create `frontend/src/lib/api-client.ts` - FastAPI service layer
+- [x] Map portfolio endpoints: `/api/v1/portfolio/` → `getPortfolios()`
+- [x] Map investment profile endpoints: `/api/v1/investment-profile/` → `getProfiles()`
+- [x] Implement error handling and response parsing
+- [x] Add TypeScript interfaces for API responses
 
-**Phase 2: Frontend Integration (Day 1-2)**
-- [ ] Replace Supabase calls in `dashboard/page.tsx`
-- [ ] Replace Supabase calls in `portfolio/page.tsx`
+**Phase 2: Frontend Integration (Day 1-2)** 🔄 IN PROGRESS
+- [x] Replace Supabase calls in `dashboard/page.tsx`
+- [x] Replace Supabase calls in `portfolio/page.tsx`
 - [ ] Replace Supabase calls in `investment-profile/page.tsx`
-- [ ] Update state management to use FastAPI responses
+- [x] Update state management to use FastAPI responses
 - [ ] Test all CRUD operations
 
 **Phase 3: Authentication Integration (Day 2)**
