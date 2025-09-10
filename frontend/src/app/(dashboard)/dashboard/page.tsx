@@ -160,8 +160,8 @@ export default function DashboardPage() {
                   </div>
                   <div className="text-right">
                     <div className="font-semibold">${company.price.toFixed(2)}</div>
-                    <div className={`text-sm ${company.change_percent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {company.change_percent >= 0 ? '+' : ''}{company.change_percent.toFixed(2)}%
+                    <div className={`text-sm ${company.changePercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      {company.changePercent >= 0 ? '+' : ''}{company.changePercent.toFixed(2)}%
                     </div>
                   </div>
                 </div>
@@ -235,32 +235,27 @@ export default function DashboardPage() {
         <CardContent>
           {watchlist.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {watchlist.map((item) => {
-                const company = companies.find(c => c.symbol === item.company_symbol);
-                if (!company) return null;
-
-                return (
-                  <div key={item.id} className="p-4 border rounded-lg">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center space-x-2">
-                        <span className="font-semibold">{company.symbol}</span>
-                        <span className="text-sm text-gray-600">{company.name}</span>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="small"
-                        onClick={() => handleRemoveFromWatchlist(item.id)}
-                      >
-                        ✕
-                      </Button>
+              {watchlist.map((company) => (
+                <div key={company.id} className="p-4 border rounded-lg">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-2">
+                      <span className="font-semibold">{company.symbol}</span>
+                      <span className="text-sm text-gray-600">{company.name}</span>
                     </div>
-                    <div className="text-lg font-bold">${company.price.toFixed(2)}</div>
-                    <div className={`text-sm ${company.change_percent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {company.change_percent >= 0 ? '+' : ''}{company.change_percent.toFixed(2)}%
-                    </div>
+                    <Button
+                      variant="ghost"
+                      size="small"
+                      onClick={() => handleRemoveFromWatchlist(company.id.toString())}
+                    >
+                      ✕
+                    </Button>
                   </div>
-                );
-              })}
+                  <div className="text-lg font-bold">${company.price.toFixed(2)}</div>
+                  <div className={`text-sm ${company.changePercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {company.changePercent >= 0 ? '+' : ''}{company.changePercent.toFixed(2)}%
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
             <div className="text-center py-8">
