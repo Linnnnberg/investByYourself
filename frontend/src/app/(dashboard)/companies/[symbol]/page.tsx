@@ -353,7 +353,7 @@ export default function CompanyPage() {
         <button className="btn-outline px-6 py-3">
           Buy {displayCompany.symbol}
         </button>
-        <Link href="/dashboard/portfolio/new" className="btn-outline px-6 py-3">
+        <Link href="/portfolio/new" className="btn-outline px-6 py-3">
           Add to Portfolio
         </Link>
       </div>

@@ -291,7 +291,7 @@ export default function InvestmentProfilePage() {
       const option = question.options.find(opt => opt.value === answer);
       return sum + (option?.score || 0);
     }, 0);
-    
+
     setRiskScore(totalScore);
   };
 
@@ -310,7 +310,7 @@ export default function InvestmentProfilePage() {
 
   if (isComplete) {
     const riskProfile = getRiskProfile(riskScore);
-    
+
     return (
       <div className="max-w-4xl mx-auto p-6">
         <div className="text-center mb-8">
@@ -333,9 +333,9 @@ export default function InvestmentProfilePage() {
                   Risk Score: {riskScore}/27
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
-                  <div 
+                  <div
                     className={`h-3 rounded-full ${
-                      riskScore <= 12 ? 'bg-green-500' : 
+                      riskScore <= 12 ? 'bg-green-500' :
                       riskScore <= 18 ? 'bg-yellow-500' : 'bg-red-500'
                     }`}
                     style={{ width: `${(riskScore / 27) * 100}%` }}
@@ -403,7 +403,7 @@ export default function InvestmentProfilePage() {
           <Button onClick={resetAssessment} variant="outline">
             Retake Assessment
           </Button>
-          <Button onClick={() => window.location.href = '/dashboard/portfolio'}>
+          <Button onClick={() => window.location.href = '/portfolio'}>
             Create Portfolio
           </Button>
         </div>
@@ -422,10 +422,10 @@ export default function InvestmentProfilePage() {
         <p className="text-gray-600 mb-4">
           Answer these 9 questions to get your personalized investment profile
         </p>
-        
+
         {/* Progress Bar */}
         <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
-          <div 
+          <div
             className="bg-blue-600 h-2 rounded-full transition-all duration-300"
             style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
           ></div>
