@@ -109,6 +109,11 @@ class Settings(BaseSettings):
             return None
         return [host.strip() for host in self.ALLOWED_HOSTS.split(",") if host.strip()]
 
+    @property
+    def DATABASE_URL(self) -> str:
+        """Get database URL."""
+        return get_database_url()
+
     @field_validator("ENVIRONMENT")
     @classmethod
     def validate_environment(cls, v):

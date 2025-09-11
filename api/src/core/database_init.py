@@ -11,6 +11,7 @@ from typing import Optional
 
 from src.core.config import settings
 from src.core.logging import get_logger
+from src.database.connection import db_manager
 from src.services.database import db_service
 
 logger = get_logger(__name__)
@@ -21,8 +22,12 @@ async def init_database() -> None:
     try:
         logger.info("Initializing database...")
 
-        # Create all tables
+        # Create all tables (existing user tables)
         db_service.create_tables()
+
+        # Create company analysis tables
+        await db_manager.initialize()
+        await db_manager.create_tables()
 
         logger.info("Database initialized successfully")
 
@@ -35,7 +40,8 @@ async def close_database() -> None:
     """Close database connections."""
     try:
         logger.info("Closing database connections...")
-        # Database connections are managed by SQLAlchemy session
+        # Close company analysis database connections
+        await db_manager.close()
         logger.info("Database connections closed")
 
     except Exception as e:
