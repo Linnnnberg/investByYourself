@@ -250,7 +250,7 @@ try {
 ### **🚧 IN PROGRESS (1/26)**
 - **Tech-006**: Performance Testing for Financial Data *(PLANNED)*
 
-### **📋 PENDING (17/32)**
+### **📋 PENDING (20/35)**
 - **Story-005**: Enhanced Company Profile & Fundamentals Analysis *(IN PROGRESS)*
 - **Story-006**: Local vs Web App Architecture Decision *(NEW)*
 - **Story-007**: Portfolio Analysis & Risk Tools *(NEW)*
@@ -261,6 +261,8 @@ try {
 - **Story-012**: Investment Strategy Engine & Backtesting *(NEW)*
 - **Story-013**: Real-time Market Intelligence Dashboard *(NEW)*
 - **Story-014**: Multi-Asset Investment Platform *(NEW)*
+- **Story-030**: Operations Page & Data Management *(NEW)*
+- **Story-031**: Multi-Source Data Validation *(NEW - LOW PRIORITY)*
 - **Tech-007**: Security for Financial Applications
 - **Tech-011**: Multi-Environment Deployment
 - **Tech-012**: Advanced Security Features
@@ -271,6 +273,7 @@ try {
 - **Tech-022**: Financial Analysis Service Extraction
 - **Tech-023**: Inter-Service Communication Setup
 - **Tech-024**: Data Service & Database Management
+- **Tech-029**: Scalability & Performance Optimization *(NEW - LOW PRIORITY)*
 - **Tech-025**: Figma + Supabase Integration & Design System ✅ **COMPLETED (100%)**
 - **Tech-026**: Unified Environment Configuration Management ✅ **COMPLETED (100%)**
 - **Tech-027**: FastAPI Gateway & Authentication System ✅ **COMPLETED (100%)**
@@ -804,6 +807,74 @@ try {
   - Support for momentum strategies with fundamental growth
   - Fallback data sources working for all companies
 
+### **<Story-030> Operations Page & Data Management** *(NEW)*
+- [ ] **Entity Operations Interface**
+  - Company data management and validation
+  - Portfolio entity operations and updates
+  - Investment profile management tools
+- [ ] **ETL Operations Dashboard**
+  - Data pipeline monitoring and control
+  - ETL job scheduling and execution
+  - Data quality monitoring and alerts
+- [ ] **Data Fix & Maintenance Tools**
+  - Data correction and cleanup utilities
+  - Manual data override capabilities
+  - Data validation and integrity checks
+- [ ] **Data Monitoring Dashboard** *(Nice to Have)*
+  - Real-time data quality metrics
+  - System health monitoring
+  - Performance analytics and reporting
+- **Priority**: Medium
+- **Dependencies**: Story-005, Tech-022
+- **ETA**: M (Medium)
+- **Success Criteria**:
+  - Centralized operations interface for data management
+  - ETL pipeline control and monitoring
+  - Data maintenance and correction tools
+  - Event-triggered data updates via API
+
+### **<Story-031> Multi-Source Data Validation** *(NEW - LOW PRIORITY)*
+- [ ] **Multi-Source Data Collection**
+  - Integrate FMP (Financial Modeling Prep) as secondary source
+  - Add SEC EDGAR data integration
+  - Implement data source comparison and validation
+- [ ] **Data Quality & Confidence Scoring**
+  - Cross-source data validation algorithms
+  - Confidence scoring for data accuracy
+  - Data source reliability tracking
+- [ ] **Conflict Resolution Framework**
+  - Rules for resolving data conflicts between sources
+  - Data source priority and fallback mechanisms
+  - Automated data quality improvement
+- **Priority**: Low
+- **Dependencies**: Story-005, Tech-029
+- **ETA**: L (Large)
+- **Success Criteria**:
+  - Multi-source data validation working
+  - Data quality confidence scoring implemented
+  - Automated conflict resolution system
+
+### **<Tech-029> Scalability & Performance Optimization** *(NEW - LOW PRIORITY)*
+- [ ] **Database Performance Optimization**
+  - Advanced indexing strategies for large datasets
+  - Query optimization and performance tuning
+  - Database partitioning and archiving
+- [ ] **Caching & Memory Management**
+  - Redis caching optimization
+  - Memory usage optimization for large datasets
+  - Concurrent processing improvements
+- [ ] **API Performance Enhancement**
+  - Response time optimization
+  - Rate limiting and throttling improvements
+  - API caching and compression
+- **Priority**: Low
+- **Dependencies**: Tech-022, Tech-023, Tech-024
+- **ETA**: L (Large)
+- **Success Criteria**:
+  - Support 1000+ companies with <10 second analysis
+  - Database queries optimized for large datasets
+  - API response times <500ms for complex queries
+
 ### **<Story-006> Local vs Web App Architecture Decision**
 - [ ] **Architecture Analysis**
   - Evaluate local app vs web app trade-offs
@@ -1244,31 +1315,30 @@ try {
   - MVP: Earnings data for top 100 US companies, basic transcripts
   - Production: Real-time updates, comprehensive analysis, >99% accuracy
 
-### **<Story-005> Enhanced Company Profile & Fundamentals Analysis**
+### **<Story-005> Enhanced Company Profile & Fundamentals Analysis** *(SIMPLIFIED FOR MVP)*
 - [x] **Phase 1: Basic Company Profile Collection** ✅ COMPLETED
-  - ✅ Company profile collector working (80+ data points)
+  - ✅ Company profile collector working (basic data points)
   - ✅ Basic data collection from Yahoo Finance
   - ✅ Data validation and quality scoring system
-  - ✅ Multi-source data validation framework ready
 - [x] **Phase 2: Infrastructure Setup** ✅ COMPLETED
   - ✅ Database schema complete for companies, financials, market data
   - ✅ ETL pipeline ready (Yahoo Finance, Alpha Vantage, FRED)
   - ✅ Data quality tracking and validation systems
   - ✅ Core portfolio and strategy infrastructure
-- [ ] **Phase 3: Analysis Engine & Sector Benchmarking** 🔄 IN PROGRESS
+- [ ] **Phase 3: MVP Analysis Engine & Sector Benchmarking** 🔄 IN PROGRESS
   - [ ] Implement sector ETF benchmarking (XLK, XLF, XLE, XLV, XLI, XLB, XLU, XLP, XLY, XLC)
-  - [ ] Scale from 5 companies to 100+ companies
+  - [ ] Basic company analysis with essential data points
   - [ ] Add sector analysis and peer benchmarking tools
-  - [ ] Integrate momentum analysis with sector comparison
+  - [ ] Event-triggered data updates (no real-time requirement)
 - **Priority**: High
 - **Dependencies**: Tech-008 ✅ COMPLETED, Tech-009 ✅ COMPLETED
-- **Status**: 🔄 **IN PROGRESS** (Infrastructure 100% ready, analysis engine needed)
-- **ETA**: M (Medium) - 2-3 weeks for analysis engine
+- **Status**: 🔄 **IN PROGRESS** (Infrastructure 100% ready, MVP analysis engine needed)
+- **ETA**: S (Small) - 1-2 weeks for MVP analysis engine
 - **Success Criteria**:
-  - Company profile completeness >95% with 80+ data points ✅
-  - Support 100+ companies simultaneously with <30 second report generation 🔄
-  - Real-time data refresh <15 minutes for market data ✅
-  - Comprehensive sector analysis with peer benchmarking 🔄
+  - Basic company profile with essential data points
+  - Sector analysis with 10 sector ETFs
+  - Event-triggered data updates via API
+  - Simple peer benchmarking tools
 
 > **📖 Detailed Analysis**: See [Company Analysis Enhancement Summary](docs/company_analysis_enhancement_summary.md) for comprehensive breakdown of enhanced capabilities and implementation roadmap.
 

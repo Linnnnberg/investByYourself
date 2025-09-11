@@ -49,78 +49,85 @@ This document summarizes the enhanced company analysis capabilities we've added 
   - Batch processing with rate limiting
 - **Strengths**: Rich data collection, scalable architecture, comprehensive coverage
 
-## 🚀 **Enhanced Capabilities Added to Plan**
+## 🚀 **Enhanced Capabilities Added to Plan** *(SIMPLIFIED FOR MVP)*
 
-### **1. Company Fundamentals & Profile Analysis**
-- **Enhanced Profiles**: Business intelligence, market metrics, real-time data
-- **Advanced Ratios**: 1000+ financial metrics across all categories
-- **Sector Analysis**: Industry comparisons, peer benchmarking, rotation insights
-- **Data Sources**: Multi-source validation (Yahoo + FMP + SEC EDGAR)
+### **1. Company Fundamentals & Profile Analysis** *(MVP VERSION)*
+- **Basic Profiles**: Essential business intelligence and market metrics
+- **Core Ratios**: Essential financial metrics for analysis
+- **Sector Analysis**: Industry comparisons with 10 sector ETFs
+- **Data Sources**: Single source (Yahoo Finance) for MVP
 
-### **2. Enhanced Company Comparison & Screening**
-- **Multi-dimensional Analysis**: Compare companies across multiple financial dimensions
-- **Sector Benchmarking**: Industry averages, peer group analysis
-- **Screening Tools**: Customizable filters for ratios, market cap, sector, growth
-- **Visual Dashboards**: Interactive charts for company comparisons
-- **Alert System**: Notify when companies meet screening criteria
+### **2. Company Comparison & Screening** *(MVP VERSION)*
+- **Basic Analysis**: Compare companies across essential financial dimensions
+- **Sector Benchmarking**: Industry averages with 10 sector ETFs
+- **Simple Screening**: Basic filters for essential ratios and metrics
+- **Basic Dashboards**: Simple charts for company comparisons
+- **Event-Triggered Updates**: API-triggered data updates (no real-time)
 
-### **3. Technical Infrastructure Enhancements**
-- **Enhanced Data Collection**: Batch processing for 100+ companies
-- **Data Quality**: Multi-source validation and confidence scoring
-- **Performance**: Support 100+ companies with <30 second analysis generation
-- **Real-time Updates**: Market data refresh every 15 minutes
+### **3. Technical Infrastructure** *(MVP VERSION)*
+- **Basic Data Collection**: Essential data points for analysis
+- **Data Quality**: Basic validation and quality scoring
+- **Performance**: Support essential analysis with reasonable response times
+- **Event-Triggered Updates**: API endpoints for data refresh triggers
 
-## 📊 **Implementation Roadmap Updates**
+## 📊 **Implementation Roadmap Updates** *(SIMPLIFIED FOR MVP)*
 
-### **Phase 2 – Core Data & Company Analysis (Weeks 3-4)**
-- **Enhanced Company Profile Collection**:
-  - Implement comprehensive company profile collector (80+ data points)
-  - Add batch processing with rate limiting
-  - Create data validation and quality scoring
+### **Phase 2 – Core Data & Company Analysis (Weeks 3-4)** *(MVP VERSION)*
+- **Basic Company Profile Collection**:
+  - Implement essential company profile collector (basic data points)
+  - Add basic data validation and quality scoring
+  - Single source data collection (Yahoo Finance)
 - **Financial Data Integration**:
-  - Add FRED macro data collector
-  - Integrate company fundamentals (Yahoo/FMP)
-  - Implement multi-source data validation
+  - Basic company fundamentals from Yahoo Finance
+  - Essential financial ratios and metrics
+  - Simple data validation
 - **Basic Analysis Tools**:
-  - Company comparison dashboard
-  - Sector analysis and peer benchmarking
-  - Financial ratio trend analysis
+  - Simple company comparison dashboard
+  - Sector analysis with 10 sector ETFs
+  - Basic financial ratio analysis
 
-### **Phase 3 – Advanced Analysis & Dashboards (Weeks 5-6)**
-- **Enhanced Financial Analysis**:
-  - Multi-dimensional company comparison tools
-  - Sector rotation analysis and insights
-  - Advanced ratio analysis and trend identification
-- **Screening & Alert System**: Company filtering and notification tools
+### **Phase 3 – Operations & API Integration (Weeks 5-6)** *(NEW)*
+- **Operations Page**:
+  - Entity operations interface for data management
+  - ETL operations dashboard and control
+  - Data fix and maintenance tools
+- **API Integration**:
+  - Event-triggered data update endpoints
+  - Basic data refresh API
+  - Simple monitoring and alerts
 
-### **Phase 4 – Advanced Features & Intelligence (Weeks 7-8)**
-- **Market Intelligence**:
-  - Sector analysis and rotation signals
-  - Economic regime detection
-  - Correlation analysis between macro and company data
+### **Phase 4 – Future Enhancements (Weeks 7-8)** *(DEFERRED)*
+- **Multi-Source Data Validation** (Story-031 - Low Priority):
+  - FMP and SEC EDGAR integration
+  - Cross-source data validation
+  - Advanced data quality scoring
+- **Scalability Improvements** (Tech-029 - Low Priority):
+  - Performance optimization for large datasets
+  - Advanced caching and memory management
+  - API performance enhancements
 
-## 🔧 **Technical Implementation Details**
+## 🔧 **Technical Implementation Details** *(SIMPLIFIED FOR MVP)*
 
-### **Company Profile Collection Enhancement**
-- **Data Points**: Expand from basic ratios to 80+ comprehensive metrics
-- **Batch Processing**: Handle 100+ companies efficiently with rate limiting
-- **Data Quality**: Implement validation rules and confidence scoring
-- **Storage Optimization**: Efficient database schema for large datasets
-- **Real-time Updates**: Market data refresh and fundamental data updates
+### **Company Profile Collection** *(MVP VERSION)*
+- **Data Points**: Essential business and financial metrics
+- **Single Source**: Yahoo Finance for MVP (multi-source deferred)
+- **Data Quality**: Basic validation and quality scoring
+- **Storage**: Existing database schema (optimization deferred)
+- **Event-Triggered Updates**: API endpoints for data refresh
 
-### **Financial Analysis Engine**
-- **Ratio Calculations**: Implement all major financial ratios
-- **Trend Analysis**: Time-series analysis of financial metrics
-- **Peer Comparison**: Industry benchmarking and sector analysis
-- **Visualization**: Interactive charts and comparison dashboards
-- **Export Capabilities**: PDF reports, Excel exports, API access
+### **Financial Analysis Engine** *(MVP VERSION)*
+- **Core Ratios**: Essential financial ratios for analysis
+- **Basic Analysis**: Simple trend analysis and comparisons
+- **Sector Comparison**: 10 sector ETF benchmarking
+- **Basic Visualization**: Simple charts and comparison tools
+- **API Access**: Basic API endpoints for data access
 
-### **Data Pipeline Architecture**
-- **Extract Layer**: Multiple data source connectors (Yahoo, FMP, FRED)
-- **Transform Layer**: Data standardization, validation, enrichment
-- **Load Layer**: Optimized database storage with indexing
-- **Cache Layer**: Redis for real-time data and frequent queries
-- **Monitoring**: Data quality metrics, pipeline health, error handling
+### **Data Pipeline Architecture** *(MVP VERSION)*
+- **Extract Layer**: Yahoo Finance connector (single source)
+- **Transform Layer**: Basic data standardization and validation
+- **Load Layer**: Existing database storage
+- **API Layer**: Event-triggered update endpoints
+- **Monitoring**: Basic data quality metrics and error handling
 
 ## 📋 **New Tasks Added to Master TODO**
 
@@ -136,17 +143,18 @@ This document summarizes the enhanced company analysis capabilities we've added 
 - Performance optimization
 - **Timeline**: Weeks 6-8
 
-## ✅ **Success Metrics**
+## ✅ **Success Metrics** *(SIMPLIFIED FOR MVP)*
 
-### **Data Quality**
-- Company profile completeness >95%
-- Financial data accuracy >99%
-- Real-time data latency <15 minutes
+### **Data Quality** *(MVP VERSION)*
+- Basic company profile completeness >90%
+- Financial data accuracy >95%
+- Event-triggered data updates working
 
-### **Analysis Capabilities**
-- Support 100+ companies simultaneously
-- Generate comprehensive reports in <30 seconds
-- Handle 1000+ financial ratios and metrics
+### **Analysis Capabilities** *(MVP VERSION)*
+- Support essential company analysis
+- Generate basic reports in reasonable time
+- Handle essential financial ratios and metrics
+- 10 sector ETF benchmarking working
 
 ### **System Performance**
 - Dashboard load time <3 seconds
