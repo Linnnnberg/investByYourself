@@ -1,0 +1,6 @@
+Symbol,Name,Sector,Market Cap ($B),Price ($),P/E Ratio,P/B Ratio,P/S Ratio,Beta,Div Yield (%),Volume (M)
+AAPL,Apple Inc.,Technology,3000.0,119.0,25.5,4.2,3.8,1.2,2.5,2.9
+MSFT,Microsoft Corporation,Technology,2800.0,104.0,25.5,4.2,3.8,1.2,2.5,0.5
+GOOGL,Alphabet Inc.,Technology,1800.0,64.0,25.5,4.2,3.8,1.2,2.5,2.3
+AMZN,Amazon.com Inc.,Consumer Cyclical,1500.0,68.0,25.5,4.2,3.8,1.2,2.5,1.6
+NVDA,NVIDIA Corporation,Technology,1200.0,111.0,25.5,4.2,3.8,1.2,2.5,3.1

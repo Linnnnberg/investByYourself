@@ -259,10 +259,11 @@ try {
 ### **🚧 IN PROGRESS (1/26)**
 - **Tech-006**: Performance Testing for Financial Data *(PLANNED)*
 
-### **📋 PENDING (21/37)**
+### **📋 PENDING (22/38)**
+- **Story-034**: Smart Search Engine *(NEW - HIGH PRIORITY)*
 - **Story-033**: AI Chat Assistant Module *(NEW - HIGH PRIORITY)*
-- **Story-034**: AI Workflow Suggestion Engine *(NEW - MEDIUM PRIORITY)*
-- **Story-035**: AI Automated Feature Execution *(NEW - LOW PRIORITY)*
+- **Story-035**: AI Workflow Suggestion Engine *(NEW - MEDIUM PRIORITY)*
+- **Story-036**: AI Automated Feature Execution *(NEW - LOW PRIORITY)*
 - **Story-006**: Local vs Web App Architecture Decision *(NEW)*
 - **Story-007**: Portfolio Analysis & Risk Tools *(EXISTING)*
 - **Story-008**: Backtesting & Strategy Testing *(EXISTING)*
@@ -1393,6 +1394,38 @@ try {
   - ✅ 490 financial ratios across all entities
   - ✅ 35 market data records with realistic pricing
   - ✅ 3-month average volume data for trading analysis
+
+### **<Story-034> Smart Search Engine** *(NEW - HIGH PRIORITY)*
+- [ ] **Core Search Engine** 📋 PENDING
+  - [ ] Set up Elasticsearch with proper configuration and indexing
+  - [ ] Implement smart tokenization with multi-token processing
+  - [ ] Create fuzzy matching algorithm with context awareness
+  - [ ] Build weighted scoring system for relevance ranking
+- [ ] **Advanced Search Features** 📋 PENDING
+  - [ ] Implement entity type detection and routing
+  - [ ] Add faceted search with multiple criteria filtering
+  - [ ] Create real-time search suggestions and autocomplete
+  - [ ] Build search analytics and user behavior tracking
+- [ ] **Multi-Entity Support** 📋 PENDING
+  - [ ] Add company search with symbol, name, sector matching
+  - [ ] Implement sector search with industry classification
+  - [ ] Create financial metrics search with definitions
+  - [ ] Add news search with content and tag matching
+- [ ] **Performance Optimization** 📋 PENDING
+  - [ ] Implement Redis caching for search results and suggestions
+  - [ ] Add search result pagination and performance monitoring
+  - [ ] Create search index optimization and maintenance
+  - [ ] Build comprehensive search testing suite
+- **Priority**: HIGH - Universal search foundation for entire platform
+- **Dependencies**: Story-032 ✅ COMPLETED (Data Population), Elasticsearch Infrastructure
+- **Status**: 📋 **PENDING** - Ready for implementation
+- **ETA**: M (Medium) - 6-8 weeks for complete search engine
+- **Success Criteria**:
+  - Sub-100ms search response times
+  - 90%+ search accuracy in top results
+  - Support for all entity types (companies, sectors, metrics, news)
+  - Real-time search suggestions and autocomplete
+  - Advanced filtering and faceted search capabilities
 
 ### **<Story-033> AI Chat Assistant Module** *(NEW - HIGH PRIORITY)*
 - [ ] **Core AI Chat Interface** 📋 PENDING

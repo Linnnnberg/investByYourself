@@ -1,0 +1,19 @@
+{
+  "success": true,
+  "data": {
+    "query": "Apple",
+    "results": [
+      {
+        "symbol": "AAPL",
+        "name": "Apple Inc.",
+        "sector": "Technology",
+        "industry": "Consumer Electronics",
+        "market_cap": 3000000000000.0,
+        "close_price": 119.0,
+        "pe_ratio": 25.5
+      }
+    ],
+    "total": 1,
+    "filters_applied": {}
+  }
+}

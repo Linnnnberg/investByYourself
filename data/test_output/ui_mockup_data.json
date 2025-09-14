@@ -1,0 +1,99 @@
+{
+  "compact_metrics_cards": [
+    {
+      "title": "Market Cap",
+      "value": "$3.0T",
+      "change": "+2.5%",
+      "trend": "up",
+      "format": "currency",
+      "size": "lg"
+    },
+    {
+      "title": "P/E Ratio",
+      "value": "25.5",
+      "change": "-0.3",
+      "trend": "down",
+      "format": "ratio",
+      "size": "md"
+    },
+    {
+      "title": "Beta",
+      "value": "1.2",
+      "change": "+0.1",
+      "trend": "up",
+      "format": "ratio",
+      "size": "sm"
+    },
+    {
+      "title": "Dividend Yield",
+      "value": "2.5%",
+      "change": "+0.1%",
+      "trend": "up",
+      "format": "percentage",
+      "size": "sm"
+    }
+  ],
+  "comparison_interface": {
+    "selected_companies": [
+      "AAPL",
+      "MSFT",
+      "GOOGL",
+      "AMZN",
+      "NVDA"
+    ],
+    "comparison_metrics": [
+      "market_cap",
+      "pe_ratio",
+      "pb_ratio",
+      "ps_ratio",
+      "beta",
+      "dividend_yield"
+    ],
+    "chart_periods": [
+      "1D",
+      "1W",
+      "1M",
+      "3M",
+      "6M",
+      "1Y",
+      "5Y"
+    ],
+    "chart_types": [
+      "line",
+      "candlestick",
+      "volume",
+      "comparison"
+    ]
+  },
+  "news_section": {
+    "categories": [
+      "earnings",
+      "corporate_action",
+      "strategy",
+      "general"
+    ],
+    "sample_news": [
+      {
+        "title": "Apple Reports Record Q4 Revenue",
+        "type": "earnings",
+        "date": "2024-10-25",
+        "sentiment": "positive",
+        "impact": "high"
+      },
+      {
+        "title": "Microsoft Announces AI Partnership",
+        "type": "strategy",
+        "date": "2024-10-24",
+        "sentiment": "positive",
+        "impact": "medium"
+      },
+      {
+        "title": "Amazon Stock Split Announcement",
+        "type": "corporate_action",
+        "date": "2024-10-23",
+        "sentiment": "positive",
+        "impact": "high"
+      }
+    ]
+  }
+}

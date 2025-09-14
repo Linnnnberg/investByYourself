@@ -1,0 +1,1350 @@
+{
+  "timestamp": "2025-09-14T15:00:34.485185",
+  "companies": [
+    {
+      "symbol": "AAPL",
+      "name": "Apple Inc.",
+      "sector": "Technology",
+      "industry": "Consumer Electronics",
+      "market_cap": 3000000000000.0,
+      "avg_volume_3m": 1,
+      "close_price": 119.0,
+      "volume": -2915326,
+      "pe_ratio": 25.5,
+      "pb_ratio": 4.2,
+      "ps_ratio": 3.8,
+      "beta": 1.2,
+      "dividend_yield": 0.025
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft Corporation",
+      "sector": "Technology",
+      "industry": "Software",
+      "market_cap": 2800000000000.0,
+      "avg_volume_3m": 1,
+      "close_price": 104.0,
+      "volume": -492513,
+      "pe_ratio": 25.5,
+      "pb_ratio": 4.2,
+      "ps_ratio": 3.8,
+      "beta": 1.2,
+      "dividend_yield": 0.025
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet Inc.",
+      "sector": "Technology",
+      "industry": "Internet Content & Information",
+      "market_cap": 1800000000000.0,
+      "avg_volume_3m": 2040068,
+      "close_price": 64.0,
+      "volume": 2291471,
+      "pe_ratio": 25.5,
+      "pb_ratio": 4.2,
+      "ps_ratio": 3.8,
+      "beta": 1.2,
+      "dividend_yield": 0.025
+    },
+    {
+      "symbol": "AMZN",
+      "name": "Amazon.com Inc.",
+      "sector": "Consumer Cyclical",
+      "industry": "Internet Retail",
+      "market_cap": 1500000000000.0,
+      "avg_volume_3m": 1,
+      "close_price": 68.0,
+      "volume": -1562488,
+      "pe_ratio": 25.5,
+      "pb_ratio": 4.2,
+      "ps_ratio": 3.8,
+      "beta": 1.2,
+      "dividend_yield": 0.025
+    },
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA Corporation",
+      "sector": "Technology",
+      "industry": "Semiconductors",
+      "market_cap": 1200000000000.0,
+      "avg_volume_3m": 1,
+      "close_price": 111.0,
+      "volume": -3145828,
+      "pe_ratio": 25.5,
+      "pb_ratio": 4.2,
+      "ps_ratio": 3.8,
+      "beta": 1.2,
+      "dividend_yield": 0.025
+    }
+  ],
+  "comparison": {
+    "companies": [
+      {
+        "symbol": "AAPL",
+        "name": "Apple Inc.",
+        "sector": "Technology",
+        "industry": "Consumer Electronics",
+        "market_cap": 3000000000000.0,
+        "avg_volume_3m": 1,
+        "close_price": 119.0,
+        "volume": -2915326,
+        "pe_ratio": 25.5,
+        "pb_ratio": 4.2,
+        "ps_ratio": 3.8,
+        "beta": 1.2,
+        "dividend_yield": 0.025
+      },
+      {
+        "symbol": "MSFT",
+        "name": "Microsoft Corporation",
+        "sector": "Technology",
+        "industry": "Software",
+        "market_cap": 2800000000000.0,
+        "avg_volume_3m": 1,
+        "close_price": 104.0,
+        "volume": -492513,
+        "pe_ratio": 25.5,
+        "pb_ratio": 4.2,
+        "ps_ratio": 3.8,
+        "beta": 1.2,
+        "dividend_yield": 0.025
+      },
+      {
+        "symbol": "GOOGL",
+        "name": "Alphabet Inc.",
+        "sector": "Technology",
+        "industry": "Internet Content & Information",
+        "market_cap": 1800000000000.0,
+        "avg_volume_3m": 2040068,
+        "close_price": 64.0,
+        "volume": 2291471,
+        "pe_ratio": 25.5,
+        "pb_ratio": 4.2,
+        "ps_ratio": 3.8,
+        "beta": 1.2,
+        "dividend_yield": 0.025
+      },
+      {
+        "symbol": "AMZN",
+        "name": "Amazon.com Inc.",
+        "sector": "Consumer Cyclical",
+        "industry": "Internet Retail",
+        "market_cap": 1500000000000.0,
+        "avg_volume_3m": 1,
+        "close_price": 68.0,
+        "volume": -1562488,
+        "pe_ratio": 25.5,
+        "pb_ratio": 4.2,
+        "ps_ratio": 3.8,
+        "beta": 1.2,
+        "dividend_yield": 0.025
+      },
+      {
+        "symbol": "NVDA",
+        "name": "NVIDIA Corporation",
+        "sector": "Technology",
+        "industry": "Semiconductors",
+        "market_cap": 1200000000000.0,
+        "avg_volume_3m": 1,
+        "close_price": 111.0,
+        "volume": -3145828,
+        "pe_ratio": 25.5,
+        "pb_ratio": 4.2,
+        "ps_ratio": 3.8,
+        "beta": 1.2,
+        "dividend_yield": 0.025
+      }
+    ],
+    "metrics": {
+      "market_cap": {
+        "values": [
+          3000000000000.0,
+          2800000000000.0,
+          1800000000000.0,
+          1500000000000.0,
+          1200000000000.0
+        ],
+        "min": 1200000000000.0,
+        "max": 3000000000000.0,
+        "avg": 2060000000000.0,
+        "count": 5
+      },
+      "close_price": {
+        "values": [
+          119.0,
+          104.0,
+          64.0,
+          68.0,
+          111.0
+        ],
+        "min": 64.0,
+        "max": 119.0,
+        "avg": 93.2,
+        "count": 5
+      },
+      "pe_ratio": {
+        "values": [
+          25.5,
+          25.5,
+          25.5,
+          25.5,
+          25.5
+        ],
+        "min": 25.5,
+        "max": 25.5,
+        "avg": 25.5,
+        "count": 5
+      },
+      "pb_ratio": {
+        "values": [
+          4.2,
+          4.2,
+          4.2,
+          4.2,
+          4.2
+        ],
+        "min": 4.2,
+        "max": 4.2,
+        "avg": 4.2,
+        "count": 5
+      },
+      "ps_ratio": {
+        "values": [
+          3.8,
+          3.8,
+          3.8,
+          3.8,
+          3.8
+        ],
+        "min": 3.8,
+        "max": 3.8,
+        "avg": 3.8,
+        "count": 5
+      },
+      "beta": {
+        "values": [
+          1.2,
+          1.2,
+          1.2,
+          1.2,
+          1.2
+        ],
+        "min": 1.2,
+        "max": 1.2,
+        "avg": 1.2,
+        "count": 5
+      },
+      "dividend_yield": {
+        "values": [
+          0.025,
+          0.025,
+          0.025,
+          0.025,
+          0.025
+        ],
+        "min": 0.025,
+        "max": 0.025,
+        "avg": 0.025,
+        "count": 5
+      },
+      "volume": {
+        "values": [
+          -2915326,
+          -492513,
+          2291471,
+          -1562488,
+          -3145828
+        ],
+        "min": -3145828,
+        "max": 2291471,
+        "avg": -1164936.8,
+        "count": 5
+      },
+      "avg_volume_3m": {
+        "values": [
+          1,
+          1,
+          2040068,
+          1,
+          1
+        ],
+        "min": 1,
+        "max": 2040068,
+        "avg": 408014.4,
+        "count": 5
+      }
+    },
+    "summary": {
+      "total_companies": 5,
+      "sectors": [
+        "Technology",
+        "Consumer Cyclical"
+      ],
+      "market_cap_range": "$1,200,000,000,000 - $3,000,000,000,000",
+      "pe_ratio_range": "25.50 - 25.50",
+      "beta_range": "1.20 - 1.20"
+    }
+  },
+  "chart_data": {
+    "companies": [
+      {
+        "symbol": "AAPL",
+        "name": "Apple Inc.",
+        "sector": "Technology",
+        "color": "hsl(0, 70%, 50%)",
+        "data": [
+          {
+            "date": "2025-08-15",
+            "price": 113.71,
+            "volume": 1866126
+          },
+          {
+            "date": "2025-08-16",
+            "price": 108.53,
+            "volume": 3274447
+          },
+          {
+            "date": "2025-08-17",
+            "price": 108.62,
+            "volume": 6353747
+          },
+          {
+            "date": "2025-08-18",
+            "price": 107.0,
+            "volume": 6361023
+          },
+          {
+            "date": "2025-08-19",
+            "price": 106.59,
+            "volume": 3279582
+          },
+          {
+            "date": "2025-08-20",
+            "price": 106.58,
+            "volume": 9111074
+          },
+          {
+            "date": "2025-08-21",
+            "price": 103.58,
+            "volume": 9136449
+          },
+          {
+            "date": "2025-08-22",
+            "price": 101.89,
+            "volume": 7491348
+          },
+          {
+            "date": "2025-08-23",
+            "price": 103.6,
+            "volume": 4250332
+          },
+          {
+            "date": "2025-08-24",
+            "price": 102.36,
+            "volume": 3095935
+          },
+          {
+            "date": "2025-08-25",
+            "price": 101.72,
+            "volume": 5462292
+          },
+          {
+            "date": "2025-08-26",
+            "price": 99.94,
+            "volume": 5802172
+          },
+          {
+            "date": "2025-08-27",
+            "price": 95.11,
+            "volume": 1015582
+          },
+          {
+            "date": "2025-08-28",
+            "price": 95.63,
+            "volume": 9148034
+          },
+          {
+            "date": "2025-08-29",
+            "price": 97.85,
+            "volume": 7419312
+          },
+          {
+            "date": "2025-08-30",
+            "price": 94.55,
+            "volume": 6079928
+          },
+          {
+            "date": "2025-08-31",
+            "price": 90.05,
+            "volume": 2893874
+          },
+          {
+            "date": "2025-09-01",
+            "price": 89.01,
+            "volume": 6011597
+          },
+          {
+            "date": "2025-09-02",
+            "price": 86.02,
+            "volume": 9407062
+          },
+          {
+            "date": "2025-09-03",
+            "price": 84.68,
+            "volume": 8295721
+          },
+          {
+            "date": "2025-09-04",
+            "price": 83.88,
+            "volume": 7526645
+          },
+          {
+            "date": "2025-09-05",
+            "price": 80.28,
+            "volume": 7143141
+          },
+          {
+            "date": "2025-09-06",
+            "price": 79.85,
+            "volume": 8404699
+          },
+          {
+            "date": "2025-09-07",
+            "price": 79.29,
+            "volume": 6708493
+          },
+          {
+            "date": "2025-09-08",
+            "price": 75.78,
+            "volume": 6957397
+          },
+          {
+            "date": "2025-09-09",
+            "price": 74.24,
+            "volume": 8310908
+          },
+          {
+            "date": "2025-09-10",
+            "price": 76.32,
+            "volume": 4665670
+          },
+          {
+            "date": "2025-09-11",
+            "price": 76.52,
+            "volume": 2673755
+          },
+          {
+            "date": "2025-09-12",
+            "price": 75.74,
+            "volume": 3317590
+          },
+          {
+            "date": "2025-09-13",
+            "price": 75.99,
+            "volume": 2899734
+          }
+        ]
+      },
+      {
+        "symbol": "MSFT",
+        "name": "Microsoft Corporation",
+        "sector": "Technology",
+        "color": "hsl(60, 70%, 50%)",
+        "data": [
+          {
+            "date": "2025-08-15",
+            "price": 99.93,
+            "volume": 1237778
+          },
+          {
+            "date": "2025-08-16",
+            "price": 97.69,
+            "volume": 8779683
+          },
+          {
+            "date": "2025-08-17",
+            "price": 94.86,
+            "volume": 7497967
+          },
+          {
+            "date": "2025-08-18",
+            "price": 94.56,
+            "volume": 2740923
+          },
+          {
+            "date": "2025-08-19",
+            "price": 93.76,
+            "volume": 9109080
+          },
+          {
+            "date": "2025-08-20",
+            "price": 94.69,
+            "volume": 4898317
+          },
+          {
+            "date": "2025-08-21",
+            "price": 90.28,
+            "volume": 1691262
+          },
+          {
+            "date": "2025-08-22",
+            "price": 91.43,
+            "volume": 7945531
+          },
+          {
+            "date": "2025-08-23",
+            "price": 93.86,
+            "volume": 7269337
+          },
+          {
+            "date": "2025-08-24",
+            "price": 90.96,
+            "volume": 3966648
+          },
+          {
+            "date": "2025-08-25",
+            "price": 93.25,
+            "volume": 6229480
+          },
+          {
+            "date": "2025-08-26",
+            "price": 92.29,
+            "volume": 8861545
+          },
+          {
+            "date": "2025-08-27",
+            "price": 92.37,
+            "volume": 6556733
+          },
+          {
+            "date": "2025-08-28",
+            "price": 91.73,
+            "volume": 3333350
+          },
+          {
+            "date": "2025-08-29",
+            "price": 88.02,
+            "volume": 3871886
+          },
+          {
+            "date": "2025-08-30",
+            "price": 83.8,
+            "volume": 4199079
+          },
+          {
+            "date": "2025-08-31",
+            "price": 81.78,
+            "volume": 4049141
+          },
+          {
+            "date": "2025-09-01",
+            "price": 80.04,
+            "volume": 8623448
+          },
+          {
+            "date": "2025-09-02",
+            "price": 79.83,
+            "volume": 4972549
+          },
+          {
+            "date": "2025-09-03",
+            "price": 80.44,
+            "volume": 3296332
+          },
+          {
+            "date": "2025-09-04",
+            "price": 76.48,
+            "volume": 1155932
+          },
+          {
+            "date": "2025-09-05",
+            "price": 73.9,
+            "volume": 3866471
+          },
+          {
+            "date": "2025-09-06",
+            "price": 71.78,
+            "volume": 6253142
+          },
+          {
+            "date": "2025-09-07",
+            "price": 68.49,
+            "volume": 6058609
+          },
+          {
+            "date": "2025-09-08",
+            "price": 66.63,
+            "volume": 6762446
+          },
+          {
+            "date": "2025-09-09",
+            "price": 66.12,
+            "volume": 2288960
+          },
+          {
+            "date": "2025-09-10",
+            "price": 66.56,
+            "volume": 1131614
+          },
+          {
+            "date": "2025-09-11",
+            "price": 68.32,
+            "volume": 9121520
+          },
+          {
+            "date": "2025-09-12",
+            "price": 66.63,
+            "volume": 3363820
+          },
+          {
+            "date": "2025-09-13",
+            "price": 65.64,
+            "volume": 2676252
+          }
+        ]
+      },
+      {
+        "symbol": "GOOGL",
+        "name": "Alphabet Inc.",
+        "sector": "Technology",
+        "color": "hsl(120, 70%, 50%)",
+        "data": [
+          {
+            "date": "2025-08-15",
+            "price": 63.3,
+            "volume": 4052238
+          },
+          {
+            "date": "2025-08-16",
+            "price": 62.83,
+            "volume": 3769757
+          },
+          {
+            "date": "2025-08-17",
+            "price": 61.62,
+            "volume": 5648491
+          },
+          {
+            "date": "2025-08-18",
+            "price": 61.91,
+            "volume": 7194003
+          },
+          {
+            "date": "2025-08-19",
+            "price": 62.77,
+            "volume": 9313783
+          },
+          {
+            "date": "2025-08-20",
+            "price": 60.76,
+            "volume": 6810702
+          },
+          {
+            "date": "2025-08-21",
+            "price": 59.33,
+            "volume": 5297089
+          },
+          {
+            "date": "2025-08-22",
+            "price": 58.56,
+            "volume": 5380433
+          },
+          {
+            "date": "2025-08-23",
+            "price": 55.85,
+            "volume": 5496927
+          },
+          {
+            "date": "2025-08-24",
+            "price": 57.12,
+            "volume": 6894944
+          },
+          {
+            "date": "2025-08-25",
+            "price": 55.6,
+            "volume": 1198437
+          },
+          {
+            "date": "2025-08-26",
+            "price": 53.39,
+            "volume": 9212510
+          },
+          {
+            "date": "2025-08-27",
+            "price": 54.9,
+            "volume": 2352874
+          },
+          {
+            "date": "2025-08-28",
+            "price": 53.96,
+            "volume": 7548131
+          },
+          {
+            "date": "2025-08-29",
+            "price": 52.32,
+            "volume": 8800794
+          },
+          {
+            "date": "2025-08-30",
+            "price": 52.03,
+            "volume": 4552056
+          },
+          {
+            "date": "2025-08-31",
+            "price": 52.57,
+            "volume": 8873915
+          },
+          {
+            "date": "2025-09-01",
+            "price": 51.64,
+            "volume": 6191270
+          },
+          {
+            "date": "2025-09-02",
+            "price": 51.59,
+            "volume": 9088013
+          },
+          {
+            "date": "2025-09-03",
+            "price": 51.42,
+            "volume": 7851917
+          },
+          {
+            "date": "2025-09-04",
+            "price": 49.77,
+            "volume": 3424912
+          },
+          {
+            "date": "2025-09-05",
+            "price": 48.24,
+            "volume": 1222640
+          },
+          {
+            "date": "2025-09-06",
+            "price": 49.12,
+            "volume": 5191704
+          },
+          {
+            "date": "2025-09-07",
+            "price": 48.95,
+            "volume": 9054819
+          },
+          {
+            "date": "2025-09-08",
+            "price": 46.99,
+            "volume": 8301525
+          },
+          {
+            "date": "2025-09-09",
+            "price": 46.52,
+            "volume": 1467643
+          },
+          {
+            "date": "2025-09-10",
+            "price": 47.66,
+            "volume": 7367008
+          },
+          {
+            "date": "2025-09-11",
+            "price": 48.03,
+            "volume": 2825705
+          },
+          {
+            "date": "2025-09-12",
+            "price": 48.73,
+            "volume": 4776269
+          },
+          {
+            "date": "2025-09-13",
+            "price": 47.83,
+            "volume": 1894118
+          }
+        ]
+      },
+      {
+        "symbol": "AMZN",
+        "name": "Amazon.com Inc.",
+        "sector": "Consumer Cyclical",
+        "color": "hsl(180, 70%, 50%)",
+        "data": [
+          {
+            "date": "2025-08-15",
+            "price": 65.12,
+            "volume": 1181957
+          },
+          {
+            "date": "2025-08-16",
+            "price": 64.06,
+            "volume": 8867231
+          },
+          {
+            "date": "2025-08-17",
+            "price": 62.41,
+            "volume": 5124024
+          },
+          {
+            "date": "2025-08-18",
+            "price": 61.08,
+            "volume": 6116045
+          },
+          {
+            "date": "2025-08-19",
+            "price": 61.64,
+            "volume": 4540127
+          },
+          {
+            "date": "2025-08-20",
+            "price": 59.51,
+            "volume": 5308743
+          },
+          {
+            "date": "2025-08-21",
+            "price": 58.75,
+            "volume": 3942721
+          },
+          {
+            "date": "2025-08-22",
+            "price": 58.18,
+            "volume": 2720398
+          },
+          {
+            "date": "2025-08-23",
+            "price": 56.63,
+            "volume": 7477596
+          },
+          {
+            "date": "2025-08-24",
+            "price": 56.5,
+            "volume": 7299596
+          },
+          {
+            "date": "2025-08-25",
+            "price": 56.48,
+            "volume": 9790173
+          },
+          {
+            "date": "2025-08-26",
+            "price": 55.82,
+            "volume": 4033702
+          },
+          {
+            "date": "2025-08-27",
+            "price": 55.83,
+            "volume": 9516899
+          },
+          {
+            "date": "2025-08-28",
+            "price": 56.9,
+            "volume": 4700040
+          },
+          {
+            "date": "2025-08-29",
+            "price": 57.56,
+            "volume": 2770820
+          },
+          {
+            "date": "2025-08-30",
+            "price": 58.53,
+            "volume": 2515080
+          },
+          {
+            "date": "2025-08-31",
+            "price": 58.56,
+            "volume": 6052932
+          },
+          {
+            "date": "2025-09-01",
+            "price": 59.87,
+            "volume": 5544303
+          },
+          {
+            "date": "2025-09-02",
+            "price": 58.97,
+            "volume": 4992701
+          },
+          {
+            "date": "2025-09-03",
+            "price": 56.75,
+            "volume": 1123454
+          },
+          {
+            "date": "2025-09-04",
+            "price": 55.39,
+            "volume": 2356382
+          },
+          {
+            "date": "2025-09-05",
+            "price": 54.04,
+            "volume": 6811924
+          },
+          {
+            "date": "2025-09-06",
+            "price": 55.1,
+            "volume": 4940623
+          },
+          {
+            "date": "2025-09-07",
+            "price": 54.87,
+            "volume": 7742889
+          },
+          {
+            "date": "2025-09-08",
+            "price": 52.59,
+            "volume": 5246573
+          },
+          {
+            "date": "2025-09-09",
+            "price": 50.93,
+            "volume": 6710451
+          },
+          {
+            "date": "2025-09-10",
+            "price": 51.27,
+            "volume": 1747845
+          },
+          {
+            "date": "2025-09-11",
+            "price": 49.24,
+            "volume": 2281105
+          },
+          {
+            "date": "2025-09-12",
+            "price": 49.8,
+            "volume": 5024789
+          },
+          {
+            "date": "2025-09-13",
+            "price": 49.84,
+            "volume": 6480147
+          }
+        ]
+      },
+      {
+        "symbol": "NVDA",
+        "name": "NVIDIA Corporation",
+        "sector": "Technology",
+        "color": "hsl(240, 70%, 50%)",
+        "data": [
+          {
+            "date": "2025-08-15",
+            "price": 112.45,
+            "volume": 4409991
+          },
+          {
+            "date": "2025-08-16",
+            "price": 107.53,
+            "volume": 5646227
+          },
+          {
+            "date": "2025-08-17",
+            "price": 103.8,
+            "volume": 8728423
+          },
+          {
+            "date": "2025-08-18",
+            "price": 98.91,
+            "volume": 2064946
+          },
+          {
+            "date": "2025-08-19",
+            "price": 98.25,
+            "volume": 6494418
+          },
+          {
+            "date": "2025-08-20",
+            "price": 97.83,
+            "volume": 1929123
+          },
+          {
+            "date": "2025-08-21",
+            "price": 97.74,
+            "volume": 3269534
+          },
+          {
+            "date": "2025-08-22",
+            "price": 94.24,
+            "volume": 1596083
+          },
+          {
+            "date": "2025-08-23",
+            "price": 94.71,
+            "volume": 9627529
+          },
+          {
+            "date": "2025-08-24",
+            "price": 97.21,
+            "volume": 9667899
+          },
+          {
+            "date": "2025-08-25",
+            "price": 92.67,
+            "volume": 8790409
+          },
+          {
+            "date": "2025-08-26",
+            "price": 89.15,
+            "volume": 3960563
+          },
+          {
+            "date": "2025-08-27",
+            "price": 91.16,
+            "volume": 4508963
+          },
+          {
+            "date": "2025-08-28",
+            "price": 90.17,
+            "volume": 8715657
+          },
+          {
+            "date": "2025-08-29",
+            "price": 85.91,
+            "volume": 8135691
+          },
+          {
+            "date": "2025-08-30",
+            "price": 85.97,
+            "volume": 8855093
+          },
+          {
+            "date": "2025-08-31",
+            "price": 82.59,
+            "volume": 1212581
+          },
+          {
+            "date": "2025-09-01",
+            "price": 81.33,
+            "volume": 6695161
+          },
+          {
+            "date": "2025-09-02",
+            "price": 83.12,
+            "volume": 4068677
+          },
+          {
+            "date": "2025-09-03",
+            "price": 81.84,
+            "volume": 6808640
+          },
+          {
+            "date": "2025-09-04",
+            "price": 78.37,
+            "volume": 7088881
+          },
+          {
+            "date": "2025-09-05",
+            "price": 75.84,
+            "volume": 7410095
+          },
+          {
+            "date": "2025-09-06",
+            "price": 72.39,
+            "volume": 4929951
+          },
+          {
+            "date": "2025-09-07",
+            "price": 72.87,
+            "volume": 8428628
+          },
+          {
+            "date": "2025-09-08",
+            "price": 69.52,
+            "volume": 3513612
+          },
+          {
+            "date": "2025-09-09",
+            "price": 68.52,
+            "volume": 1439703
+          },
+          {
+            "date": "2025-09-10",
+            "price": 68.75,
+            "volume": 7081498
+          },
+          {
+            "date": "2025-09-11",
+            "price": 70.54,
+            "volume": 1089486
+          },
+          {
+            "date": "2025-09-12",
+            "price": 67.86,
+            "volume": 7904393
+          },
+          {
+            "date": "2025-09-13",
+            "price": 65.42,
+            "volume": 5771890
+          }
+        ]
+      }
+    ],
+    "data_points": []
+  },
+  "search_tests": {
+    "queries": [
+      "Apple",
+      "Tech",
+      "Financial",
+      "MSFT"
+    ],
+    "results": {
+      "Apple": [
+        {
+          "symbol": "AAPL",
+          "name": "Apple Inc.",
+          "sector": "Technology",
+          "industry": "Consumer Electronics",
+          "market_cap": 3000000000000.0,
+          "close_price": 119.0,
+          "pe_ratio": 25.5
+        }
+      ],
+      "Tech": [
+        {
+          "symbol": "AAPL",
+          "name": "Apple Inc.",
+          "sector": "Technology",
+          "industry": "Consumer Electronics",
+          "market_cap": 3000000000000.0,
+          "close_price": 119.0,
+          "pe_ratio": 25.5
+        },
+        {
+          "symbol": "MSFT",
+          "name": "Microsoft Corporation",
+          "sector": "Technology",
+          "industry": "Software",
+          "market_cap": 2800000000000.0,
+          "close_price": 104.0,
+          "pe_ratio": 25.5
+        },
+        {
+          "symbol": "GOOGL",
+          "name": "Alphabet Inc.",
+          "sector": "Technology",
+          "industry": "Internet Content & Information",
+          "market_cap": 1800000000000.0,
+          "close_price": 64.0,
+          "pe_ratio": 25.5
+        },
+        {
+          "symbol": "NVDA",
+          "name": "NVIDIA Corporation",
+          "sector": "Technology",
+          "industry": "Semiconductors",
+          "market_cap": 1200000000000.0,
+          "close_price": 111.0,
+          "pe_ratio": 25.5
+        },
+        {
+          "symbol": "META",
+          "name": "Meta Platforms Inc.",
+          "sector": "Technology",
+          "industry": "Social Media",
+          "market_cap": 900000000000.0,
+          "close_price": 22.0,
+          "pe_ratio": 25.5
+        },
+        {
+          "symbol": "XLK",
+          "name": "Technology Select Sector SPDR Fund",
+          "sector": "Technology",
+          "industry": "Technology ETF",
+          "market_cap": 50000000000.0,
+          "close_price": 26.0,
+          "pe_ratio": 25.5
+        }
+      ],
+      "Financial": [
+        {
+          "symbol": "JPM",
+          "name": "JPMorgan Chase & Co.",
+          "sector": "Financial Services",
+          "industry": "Banks",
+          "market_cap": 500000000000.0,
+          "close_price": 78.0,
+          "pe_ratio": 25.5
+        },
+        {
+          "symbol": "BAC",
+          "name": "Bank of America Corporation",
+          "sector": "Financial Services",
+          "industry": "Banks",
+          "market_cap": 300000000000.0,
+          "close_price": 70.0,
+          "pe_ratio": 25.5
+        },
+        {
+          "symbol": "WFC",
+          "name": "Wells Fargo & Company",
+          "sector": "Financial Services",
+          "industry": "Banks",
+          "market_cap": 200000000000.0,
+          "close_price": 68.0,
+          "pe_ratio": 25.5
+        },
+        {
+          "symbol": "XLF",
+          "name": "Financial Select Sector SPDR Fund",
+          "sector": "Financial Services",
+          "industry": "Financial ETF",
+          "market_cap": 40000000000.0,
+          "close_price": 50.0,
+          "pe_ratio": 25.5
+        }
+      ],
+      "MSFT": [
+        {
+          "symbol": "MSFT",
+          "name": "Microsoft Corporation",
+          "sector": "Technology",
+          "industry": "Software",
+          "market_cap": 2800000000000.0,
+          "close_price": 104.0,
+          "pe_ratio": 25.5
+        }
+      ]
+    }
+  },
+  "sector_tests": {
+    "sectors": [
+      "Technology",
+      "Financial Services",
+      "Healthcare"
+    ],
+    "results": {
+      "Technology": [
+        {
+          "symbol": "AAPL",
+          "name": "Apple Inc.",
+          "sector": "Technology",
+          "market_cap": 3000000000000.0,
+          "close_price": 119.0,
+          "pe_ratio": 25.5,
+          "beta": 1.2
+        },
+        {
+          "symbol": "MSFT",
+          "name": "Microsoft Corporation",
+          "sector": "Technology",
+          "market_cap": 2800000000000.0,
+          "close_price": 104.0,
+          "pe_ratio": 25.5,
+          "beta": 1.2
+        },
+        {
+          "symbol": "GOOGL",
+          "name": "Alphabet Inc.",
+          "sector": "Technology",
+          "market_cap": 1800000000000.0,
+          "close_price": 64.0,
+          "pe_ratio": 25.5,
+          "beta": 1.2
+        },
+        {
+          "symbol": "NVDA",
+          "name": "NVIDIA Corporation",
+          "sector": "Technology",
+          "market_cap": 1200000000000.0,
+          "close_price": 111.0,
+          "pe_ratio": 25.5,
+          "beta": 1.2
+        },
+        {
+          "symbol": "META",
+          "name": "Meta Platforms Inc.",
+          "sector": "Technology",
+          "market_cap": 900000000000.0,
+          "close_price": 22.0,
+          "pe_ratio": 25.5,
+          "beta": 1.2
+        },
+        {
+          "symbol": "XLK",
+          "name": "Technology Select Sector SPDR Fund",
+          "sector": "Technology",
+          "market_cap": 50000000000.0,
+          "close_price": 26.0,
+          "pe_ratio": 25.5,
+          "beta": 1.2
+        }
+      ],
+      "Financial Services": [
+        {
+          "symbol": "JPM",
+          "name": "JPMorgan Chase & Co.",
+          "sector": "Financial Services",
+          "market_cap": 500000000000.0,
+          "close_price": 78.0,
+          "pe_ratio": 25.5,
+          "beta": 1.2
+        },
+        {
+          "symbol": "BAC",
+          "name": "Bank of America Corporation",
+          "sector": "Financial Services",
+          "market_cap": 300000000000.0,
+          "close_price": 70.0,
+          "pe_ratio": 25.5,
+          "beta": 1.2
+        },
+        {
+          "symbol": "WFC",
+          "name": "Wells Fargo & Company",
+          "sector": "Financial Services",
+          "market_cap": 200000000000.0,
+          "close_price": 68.0,
+          "pe_ratio": 25.5,
+          "beta": 1.2
+        },
+        {
+          "symbol": "XLF",
+          "name": "Financial Select Sector SPDR Fund",
+          "sector": "Financial Services",
+          "market_cap": 40000000000.0,
+          "close_price": 50.0,
+          "pe_ratio": 25.5,
+          "beta": 1.2
+        }
+      ],
+      "Healthcare": [
+        {
+          "symbol": "UNH",
+          "name": "UnitedHealth Group Incorporated",
+          "sector": "Healthcare",
+          "market_cap": 500000000000.0,
+          "close_price": 22.0,
+          "pe_ratio": 25.5,
+          "beta": 1.2
+        },
+        {
+          "symbol": "JNJ",
+          "name": "Johnson & Johnson",
+          "sector": "Healthcare",
+          "market_cap": 450000000000.0,
+          "close_price": 78.0,
+          "pe_ratio": 25.5,
+          "beta": 1.2
+        },
+        {
+          "symbol": "PFE",
+          "name": "Pfizer Inc.",
+          "sector": "Healthcare",
+          "market_cap": 250000000000.0,
+          "close_price": 54.0,
+          "pe_ratio": 25.5,
+          "beta": 1.2
+        },
+        {
+          "symbol": "XLV",
+          "name": "Health Care Select Sector SPDR Fund",
+          "sector": "Healthcare",
+          "market_cap": 35000000000.0,
+          "close_price": 48.0,
+          "pe_ratio": 25.5,
+          "beta": 1.2
+        }
+      ]
+    }
+  }
+}
