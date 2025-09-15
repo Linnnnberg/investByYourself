@@ -191,6 +191,73 @@ try {
 - **Risk Level**: Medium
 - **Business Value**: High - Real-time market monitoring
 
+#### **Priority 5: Technical Analysis & RSI Implementation (Tech-035) - HIGH** 📊
+- **Why Fifth Priority**: Critical for buy/sell decision making, leverages existing data infrastructure
+- **Timeline**: Weeks 17-19
+- **Dependencies**: Story-032 ✅ COMPLETED (Data Population), Alpha Vantage API ✅ AVAILABLE
+- **Risk Level**: Low - Building on existing infrastructure
+- **Business Value**: High - Essential for investment decision making
+
+**Technical Indicators Implementation Plan:**
+
+**Phase 1: RSI Data Collection & Storage (Week 17)**
+- [ ] Implement RSI data collection from Alpha Vantage API
+- [ ] Create technical_indicators table in database schema
+- [ ] Add RSI calculation service with configurable periods (14, 21, 50)
+- [ ] Store historical RSI data for all companies
+- [ ] Add RSI data to company analysis API endpoints
+
+**Phase 2: Technical Analysis Service (Week 18)**
+- [ ] Create TechnicalAnalysisService with buy/sell signal logic
+- [ ] Implement RSI-based signals (oversold <30, overbought >70)
+- [ ] Add MACD calculation and signal generation
+- [ ] Implement Bollinger Bands with price position signals
+- [ ] Create moving averages (SMA, EMA) with trend signals
+- [ ] Add Stochastic oscillator and ADX momentum indicators
+
+**Phase 3: Frontend Integration (Week 19)**
+- [ ] Add RSI display to company analysis pages
+- [ ] Create technical indicators chart component
+- [ ] Implement buy/sell signal visualization
+- [ ] Add technical analysis tab to company profiles
+- [ ] Create technical indicators dashboard
+
+**API Endpoints:**
+```
+GET /api/v1/analysis/technical/{symbol} - Get all technical indicators
+GET /api/v1/analysis/rsi/{symbol} - Get RSI data and signals
+GET /api/v1/analysis/signals/{symbol} - Get buy/sell signals
+GET /api/v1/analysis/indicators/{symbol} - Get specific indicator data
+```
+
+**Database Schema Addition:**
+```sql
+CREATE TABLE technical_indicators (
+    id SERIAL PRIMARY KEY,
+    symbol VARCHAR(10) NOT NULL,
+    date DATE NOT NULL,
+    rsi_14 DECIMAL(5,2),
+    rsi_21 DECIMAL(5,2),
+    rsi_50 DECIMAL(5,2),
+    macd DECIMAL(8,4),
+    macd_signal DECIMAL(8,4),
+    macd_histogram DECIMAL(8,4),
+    bb_upper DECIMAL(8,2),
+    bb_middle DECIMAL(8,2),
+    bb_lower DECIMAL(8,2),
+    sma_20 DECIMAL(8,2),
+    sma_50 DECIMAL(8,2),
+    sma_200 DECIMAL(8,2),
+    ema_12 DECIMAL(8,2),
+    ema_26 DECIMAL(8,2),
+    stoch_k DECIMAL(5,2),
+    stoch_d DECIMAL(5,2),
+    adx DECIMAL(5,2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(symbol, date)
+);
+```
+
 **Implementation Strategy**: Feature-first development with minimal technical debt
 **Key Benefit**: Deliver immediate user value while building sustainable architecture
 **Technical Tasks**: Only when they block feature development or are "must have" dependencies

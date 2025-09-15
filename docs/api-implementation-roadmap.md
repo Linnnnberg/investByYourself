@@ -3,8 +3,8 @@
 
 ## 🎉 **IMPLEMENTATION STATUS: PHASE 1 COMPLETE**
 
-**Last Updated**: September 4, 2025  
-**Status**: ✅ **Phase 1 Foundation & Core APIs COMPLETED**  
+**Last Updated**: September 4, 2025
+**Status**: ✅ **Phase 1 Foundation & Core APIs COMPLETED**
 **Next Phase**: Portfolio Management & Investment Profile APIs
 
 ### **✅ Completed Features:**
@@ -199,25 +199,68 @@ Server → Client: price_update, portfolio_update, news_alert, error
 
 ## **Phase 3: Advanced Analytics (Weeks 7-9)**
 
-### **Week 7: Technical Analysis**
-**Goal**: Technical indicators and chart data
+### **Week 7: Technical Analysis & RSI Implementation** 🎯
+**Goal**: Complete technical indicators system with buy/sell signals
 
-**Tasks**:
-- [ ] Implement technical indicators (RSI, MACD, Bollinger Bands)
-- [ ] Create chart data endpoints
-- [ ] Add moving averages calculations
-- [ ] Implement trend analysis
-- [ ] Create technical signal generation
-- [ ] Add indicator customization
+**Phase 1: RSI Data Collection & Storage**
+- [ ] Implement RSI data collection from Alpha Vantage API
+- [ ] Create technical_indicators table in database schema
+- [ ] Add RSI calculation service with configurable periods (14, 21, 50)
+- [ ] Store historical RSI data for all companies
+- [ ] Add RSI data to company analysis API endpoints
+
+**Phase 2: Technical Analysis Service**
+- [ ] Create TechnicalAnalysisService with buy/sell signal logic
+- [ ] Implement RSI-based signals (oversold <30, overbought >70)
+- [ ] Add MACD calculation and signal generation
+- [ ] Implement Bollinger Bands with price position signals
+- [ ] Create moving averages (SMA, EMA) with trend signals
+- [ ] Add Stochastic oscillator and ADX momentum indicators
+
+**Phase 3: API Endpoints**
+- [ ] Create comprehensive technical analysis endpoints
+- [ ] Add real-time indicator calculations
+- [ ] Implement signal generation endpoints
+- [ ] Add historical data retrieval
 
 **API Endpoints**:
 ```
-GET /api/v1/analysis/technical/{symbol}
-GET /api/v1/market/chart/{symbol}
-GET /api/v1/analysis/indicators/{symbol}
+GET /api/v1/analysis/technical/{symbol} - Get all technical indicators
+GET /api/v1/analysis/rsi/{symbol} - Get RSI data and signals
+GET /api/v1/analysis/signals/{symbol} - Get buy/sell signals
+GET /api/v1/analysis/indicators/{symbol} - Get specific indicator data
+GET /api/v1/market/chart/{symbol} - Get chart data with indicators
 ```
 
-**Frontend Impact**: Enables technical analysis charts and indicators
+**Database Schema**:
+```sql
+CREATE TABLE technical_indicators (
+    id SERIAL PRIMARY KEY,
+    symbol VARCHAR(10) NOT NULL,
+    date DATE NOT NULL,
+    rsi_14 DECIMAL(5,2),
+    rsi_21 DECIMAL(5,2),
+    rsi_50 DECIMAL(5,2),
+    macd DECIMAL(8,4),
+    macd_signal DECIMAL(8,4),
+    macd_histogram DECIMAL(8,4),
+    bb_upper DECIMAL(8,2),
+    bb_middle DECIMAL(8,2),
+    bb_lower DECIMAL(8,2),
+    sma_20 DECIMAL(8,2),
+    sma_50 DECIMAL(8,2),
+    sma_200 DECIMAL(8,2),
+    ema_12 DECIMAL(8,2),
+    ema_26 DECIMAL(8,2),
+    stoch_k DECIMAL(5,2),
+    stoch_d DECIMAL(5,2),
+    adx DECIMAL(5,2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(symbol, date)
+);
+```
+
+**Frontend Impact**: Enables technical analysis charts, RSI displays, and buy/sell signals
 
 ---
 
