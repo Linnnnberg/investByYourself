@@ -214,6 +214,29 @@ try {
   - [ ] Add user context to API calls
   - [ ] Implement password reset functionality
 
+#### **Priority 7: Operations Page with CRUD API (Story-037) - MEDIUM** 🔧
+- **Why Medium Priority**: Essential for data management and administration
+- **Timeline**: Weeks 23-25
+- **Dependencies**: Tech-036 ✅ COMPLETED (Authentication), Database infrastructure ✅ AVAILABLE
+- **Risk Level**: Medium - Complex UI and API development required
+- **Business Value**: High - Enable direct database management through UI
+- **Features**:
+  - [ ] Sidebar navigation for all database entities
+  - [ ] CRUD operations for companies, users, portfolios, financial data
+  - [ ] Bulk operations (import/export/delete)
+  - [ ] Advanced search and filtering capabilities
+  - [ ] Real-time data updates and audit logging
+  - [ ] Role-based access control for admin functions
+  - [ ] Responsive design for all screen sizes
+- **Implementation Plan**:
+  - [ ] Create generic CRUD service for all entities
+  - [ ] Build operations API endpoints with full CRUD support
+  - [ ] Develop operations page with sidebar navigation
+  - [ ] Implement entity management panels with data tables
+  - [ ] Add bulk operations and import/export functionality
+  - [ ] Implement advanced filtering and search
+  - [ ] Add audit logging and security controls
+
 **Technical Indicators Implementation Plan:**
 
 **Phase 1: RSI Data Collection & Storage (Week 17)**
