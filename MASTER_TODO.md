@@ -237,6 +237,28 @@ try {
   - [ ] Implement advanced filtering and search
   - [ ] Add audit logging and security controls
 
+#### **Priority 8: Historical Price Data & Technical Indicators (Story-038) - HIGH** 📈
+- **Why High Priority**: Essential for technical analysis and investment decision making
+- **Timeline**: Weeks 26-28
+- **Dependencies**: Database infrastructure ✅ AVAILABLE, Alpha Vantage API ✅ AVAILABLE
+- **Risk Level**: Medium - API rate limiting and data quality challenges
+- **Business Value**: High - Enable comprehensive technical analysis and historical data visualization
+- **Data Requirements**:
+  - [ ] 5 years of daily EOD price data for all 45 entities (companies + ETFs)
+  - [ ] RSI calculations (14, 21, 50 periods)
+  - [ ] MACD, Moving Averages, Bollinger Bands
+  - [ ] Stochastic Oscillator, Williams %R, ATR
+  - [ ] Volume indicators (OBV, Volume SMA)
+- **Implementation Plan**:
+  - [ ] Design database schema for historical prices and technical indicators
+  - [ ] Implement data collection service with Alpha Vantage and Yahoo Finance APIs
+  - [ ] Create technical indicators calculation engine
+  - [ ] Build batch data collection and validation system
+  - [ ] Add historical data API endpoints
+  - [ ] Integrate historical data with frontend charts
+  - [ ] Implement daily data update automation
+  - [ ] Add data quality monitoring and validation
+
 **Technical Indicators Implementation Plan:**
 
 **Phase 1: RSI Data Collection & Storage (Week 17)**
