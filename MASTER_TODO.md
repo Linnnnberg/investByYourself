@@ -198,6 +198,22 @@ try {
 - **Risk Level**: Low - Building on existing infrastructure
 - **Business Value**: High - Essential for investment decision making
 
+#### **Priority 6: Authentication System Implementation (Tech-036) - MEDIUM** 🔐
+- **Why Medium Priority**: Critical for user management but not blocking core functionality
+- **Timeline**: Weeks 20-22
+- **Dependencies**: Tech-028 ✅ COMPLETED (API Gateway), Database infrastructure ✅ AVAILABLE
+- **Risk Level**: Medium - Database integration required
+- **Business Value**: High - Enable user registration, login, and personalized experience
+- **Current Issue**: All authentication methods return `None` - users cannot register or login
+- **Implementation Plan**:
+  - [ ] Connect AuthService to SQLite database
+  - [ ] Implement user registration and login endpoints
+  - [ ] Add JWT token validation and refresh logic
+  - [ ] Create user management database tables
+  - [ ] Test complete authentication flow end-to-end
+  - [ ] Add user context to API calls
+  - [ ] Implement password reset functionality
+
 **Technical Indicators Implementation Plan:**
 
 **Phase 1: RSI Data Collection & Storage (Week 17)**
