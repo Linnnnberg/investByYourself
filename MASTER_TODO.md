@@ -186,6 +186,41 @@ try {
 - **Implementation Plan**: `docs/portfolio-page-implementation-plan.md`
 - **Specification Analysis**: `docs/portfolio-specification-analysis.md`
 
+#### **Priority 4: Allocation Framework System (Story-008) - HIGH** 🏗️
+- **Why Fourth Priority**: Enables structured, rule-based portfolio construction with professional-grade allocation management
+- **Timeline**: Weeks 33-35 (4-6 weeks)
+- **Dependencies**: Story-007 (Portfolio Page) - PENDING, Tech-036 (Authentication) - PENDING
+- **Risk Level**: Medium - Complex framework logic and mapping system
+- **Business Value**: High - Professional portfolio management with allocation templates and constraints
+- **Implementation Plan**: `docs/allocation-framework-implementation-plan.md`
+
+**Phase 1: Core Framework System (Weeks 33-34)**
+- Data model for allocation frameworks and buckets
+- Template system (Conservative/Balanced/Growth/Core-Satellite)
+- Framework builder UI with tree structure and validation
+- Product mapping engine with rule-based filtering
+
+**Phase 2: Integration & Advanced Features (Weeks 34-35)**
+- Portfolio integration with framework application
+- Band-based rebalancing with drift detection
+- Constraint management (global and per-bucket)
+- Framework-aware backtesting and analytics
+
+**Phase 3: Education & Polish (Weeks 35-36)**
+- Education system with tooltips and explainers
+- Advanced analytics and allocation reporting
+- Export functionality for framework definitions
+- Comprehensive testing and validation
+
+**Key Features**:
+- **Template System**: Pre-built allocation frameworks (Conservative/Balanced/Growth)
+- **Custom Frameworks**: Drag-and-drop bucket builder with hierarchical structure
+- **Product Mapping**: Auto-suggest ETFs/stocks per bucket with data health indicators
+- **Constraint Management**: Global and per-bucket rules (liquidity, sector caps, etc.)
+- **Band-based Rebalancing**: Automatic rebalancing based on drift thresholds
+- **Framework-aware Backtesting**: Support for framework-driven reweighting
+- **Education System**: Tooltips and explainers for framework concepts
+
 **Phase 1: Core Portfolio Management (Weeks 30-31)**
 - Investment profile integration for portfolio creation
 - Portfolio construction with holdings management
