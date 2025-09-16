@@ -219,8 +219,15 @@ data/
 ### **Project Overview**
 - **`README.md`** - Main project documentation
 - **`MASTER_TODO.md`** - Master task list and progress tracking
-- **`CI_CD_COMPREHENSIVE.md`** - CI/CD implementation details
 - **`SECURITY.md`** - Security policies and procedures
+
+### **Organized Documentation Structure**
+- **`docs/architecture/`** - Architecture documentation
+  - `APPLICATION_ARCHITECTURE_REVIEW.md` - System architecture review
+- **`docs/overview/`** - Project overview documentation
+  - `APPLICATION_SUMMARY.md` - Application summary
+- **`docs/devops/`** - DevOps and CI/CD documentation
+  - `CI_CD_COMPREHENSIVE.md` - CI/CD implementation details
 
 ---
 
