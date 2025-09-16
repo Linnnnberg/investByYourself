@@ -95,7 +95,7 @@ export default function DashboardPage() {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card variant="interactive" onClick={() => window.location.href = '/dashboard/investment-profile'}>
+        <Card variant="interactive" onClick={() => window.location.href = '/investment-profile'}>
           <CardContent className="text-center p-6">
             <div className="text-4xl mb-2">📊</div>
             <h3 className="text-lg font-semibold mb-2">Investment Profile</h3>
