@@ -185,7 +185,9 @@ export default function CompaniesPage() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-xl">{company.symbol}</CardTitle>
+                  <Link href={`/companies/${company.symbol}`}>
+                    <CardTitle className="text-xl text-blue-600 hover:text-blue-800 hover:underline cursor-pointer">{company.symbol}</CardTitle>
+                  </Link>
                   <CardDescription className="text-sm">{company.name}</CardDescription>
                 </div>
                 <Badge className={getSectorColor(company.sector)}>
