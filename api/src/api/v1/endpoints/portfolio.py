@@ -12,11 +12,21 @@ from typing import List, Optional
 
 from fastapi import APIRouter, HTTPException, Path, Query
 
-from src.models.portfolio import (AssetType, Holding, HoldingCreate,
-                                  HoldingUpdate, Portfolio, PortfolioCreate,
-                                  PortfolioDetail, PortfolioSummary,
-                                  PortfolioUpdate, RiskProfile, Transaction,
-                                  TransactionCreate, TransactionType)
+from src.models.portfolio import (
+    AssetType,
+    Holding,
+    HoldingCreate,
+    HoldingUpdate,
+    Portfolio,
+    PortfolioCreate,
+    PortfolioDetail,
+    PortfolioSummary,
+    PortfolioUpdate,
+    RiskProfile,
+    Transaction,
+    TransactionCreate,
+    TransactionType,
+)
 
 router = APIRouter()
 

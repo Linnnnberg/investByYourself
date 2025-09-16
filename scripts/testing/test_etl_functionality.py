@@ -21,8 +21,9 @@ async def test_data_collection_framework():
 
     try:
         from src.etl.collectors.base_collector import BaseDataCollector
-        from src.etl.collectors.collection_orchestrator import \
-            DataCollectionOrchestrator
+        from src.etl.collectors.collection_orchestrator import (
+            DataCollectionOrchestrator,
+        )
 
         print("✅ BaseDataCollector imported successfully")
         print("✅ DataCollectionOrchestrator imported successfully")
@@ -45,8 +46,7 @@ async def test_data_processing_engine():
 
     try:
         from src.etl.transformers.base_transformer import BaseDataTransformer
-        from src.etl.transformers.financial_transformer import \
-            FinancialDataTransformer
+        from src.etl.transformers.financial_transformer import FinancialDataTransformer
 
         print("✅ BaseDataTransformer imported successfully")
         print("✅ FinancialDataTransformer imported successfully")
@@ -169,8 +169,7 @@ async def test_database_operations():
     print("-" * 50)
 
     try:
-        from src.etl.loaders.database_loader import (DatabaseConfig,
-                                                     DatabaseLoader)
+        from src.etl.loaders.database_loader import DatabaseConfig, DatabaseLoader
 
         # Create config with test environment
         config = DatabaseConfig(
@@ -227,9 +226,7 @@ async def main():
     print(f"🎯 Test Results: {passed}/{total} tests passed")
 
     if passed == total:
-        print(
-            "✅ All ETL functionality tests passed! Security fixes working correctly."
-        )
+        print("✅ All ETL functionality tests passed! Security fixes working correctly.")
         print("✅ ETL pipeline is ready for use with proper environment configuration.")
     else:
         print("❌ Some tests failed. Check the output above.")

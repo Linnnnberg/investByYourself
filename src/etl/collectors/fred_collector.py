@@ -22,8 +22,13 @@ import aiohttp
 import pandas as pd
 import structlog
 
-from .base_collector import (BaseDataCollector, DataCollectionError,
-                             DataValidationError, RateLimitConfig, RetryConfig)
+from .base_collector import (
+    BaseDataCollector,
+    DataCollectionError,
+    DataValidationError,
+    RateLimitConfig,
+    RetryConfig,
+)
 
 logger = structlog.get_logger(__name__)
 

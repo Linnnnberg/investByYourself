@@ -160,8 +160,8 @@ export default function DashboardPage() {
             </div>
           </CardContent>
           <CardFooter>
-            <Link href="/companies" className="w-full">
-              <Button variant="outline" className="w-full">View All Companies</Button>
+            <Link href="/companies">
+              <Button variant="outline">View All Companies</Button>
             </Link>
           </CardFooter>
         </Card>
@@ -210,8 +210,8 @@ export default function DashboardPage() {
             )}
           </CardContent>
           <CardFooter>
-            <Link href="/portfolio" className="w-full">
-              <Button variant="outline" className="w-full">Manage Portfolios</Button>
+            <Link href="/portfolio">
+              <Button variant="outline">Manage Portfolios</Button>
             </Link>
           </CardFooter>
         </Card>
@@ -257,8 +257,8 @@ export default function DashboardPage() {
           )}
         </CardContent>
         <CardFooter>
-          <Link href="/watchlist" className="w-full">
-            <Button variant="outline" className="w-full">Manage Watchlist</Button>
+          <Link href="/watchlist">
+            <Button variant="outline">Manage Watchlist</Button>
           </Link>
         </CardFooter>
       </Card>

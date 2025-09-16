@@ -17,18 +17,25 @@ export default function CompanyPage() {
   useEffect(() => {
     const fetchCompanyData = async () => {
       try {
-        const [profileResponse, financialsResponse] = await Promise.all([
+        setLoading(true);
+        const [profileResponse, sectorComparisonResponse] = await Promise.all([
           apiClient.getCompanyProfile(symbol),
-          apiClient.getCompanyFinancials(symbol, 'income'),
+          apiClient.getSectorComparison(symbol),
         ]);
 
         if (profileResponse.success) {
           setCompany(profileResponse.data);
+        } else {
+          console.error('Failed to fetch company profile:', profileResponse.error);
         }
 
-        if (financialsResponse.success) {
-          setFinancials(financialsResponse.data || []);
+        if (sectorComparisonResponse.success) {
+          // Store sector comparison data for later use
+          console.log('Sector comparison data:', sectorComparisonResponse.data);
         }
+
+        // For now, use empty array for financials since we're using metrics instead
+        setFinancials([]);
       } catch (error) {
         console.error('Failed to fetch company data:', error);
       } finally {
@@ -41,21 +48,14 @@ export default function CompanyPage() {
     }
   }, [symbol]);
 
-  // Mock data for development
-  const mockCompany: CompanyProfile = {
-    symbol: 'AAPL',
-    name: 'Apple Inc.',
-    sector: 'Technology',
-    industry: 'Consumer Electronics',
-    marketCap: 3000000000000,
-    peRatio: 25.5,
-    price: 150.25,
-    change: 2.15,
-    changePercent: 1.45,
-    volume: 50000000,
-    avgVolume: 45000000,
-    high52Week: 180.50,
-    low52Week: 120.75,
+  // Fallback data for development
+  const fallbackCompany: CompanyProfile = {
+    symbol: symbol || 'N/A',
+    name: 'Loading...',
+    sector: 'Unknown',
+    industry: 'Unknown',
+    market_cap: 0,
+    pe_ratio: 0,
   };
 
   const mockFinancials: FinancialStatement[] = [
@@ -88,8 +88,8 @@ export default function CompanyPage() {
   ];
 
   // Use mock data for now
-  const displayCompany = company || mockCompany;
-  const displayFinancials = financials.length > 0 ? financials : mockFinancials;
+  const displayCompany = company || fallbackCompany;
+  const displayFinancials = financials.length > 0 ? financials : [];
 
   if (loading) {
     return (
@@ -117,11 +117,15 @@ export default function CompanyPage() {
           </div>
 
           <div className="text-right">
-            <div className="text-3xl font-bold text-gray-900">${displayCompany.price.toFixed(2)}</div>
-            <div className={`text-lg font-medium ${displayCompany.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-              {displayCompany.change >= 0 ? '+' : ''}{displayCompany.change.toFixed(2)} ({displayCompany.changePercent.toFixed(2)}%)
+            <div className="text-3xl font-bold text-gray-900">
+              {displayCompany.financial_metrics?.pe_ratio ? `P/E: ${displayCompany.financial_metrics.pe_ratio.toFixed(1)}` : 'N/A'}
             </div>
-            <div className="text-sm text-gray-500">Volume: {displayCompany.volume.toLocaleString()}</div>
+            <div className="text-lg font-medium text-gray-600">
+              {displayCompany.sector || 'Unknown Sector'}
+            </div>
+            <div className="text-sm text-gray-500">
+              {displayCompany.market_cap ? `Market Cap: $${(displayCompany.market_cap / 1000000000).toFixed(1)}B` : 'N/A'}
+            </div>
           </div>
         </div>
 
@@ -129,19 +133,27 @@ export default function CompanyPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 pt-6 border-t border-gray-200">
           <div>
             <div className="text-sm text-gray-500">Market Cap</div>
-            <div className="text-lg font-semibold">${(displayCompany.marketCap / 1000000000).toFixed(1)}B</div>
+            <div className="text-lg font-semibold">
+              {displayCompany.market_cap ? `$${(displayCompany.market_cap / 1000000000).toFixed(1)}B` : 'N/A'}
+            </div>
           </div>
           <div>
             <div className="text-sm text-gray-500">P/E Ratio</div>
-            <div className="text-lg font-semibold">{displayCompany.peRatio.toFixed(1)}</div>
+            <div className="text-lg font-semibold">
+              {displayCompany.financial_metrics?.pe_ratio?.toFixed(1) || 'N/A'}
+            </div>
           </div>
           <div>
-            <div className="text-sm text-gray-500">52W High</div>
-            <div className="text-lg font-semibold">${displayCompany.high52Week.toFixed(2)}</div>
+            <div className="text-sm text-gray-500">P/B Ratio</div>
+            <div className="text-lg font-semibold">
+              {displayCompany.financial_metrics?.price_to_book?.toFixed(1) || 'N/A'}
+            </div>
           </div>
           <div>
-            <div className="text-sm text-gray-500">52W Low</div>
-            <div className="text-lg font-semibold">${displayCompany.low52Week.toFixed(2)}</div>
+            <div className="text-sm text-gray-500">ROE</div>
+            <div className="text-lg font-semibold">
+              {displayCompany.financial_metrics?.roe ? `${(displayCompany.financial_metrics.roe * 100).toFixed(1)}%` : 'N/A'}
+            </div>
           </div>
         </div>
       </div>
@@ -178,55 +190,59 @@ export default function CompanyPage() {
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Company Description</h3>
                 <p className="text-gray-600 leading-relaxed">
-                  {displayCompany.name} is a leading technology company in the {displayCompany.industry.toLowerCase()} industry.
-                  The company operates in the {displayCompany.sector} sector and has established itself as a market leader
-                  with innovative products and services.
+                  {displayCompany.description || `${displayCompany.name} is a company in the ${displayCompany.industry?.toLowerCase() || 'unknown'} industry. The company operates in the ${displayCompany.sector || 'unknown'} sector.`}
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="font-medium text-gray-900 mb-3">Trading Information</h4>
+                  <h4 className="font-medium text-gray-900 mb-3">Company Information</h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Current Price</span>
-                      <span className="font-medium">${displayCompany.price.toFixed(2)}</span>
+                      <span className="text-gray-500">Symbol</span>
+                      <span className="font-medium">{displayCompany.symbol}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Day Change</span>
-                      <span className={`font-medium ${displayCompany.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                        {displayCompany.change >= 0 ? '+' : ''}{displayCompany.change.toFixed(2)} ({displayCompany.changePercent.toFixed(2)}%)
-                      </span>
+                      <span className="text-gray-500">Exchange</span>
+                      <span className="font-medium">{displayCompany.exchange || 'N/A'}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Volume</span>
-                      <span className="font-medium">{displayCompany.volume.toLocaleString()}</span>
+                      <span className="text-gray-500">Country</span>
+                      <span className="font-medium">{displayCompany.country || 'N/A'}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Avg Volume</span>
-                      <span className="font-medium">{displayCompany.avgVolume.toLocaleString()}</span>
+                      <span className="text-gray-500">CEO</span>
+                      <span className="font-medium">{displayCompany.ceo || 'N/A'}</span>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="font-medium text-gray-900 mb-3">Valuation Metrics</h4>
+                  <h4 className="font-medium text-gray-900 mb-3">Financial Metrics</h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-500">Market Cap</span>
-                      <span className="font-medium">${(displayCompany.marketCap / 1000000000).toFixed(1)}B</span>
+                      <span className="font-medium">
+                        {displayCompany.market_cap ? `$${(displayCompany.market_cap / 1000000000).toFixed(1)}B` : 'N/A'}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">P/E Ratio</span>
-                      <span className="font-medium">{displayCompany.peRatio.toFixed(1)}</span>
+                      <span className="font-medium">
+                        {displayCompany.financial_metrics?.pe_ratio?.toFixed(1) || 'N/A'}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-500">52W High</span>
-                      <span className="font-medium">${displayCompany.high52Week.toFixed(2)}</span>
+                      <span className="text-gray-500">P/B Ratio</span>
+                      <span className="font-medium">
+                        {displayCompany.financial_metrics?.price_to_book?.toFixed(1) || 'N/A'}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-500">52W Low</span>
-                      <span className="font-medium">${displayCompany.low52Week.toFixed(2)}</span>
+                      <span className="text-gray-500">ROE</span>
+                      <span className="font-medium">
+                        {displayCompany.financial_metrics?.roe ? `${(displayCompany.financial_metrics.roe * 100).toFixed(1)}%` : 'N/A'}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -290,38 +306,50 @@ export default function CompanyPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="text-sm text-gray-500">Price-to-Earnings (P/E)</div>
-                  <div className="text-2xl font-bold text-gray-900">{displayCompany.peRatio.toFixed(1)}</div>
-                  <div className="text-xs text-gray-500 mt-1">Industry Avg: 22.5</div>
+                  <div className="text-2xl font-bold text-gray-900">
+                    {displayCompany.financial_metrics?.pe_ratio?.toFixed(1) || 'N/A'}
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">Valuation Metric</div>
                 </div>
 
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="text-sm text-gray-500">Price-to-Book (P/B)</div>
-                  <div className="text-2xl font-bold text-gray-900">15.2</div>
-                  <div className="text-xs text-gray-500 mt-1">Industry Avg: 12.8</div>
+                  <div className="text-2xl font-bold text-gray-900">
+                    {displayCompany.financial_metrics?.price_to_book?.toFixed(1) || 'N/A'}
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">Valuation Metric</div>
                 </div>
 
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="text-sm text-gray-500">Debt-to-Equity</div>
-                  <div className="text-2xl font-bold text-gray-900">0.45</div>
-                  <div className="text-xs text-gray-500 mt-1">Industry Avg: 0.62</div>
+                  <div className="text-2xl font-bold text-gray-900">
+                    {displayCompany.financial_metrics?.debt_to_equity?.toFixed(2) || 'N/A'}
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">Financial Strength</div>
                 </div>
 
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="text-sm text-gray-500">Return on Equity</div>
-                  <div className="text-2xl font-bold text-gray-900">28.5%</div>
-                  <div className="text-xs text-gray-500 mt-1">Industry Avg: 18.2%</div>
+                  <div className="text-2xl font-bold text-gray-900">
+                    {displayCompany.financial_metrics?.roe ? `${(displayCompany.financial_metrics.roe * 100).toFixed(1)}%` : 'N/A'}
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">Profitability</div>
                 </div>
 
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="text-sm text-gray-500">Profit Margin</div>
-                  <div className="text-2xl font-bold text-gray-900">25.8%</div>
-                  <div className="text-xs text-gray-500 mt-1">Industry Avg: 15.6%</div>
+                  <div className="text-sm text-gray-500">Net Margin</div>
+                  <div className="text-2xl font-bold text-gray-900">
+                    {displayCompany.financial_metrics?.net_margin ? `${(displayCompany.financial_metrics.net_margin * 100).toFixed(1)}%` : 'N/A'}
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">Profitability</div>
                 </div>
 
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="text-sm text-gray-500">Current Ratio</div>
-                  <div className="text-2xl font-bold text-gray-900">1.85</div>
-                  <div className="text-xs text-gray-500 mt-1">Industry Avg: 1.45</div>
+                  <div className="text-2xl font-bold text-gray-900">
+                    {displayCompany.financial_metrics?.current_ratio?.toFixed(2) || 'N/A'}
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">Liquidity</div>
                 </div>
               </div>
             </div>

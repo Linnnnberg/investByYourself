@@ -35,11 +35,11 @@ This document outlines the plan to integrate the Next.js frontend with the FastA
 class ApiClient {
   private baseURL = 'http://localhost:8000/api/v1'
   private authToken?: string
-  
+
   constructor(authToken?: string) {
     this.authToken = authToken
   }
-  
+
   private async request<T>(endpoint: string, options?: RequestInit): Promise<T> {
     const url = `${this.baseURL}${endpoint}`
     const headers = {
@@ -47,13 +47,13 @@ class ApiClient {
       ...(this.authToken && { Authorization: `Bearer ${this.authToken}` }),
       ...options?.headers,
     }
-    
+
     const response = await fetch(url, { ...options, headers })
-    
+
     if (!response.ok) {
       throw new ApiError(response.status, await response.text())
     }
-    
+
     return response.json()
   }
 }

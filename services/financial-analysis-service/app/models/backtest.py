@@ -8,8 +8,18 @@ SQLAlchemy model for backtest executions.
 from datetime import datetime
 
 from app.core.database import Base
-from sqlalchemy import (JSON, Boolean, Column, Date, DateTime, ForeignKey,
-                        Integer, Numeric, String, Text)
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    Column,
+    Date,
+    DateTime,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
+    Text,
+)
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 

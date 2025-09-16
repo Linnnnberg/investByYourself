@@ -48,7 +48,7 @@ export default function TestApiPage() {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">API Integration Test</h1>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* API Status */}
           <div className="bg-white rounded-lg shadow p-6">
@@ -95,7 +95,7 @@ export default function TestApiPage() {
               <div className="text-red-600">{error}</div>
             </div>
           )}
-          
+
           {loading ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>

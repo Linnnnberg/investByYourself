@@ -7,16 +7,23 @@ from datetime import datetime
 from typing import Dict, List, Optional
 from uuid import UUID, uuid4
 
-from ..models.investment_profile import (Diversification, FinancialGoals,
-                                         IncomeNeeds, InvestmentExperience,
-                                         InvestmentProfile,
-                                         InvestmentProfileCreate,
-                                         InvestmentProfileSummary,
-                                         InvestmentProfileUpdate,
-                                         InvestmentRecommendation,
-                                         LiquidityNeeds, MarketVolatility,
-                                         Rebalancing, RiskScore, RiskTolerance,
-                                         TimeHorizon)
+from ..models.investment_profile import (
+    Diversification,
+    FinancialGoals,
+    IncomeNeeds,
+    InvestmentExperience,
+    InvestmentProfile,
+    InvestmentProfileCreate,
+    InvestmentProfileSummary,
+    InvestmentProfileUpdate,
+    InvestmentRecommendation,
+    LiquidityNeeds,
+    MarketVolatility,
+    Rebalancing,
+    RiskScore,
+    RiskTolerance,
+    TimeHorizon,
+)
 
 
 class InvestmentProfileService:

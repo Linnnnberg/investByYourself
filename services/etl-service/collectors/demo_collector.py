@@ -12,8 +12,7 @@ from typing import Any, Dict, List, Optional
 
 import pandas as pd
 import yfinance as yf
-from models.test_universe import (UniverseManager, get_stock_info,
-                                  get_test_symbols)
+from models.test_universe import UniverseManager, get_stock_info, get_test_symbols
 
 
 class DemoDataCollector:
@@ -385,9 +384,7 @@ class DemoDataCollector:
         if symbols is None:
             symbols = get_test_symbols()
 
-        print(
-            f"🚀 Starting comprehensive data collection for {len(symbols)} symbols..."
-        )
+        print(f"🚀 Starting comprehensive data collection for {len(symbols)} symbols...")
         start_time = time.time()
 
         # Collect all data types

@@ -3,6 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { DashboardPageLayout, StatsCard, EmptyState } from "@/components/layouts";
 import { Plus, TrendingUp, TrendingDown, Minus } from "lucide-react";
 
 export default function WatchlistPage() {
@@ -46,20 +47,32 @@ export default function WatchlistPage() {
     }
   ];
 
+  const handleAddStock = () => {
+    console.log('Add stock clicked');
+    // TODO: Implement add stock functionality
+  };
+
+  const handleRemoveStock = (symbol: string) => {
+    console.log('Remove stock:', symbol);
+    // TODO: Implement remove stock functionality
+  };
+
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Watchlist</h1>
-          <p className="text-muted-foreground">
-            Track your favorite stocks and monitor market movements
-          </p>
-        </div>
-        <Button>
-          <Plus className="mr-2 h-4 w-4" />
-          Add Stock
-        </Button>
-      </div>
+    <DashboardPageLayout
+      title="Watchlist"
+      description="Track your favorite stocks and monitor market movements"
+      actions={[
+        {
+          label: 'Add Stock',
+          onClick: handleAddStock,
+          icon: <Plus className="h-4 w-4" />
+        }
+      ]}
+      status={[
+        { label: 'API', value: 'Connected', color: 'green' },
+        { label: 'Backend', value: 'FastAPI', color: 'blue' }
+      ]}
+    >
 
       <div className="grid gap-4">
         {watchlistItems.map((item) => (
@@ -100,6 +113,6 @@ export default function WatchlistPage() {
           </Card>
         ))}
       </div>
-    </div>
+    </DashboardPageLayout>
   );
 }

@@ -226,9 +226,15 @@ export const Card: React.FC<CardProps> = ({
   const CardElement = isInteractive ? 'div' : 'div';
   const cardProps = isInteractive ? { onClick: handleClick, role: 'button', tabIndex: 0 } : {};
 
+  // Build class names array and filter out empty strings
+  const classNames = [
+    'design-system-card',
+    className
+  ].filter(Boolean).join(' ');
+
   return (
     <CardElement
-      className={`design-system-card ${className}`}
+      className={classNames}
       style={cardStyle}
       {...cardProps}
     >
@@ -259,29 +265,38 @@ export const Card: React.FC<CardProps> = ({
 export const CardHeader: React.FC<{ children: React.ReactNode; className?: string }> = ({
   children,
   className = '',
-}) => (
-  <div className={`card-header ${className}`} style={cardStyles.header}>
-    {children}
-  </div>
-);
+}) => {
+  const classNames = ['card-header', className].filter(Boolean).join(' ');
+  return (
+    <div className={classNames} style={cardStyles.header}>
+      {children}
+    </div>
+  );
+};
 
 export const CardContent: React.FC<{ children: React.ReactNode; className?: string }> = ({
   children,
   className = '',
-}) => (
-  <div className={`card-content ${className}`}>
-    {children}
-  </div>
-);
+}) => {
+  const classNames = ['card-content', className].filter(Boolean).join(' ');
+  return (
+    <div className={classNames}>
+      {children}
+    </div>
+  );
+};
 
 export const CardFooter: React.FC<{ children: React.ReactNode; className?: string }> = ({
   children,
   className = '',
-}) => (
-  <div className={`card-footer ${className}`} style={cardStyles.footer}>
-    {children}
-  </div>
-);
+}) => {
+  const classNames = ['card-footer', className].filter(Boolean).join(' ');
+  return (
+    <div className={classNames} style={cardStyles.footer}>
+      {children}
+    </div>
+  );
+};
 
 // Export default
 export default Card;

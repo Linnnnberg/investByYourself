@@ -5,8 +5,12 @@ Tech-021: ETL Service Extraction
 Simple test to verify the Magnificent 7 stocks test universe is configured correctly.
 """
 
-from models.test_universe import (get_magnificent_7_universe, get_stock_info,
-                                  get_test_symbols, get_universe_manager)
+from models.test_universe import (
+    get_magnificent_7_universe,
+    get_stock_info,
+    get_test_symbols,
+    get_universe_manager,
+)
 
 
 def test_universe_configuration():

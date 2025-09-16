@@ -9,11 +9,13 @@ from uuid import UUID
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
 
-from ....models.investment_profile import (InvestmentProfile,
-                                           InvestmentProfileCreate,
-                                           InvestmentProfileSummary,
-                                           InvestmentProfileUpdate,
-                                           ProfileAssessment)
+from ....models.investment_profile import (
+    InvestmentProfile,
+    InvestmentProfileCreate,
+    InvestmentProfileSummary,
+    InvestmentProfileUpdate,
+    ProfileAssessment,
+)
 from ....services.investment_profile import investment_profile_service
 
 router = APIRouter()

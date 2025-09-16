@@ -23,9 +23,11 @@ import streamlit as st
 # Add the project root to the path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
-from scripts.financial_analysis.data_explorer import (CompanyProfile,
-                                                      FinancialCharts,
-                                                      FinancialDataExplorer)
+from scripts.financial_analysis.data_explorer import (
+    CompanyProfile,
+    FinancialCharts,
+    FinancialDataExplorer,
+)
 
 # Page configuration
 st.set_page_config(

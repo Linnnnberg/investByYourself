@@ -8,8 +8,10 @@ Main FastAPI application entry point with comprehensive API structure.
 
 import logging
 import os
+import sys
 import time
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import AsyncGenerator
 
 from fastapi import FastAPI, Request, Response
@@ -19,11 +21,25 @@ from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import JSONResponse
 
+# Add the parent directory to the path to import env_loader
+sys.path.append(str(Path(__file__).parent.parent))
+
 from src.api.v1.router import api_router
 from src.core.config import settings
 from src.core.database_init import close_database, init_database
 from src.core.exceptions import APIException
 from src.core.logging import setup_logging
+
+# Load environment configuration
+try:
+    from env_loader import load_environment
+
+    load_environment()
+except ImportError:
+    # Fallback to direct environment loading
+    from dotenv import load_dotenv
+
+    load_dotenv()
 
 # Setup logging
 setup_logging()

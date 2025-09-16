@@ -39,9 +39,6 @@ const buttonStyles = {
     cursor: 'pointer',
     transition: designSystem.transitions.fast,
     outline: 'none',
-    '&:focus-visible': {
-      boxShadow: `0 0 0 3px ${colors.primary[200]}`,
-    },
   },
 
   // Size variants
@@ -74,100 +71,28 @@ const buttonStyles = {
     primary: {
       backgroundColor: colors.primary[500],
       color: colors.text.inverse,
-      '&:hover': {
-        backgroundColor: colors.primary[600],
-      },
-      '&:active': {
-        backgroundColor: colors.primary[700],
-      },
-      '&:disabled': {
-        backgroundColor: colors.neutral[300],
-        color: colors.text.disabled,
-        cursor: 'not-allowed',
-      },
     },
     secondary: {
       backgroundColor: colors.secondary[100],
       color: colors.text.primary,
       border: `1px solid ${colors.secondary[300]}`,
-      '&:hover': {
-        backgroundColor: colors.secondary[200],
-        borderColor: colors.secondary[400],
-      },
-      '&:active': {
-        backgroundColor: colors.secondary[300],
-        borderColor: colors.secondary[500],
-      },
-      '&:disabled': {
-        backgroundColor: colors.neutral[100],
-        borderColor: colors.neutral[300],
-        color: colors.text.disabled,
-        cursor: 'not-allowed',
-      },
     },
     outline: {
       backgroundColor: 'transparent',
       color: colors.primary[600],
       border: `2px solid ${colors.primary[500]}`,
-      '&:hover': {
-        backgroundColor: colors.primary[50],
-        borderColor: colors.primary[600],
-      },
-      '&:active': {
-        backgroundColor: colors.primary[100],
-        borderColor: colors.primary[700],
-      },
-      '&:disabled': {
-        borderColor: colors.neutral[300],
-        color: colors.text.disabled,
-        cursor: 'not-allowed',
-      },
     },
     ghost: {
       backgroundColor: 'transparent',
       color: colors.text.secondary,
-      '&:hover': {
-        backgroundColor: colors.neutral[100],
-        color: colors.text.primary,
-      },
-      '&:active': {
-        backgroundColor: colors.neutral[200],
-        color: colors.text.primary,
-      },
-      '&:disabled': {
-        color: colors.text.disabled,
-        cursor: 'not-allowed',
-      },
     },
     danger: {
       backgroundColor: colors.danger[500],
       color: colors.text.inverse,
-      '&:hover': {
-        backgroundColor: colors.danger[600],
-      },
-      '&:active': {
-        backgroundColor: colors.danger[700],
-      },
-      '&:disabled': {
-        backgroundColor: colors.neutral[300],
-        color: colors.text.disabled,
-        cursor: 'not-allowed',
-      },
     },
     success: {
       backgroundColor: colors.success[500],
       color: colors.text.inverse,
-      '&:hover': {
-        backgroundColor: colors.success[600],
-      },
-      '&:active': {
-        backgroundColor: colors.success[700],
-      },
-      '&:disabled': {
-        backgroundColor: colors.neutral[300],
-        color: colors.text.disabled,
-        cursor: 'not-allowed',
-      },
     },
   },
 
@@ -269,19 +194,29 @@ export const Button: React.FC<ButtonProps> = ({
     );
   };
 
+  // Build class names array and filter out empty strings
+  const classNames = [
+    'design-system-button',
+    `design-system-button-${variant}`,
+    `design-system-button-${size}`,
+    isDisabled ? 'design-system-button-disabled' : '',
+    loading ? 'design-system-button-loading' : '',
+    className
+  ].filter(Boolean).join(' ');
+
   return (
     <button
-      className={`design-system-button ${className}`}
+      className={classNames}
       style={buttonStyle as React.CSSProperties}
       disabled={isDisabled}
       {...props}
     >
       {loading && renderLoadingSpinner()}
       {icon && iconPosition === 'left' && renderIcon()}
-      <span className="button-content">{children}</span>
+      {children}
       {icon && iconPosition === 'right' && renderIcon()}
 
-      {/* Add CSS for animations */}
+      {/* Add CSS for animations and hover states */}
       <style jsx>{`
         @keyframes spin {
           from { transform: rotate(0deg); }
@@ -300,6 +235,76 @@ export const Button: React.FC<ButtonProps> = ({
 
         .design-system-button:focus-visible {
           box-shadow: 0 0 0 3px ${colors.primary[200]};
+        }
+
+        .design-system-button-primary:hover:not(:disabled) {
+          background-color: ${colors.primary[600]};
+        }
+
+        .design-system-button-primary:active:not(:disabled) {
+          background-color: ${colors.primary[700]};
+        }
+
+        .design-system-button-secondary:hover:not(:disabled) {
+          background-color: ${colors.secondary[200]};
+          border-color: ${colors.secondary[400]};
+        }
+
+        .design-system-button-secondary:active:not(:disabled) {
+          background-color: ${colors.secondary[300]};
+          border-color: ${colors.secondary[500]};
+        }
+
+        .design-system-button-outline:hover:not(:disabled) {
+          background-color: ${colors.primary[50]};
+          border-color: ${colors.primary[600]};
+        }
+
+        .design-system-button-outline:active:not(:disabled) {
+          background-color: ${colors.primary[100]};
+          border-color: ${colors.primary[700]};
+        }
+
+        .design-system-button-ghost:hover:not(:disabled) {
+          background-color: ${colors.neutral[100]};
+          color: ${colors.text.primary};
+        }
+
+        .design-system-button-ghost:active:not(:disabled) {
+          background-color: ${colors.neutral[200]};
+          color: ${colors.text.primary};
+        }
+
+        .design-system-button-danger:hover:not(:disabled) {
+          background-color: ${colors.danger[600]};
+        }
+
+        .design-system-button-danger:active:not(:disabled) {
+          background-color: ${colors.danger[700]};
+        }
+
+        .design-system-button-success:hover:not(:disabled) {
+          background-color: ${colors.success[600]};
+        }
+
+        .design-system-button-success:active:not(:disabled) {
+          background-color: ${colors.success[700]};
+        }
+
+        .design-system-button-disabled {
+          background-color: ${colors.neutral[300]} !important;
+          color: ${colors.text.disabled} !important;
+          cursor: not-allowed !important;
+        }
+
+        .design-system-button-outline.design-system-button-disabled {
+          border-color: ${colors.neutral[300]} !important;
+          background-color: transparent !important;
+        }
+
+        .design-system-button-loading {
+          cursor: wait;
+          opacity: 0.7;
         }
       `}</style>
     </button>

@@ -602,9 +602,7 @@ def main():
 
     # 1) Business Segments
     lines.append("\n## 1) 业务分部 (Business Segments)\n")
-    lines.append(
-        "> 数据优先来自年报/投资者关系；这里允许手动或 JSON 输入（--segments_json）\n"
-    )
+    lines.append("> 数据优先来自年报/投资者关系；这里允许手动或 JSON 输入（--segments_json）\n")
     try:
         lines.append(segments.to_markdown(index=False))
     except Exception:

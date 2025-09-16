@@ -15,13 +15,18 @@ from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from src.api.v1.endpoints.investment_profile import \
-    router as investment_profile_router
+from src.api.v1.endpoints.analysis import router as analysis_router
+from src.api.v1.endpoints.investment_profile import router as investment_profile_router
 from src.api.v1.endpoints.portfolio import router as portfolio_router
 from src.middleware.rate_limiting import limiter, setup_rate_limiting
+
 # Import portfolio models and endpoints
-from src.models.portfolio import (HoldingCreate, PortfolioCreate,
-                                  PortfolioUpdate, TransactionCreate)
+from src.models.portfolio import (
+    HoldingCreate,
+    PortfolioCreate,
+    PortfolioUpdate,
+    TransactionCreate,
+)
 from src.services.database import db_service
 
 # Setup basic logging
@@ -90,6 +95,13 @@ def create_application() -> FastAPI:
         investment_profile_router,
         prefix="/api/v1/investment-profile",
         tags=["Investment Profile"],
+    )
+
+    # Include analysis router
+    app.include_router(
+        analysis_router,
+        prefix="/api/v1/analysis",
+        tags=["Financial Analysis"],
     )
 
     # Add health check endpoint
