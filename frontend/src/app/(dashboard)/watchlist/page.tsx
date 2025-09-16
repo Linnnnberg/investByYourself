@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DashboardPageLayout, StatsCard, EmptyState } from "@/components/layouts";
 import { Plus, TrendingUp, TrendingDown, Minus } from "lucide-react";
+import Link from "next/link";
 
 export default function WatchlistPage() {
   // Mock watchlist data
@@ -79,8 +80,10 @@ export default function WatchlistPage() {
           <Card key={item.symbol} className="hover:shadow-md transition-shadow">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-lg">{item.symbol}</CardTitle>
+                <div className="flex-1">
+                  <Link href={`/companies/${item.symbol}`} className="hover:underline">
+                    <CardTitle className="text-lg text-blue-600 hover:text-blue-800">{item.symbol}</CardTitle>
+                  </Link>
                   <CardDescription className="text-sm">{item.name}</CardDescription>
                 </div>
                 <div className="text-right">
