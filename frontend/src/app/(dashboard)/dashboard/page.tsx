@@ -145,7 +145,9 @@ export default function DashboardPage() {
                       <span className="text-blue-600 font-semibold">{company.symbol[0]}</span>
                     </div>
                     <div>
-                      <div className="font-semibold">{company.symbol}</div>
+                      <Link href={`/companies/${company.symbol}`}>
+                        <div className="font-semibold text-blue-600 hover:text-blue-800 hover:underline cursor-pointer">{company.symbol}</div>
+                      </Link>
                       <div className="text-sm text-gray-600">{company.name}</div>
                     </div>
                   </div>
@@ -230,7 +232,9 @@ export default function DashboardPage() {
                 <div key={company.id} className="p-4 border rounded-lg">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center space-x-2">
-                      <span className="font-semibold">{company.symbol}</span>
+                      <Link href={`/companies/${company.symbol}`}>
+                        <span className="font-semibold text-blue-600 hover:text-blue-800 hover:underline cursor-pointer">{company.symbol}</span>
+                      </Link>
                       <span className="text-sm text-gray-600">{company.name}</span>
                     </div>
                     <Button
