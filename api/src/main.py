@@ -24,22 +24,16 @@ from fastapi.responses import JSONResponse
 # Add the parent directory to the path to import env_loader
 sys.path.append(str(Path(__file__).parent.parent))
 
+# Load environment configuration
+from dotenv import load_dotenv
+
 from src.api.v1.router import api_router
 from src.core.config import settings
 from src.core.database_init import close_database, init_database
 from src.core.exceptions import APIException
 from src.core.logging import setup_logging
 
-# Load environment configuration
-try:
-    from env_loader import load_environment
-
-    load_environment()
-except ImportError:
-    # Fallback to direct environment loading
-    from dotenv import load_dotenv
-
-    load_dotenv()
+load_dotenv()
 
 # Setup logging
 setup_logging()
