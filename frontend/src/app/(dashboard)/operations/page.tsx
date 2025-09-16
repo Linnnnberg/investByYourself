@@ -70,11 +70,11 @@ export default function OperationsPage() {
               <p className="text-gray-600">Manage all database entities with full CRUD operations</p>
             </div>
             <div className="flex items-center space-x-3">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="small">
                 <Database className="h-4 w-4 mr-2" />
                 Database Status
               </Button>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="small">
                 <Wrench className="h-4 w-4 mr-2" />
                 System Tools
               </Button>
@@ -139,21 +139,21 @@ export default function OperationsPage() {
                 <div className="flex items-center space-x-2">
                   <Button
                     onClick={() => handleCRUDOperation('create', selectedEntity)}
-                    size="sm"
+                    size="small"
                   >
                     Add New
                   </Button>
                   <Button
                     variant="outline"
                     onClick={() => handleCRUDOperation('export', selectedEntity)}
-                    size="sm"
+                    size="small"
                   >
                     Export
                   </Button>
                   <Button
                     variant="outline"
                     onClick={() => handleCRUDOperation('import', selectedEntity)}
-                    size="sm"
+                    size="small"
                   >
                     Import
                   </Button>

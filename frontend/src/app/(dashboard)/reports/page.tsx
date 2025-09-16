@@ -76,7 +76,7 @@ export default function ReportsPage() {
                     {report.type}
                   </div>
                 </div>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="small">
                   <Download className="h-4 w-4 mr-1" />
                   Download
                 </Button>
