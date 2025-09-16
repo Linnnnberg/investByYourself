@@ -177,12 +177,52 @@ try {
 - **Risk Level**: Low
 - **Business Value**: High - Enhanced company research capabilities
 
-#### **Priority 3: Portfolio Analysis & Risk Tools (Story-007) - HIGH** 🎯
-- **Why Third Priority**: Essential investment platform feature, builds on strategy module
-- **Timeline**: Weeks 9-12
-- **Dependencies**: Story-015 (Strategy Module)
-- **Risk Level**: Medium
-- **Business Value**: High - Portfolio management and risk assessment
+#### **Priority 3: Portfolio Construction & Analysis Page (Story-007) - HIGH** 🎯
+- **Why Third Priority**: Essential investment platform feature, comprehensive portfolio management
+- **Timeline**: Weeks 30-32 (6-8 weeks)
+- **Dependencies**: Story-005 ✅ COMPLETED, Tech-036 (Authentication) - PENDING, Story-038 (Historical Data) - PENDING
+- **Risk Level**: Medium - Complex UI and analysis implementation
+- **Business Value**: High - Complete portfolio management and risk assessment
+- **Implementation Plan**: `docs/portfolio-page-implementation-plan.md`
+- **Specification Analysis**: `docs/portfolio-specification-analysis.md`
+
+**Phase 1: Core Portfolio Management (Weeks 30-31)**
+- Investment profile integration for portfolio creation
+- Portfolio construction with holdings management
+- Basic portfolio metrics and allocation analysis
+- Drag-and-drop portfolio editing interface
+
+**Phase 2: Advanced Analytics (Weeks 32-33)**
+- Risk analysis (volatility, beta, VaR, drawdown)
+- Performance analytics (Sharpe ratio, benchmark comparison)
+- Concentration analysis and correlation matrix
+- Professional portfolio visualization
+
+**Phase 3: Backtesting & Simulation (Weeks 34-35)**
+- Historical performance analysis with customizable time ranges
+- Portfolio vs benchmark comparison
+- Monte Carlo simulations (Phase 2+)
+- Stress testing scenarios (2008, COVID-2020)
+
+**Phase 4: Rebalancing & Optimization (Weeks 36-37)**
+- Automated rebalancing triggers (threshold, time, risk-based)
+- Portfolio optimization (MVO, risk parity, HRP)
+- Transaction cost analysis and tax-efficient rebalancing
+- Rebalancing history and suggestions
+
+**Phase 5: Reporting & Export (Weeks 38-39)**
+- Professional PDF report generation
+- CSV/Excel data export functionality
+- Portfolio holdings and performance summaries
+- Benchmark comparison charts
+
+**Key Features**:
+- Investment profile integration for personalized portfolio construction
+- Real-time portfolio tracking and performance metrics
+- Advanced risk analysis and portfolio optimization
+- Comprehensive backtesting with historical data
+- Professional reporting and export capabilities
+- Drag-and-drop portfolio editing and rebalancing
 
 #### **Priority 4: Real-time Market Dashboard (Story-013) - HIGH** 📈
 - **Why Fourth Priority**: User engagement feature, leverages existing data sources
