@@ -7,6 +7,7 @@
 **Related Documents:**
 - **[📈 Development Plan](investbyyourself_plan.md)** - Main project roadmap and architecture
 - **[📋 Master TODO List](../MASTER_TODO.md)** - Complete task tracking and progress
+- **[🚨 Troubleshooting Guide](troubleshooting/portfolio-management-issues.md)** - Current system issues and fixes
 - **[🔍 Company Analysis Enhancement Summary](company_analysis_enhancement_summary.md)** - Enhanced company analysis capabilities
 - **[🏗️ ETL Architecture Plan](etl_architecture_plan.md)** - Technical implementation details
 - **[🔍 Data Source Analysis](data_source_analysis.md)** - API and data source strategy

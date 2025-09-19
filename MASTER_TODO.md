@@ -29,9 +29,9 @@
 
 ### **🚀 FUNCTIONALITY-FIRST PRIORITY PLAN**
 
-**Current Status**: ✅ **Investment Profile & Portfolio Management COMPLETED** - Full risk assessment and portfolio building system operational
-**Next Phase**: Workflow Engine for Allocation Framework (Story-009-MVP) - 60% Complete, Week 2 in progress
-**Immediate Priority**: Enhanced Step Components for Workflow Engine (Week 2 Day 1)
+**Current Status**: 🚨 **PORTFOLIO MANAGEMENT SYSTEM - TROUBLESHOOTING REQUIRED** - Core functionality implemented but experiencing issues
+**Next Phase**: Resolve portfolio management issues and complete workflow integration
+**Immediate Priority**: HIGH PRIORITY TROUBLESHOOTING - Portfolio display and API connectivity issues
 
 #### **Priority 0: Data Population for Company Analysis (Story-032) - ✅ COMPLETED** 🎉
 - **Status**: ✅ COMPLETED - Database fully populated with 35 companies, 490 financial ratios, and market data
@@ -39,6 +39,56 @@
 - **Dependencies**: Story-005 ✅ COMPLETED, Tech-008 ✅ COMPLETED, Tech-009 ✅ COMPLETED
 - **Risk Level**: Low - Data population completed successfully
 - **Business Value**: Critical - Enable company analysis and sector benchmarking features
+
+#### **Priority 0: Portfolio Management System Troubleshooting (Fix-001) - 🚨 HIGH PRIORITY** 🔥
+- **Status**: 🚨 IN PROGRESS - Portfolio management system experiencing issues after implementation
+- **Timeline**: Immediate - Blocking core functionality
+- **Dependencies**: Tech-028.1 ✅ COMPLETED, Portfolio system implemented
+- **Risk Level**: HIGH - Core portfolio functionality not working
+- **Business Value**: CRITICAL - Portfolio management is core platform feature
+- **Issues Identified**:
+  - Portfolio creation workflow returning null instead of proper results
+  - API 404 errors preventing portfolio display
+  - Frontend not showing created portfolios in UI
+  - Potential API endpoint URL mismatches
+  - Data format inconsistencies between frontend and backend
+
+#### **🔧 Fix-001 Troubleshooting Implementation Plan**
+
+**Phase 1: Issue Identification (Immediate)**
+- [ ] Identify specific error messages and symptoms from frontend/backend
+- [ ] Check browser console for JavaScript errors and network issues
+- [ ] Test API server connectivity and endpoint responses
+- [ ] Verify database connection and portfolio data integrity
+- [ ] Document exact steps to reproduce issues
+
+**Phase 2: API Connectivity Resolution (Day 1)**
+- [ ] Test all portfolio API endpoints individually
+- [ ] Verify API endpoint URLs match between frontend and backend
+- [ ] Check API response format consistency
+- [ ] Fix any 404 errors in API routing
+- [ ] Validate API authentication and headers
+
+**Phase 3: Frontend Integration Fix (Day 1)**
+- [ ] Fix portfolio data loading in frontend components
+- [ ] Resolve data format mismatches between API and UI components
+- [ ] Test portfolio creation workflow end-to-end
+- [ ] Fix portfolio list display issues
+- [ ] Validate all CRUD operations work correctly
+
+**Phase 4: Database & Workflow Integration (Day 1-2)**
+- [ ] Verify portfolio data persistence in database
+- [ ] Fix workflow execution result handling
+- [ ] Test complete portfolio creation flow
+- [ ] Validate portfolio updates and deletions
+- [ ] Ensure data consistency across all operations
+
+**Phase 5: Testing & Validation (Day 2)**
+- [ ] Run comprehensive end-to-end tests
+- [ ] Test all portfolio management features
+- [ ] Validate error handling and edge cases
+- [ ] Performance testing for portfolio operations
+- [ ] User acceptance testing for portfolio UI
 
 #### **Priority 1: Frontend-Backend API Integration Fix (Tech-028.1) - ✅ COMPLETED** 🎉
 - **Status**: ✅ COMPLETED - Frontend successfully connected to FastAPI backend
