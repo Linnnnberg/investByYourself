@@ -15,7 +15,7 @@ import {
   StepExecutionRequest
 } from '@/types/workflow';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1` : 'http://localhost:8000/api/v1';
 
 class WorkflowApiError extends Error {
   constructor(

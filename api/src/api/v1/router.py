@@ -15,7 +15,7 @@ from src.api.v1.endpoints import (
     investment_profile,
     market_data,
     notifications,
-    portfolio,
+    portfolios,
     watchlist,
     websocket,
     workflows,
@@ -26,10 +26,6 @@ api_router = APIRouter()
 
 # Include all endpoint routers
 api_router.include_router(auth.router, prefix="/auth", tags=["Authentication"])
-
-api_router.include_router(
-    portfolio.router, prefix="/portfolio", tags=["Portfolio Management"]
-)
 
 api_router.include_router(
     investment_profile.router, prefix="/investment-profile", tags=["Investment Profile"]
@@ -51,6 +47,10 @@ api_router.include_router(
 
 api_router.include_router(
     workflows.router, prefix="/workflows", tags=["Workflow Management"]
+)
+
+api_router.include_router(
+    portfolios.router, prefix="/portfolios", tags=["Portfolio Management"]
 )
 
 api_router.include_router(websocket.router, prefix="/ws", tags=["WebSocket"])

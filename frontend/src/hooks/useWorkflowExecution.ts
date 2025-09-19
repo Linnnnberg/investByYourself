@@ -68,7 +68,19 @@ export function useWorkflowExecution(options: UseWorkflowExecutionOptions = {}):
         if (['completed', 'failed', 'cancelled'].includes(currentStatus.status)) {
           setIsLoading(false);
           if (currentStatus.status === 'completed') {
-            onComplete?.(execution as WorkflowExecutionResponse);
+            // Create a proper WorkflowExecutionResponse from the status
+            const completedExecution: WorkflowExecutionResponse = {
+              execution_id: currentStatus.execution_id,
+              workflow_id: currentStatus.workflow_id,
+              status: currentStatus.status,
+              current_step: currentStatus.current_step,
+              progress: currentStatus.progress,
+              results: currentStatus.step_results || {},
+              error_message: currentStatus.error_message,
+              started_at: currentStatus.started_at,
+              completed_at: currentStatus.completed_at,
+            };
+            onComplete?.(completedExecution);
           }
           return;
         }

@@ -1,243 +1,235 @@
 #!/usr/bin/env python3
 """
-InvestByYourself API Portfolio Models
-Tech-028: API Implementation
+Portfolio Database Models
+InvestByYourself Financial Platform
 
-Data models for portfolio management.
+Database models for portfolio management.
 """
 
 from datetime import datetime
-from decimal import Decimal
 from enum import Enum
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
+from uuid import UUID, uuid4
 
-from pydantic import BaseModel, Field, field_validator
+from sqlalchemy import JSON, Column, DateTime, Float, Integer, String, Text
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+
+Base = declarative_base()
 
 
-class AssetType(str, Enum):
+class AssetType(Enum):
     """Asset type enumeration."""
 
-    STOCK = "stock"
-    BOND = "bond"
-    ETF = "etf"
-    MUTUAL_FUND = "mutual_fund"
-    CRYPTO = "crypto"
-    COMMODITY = "commodity"
-    CASH = "cash"
-    OTHER = "other"
+    STOCK = "Stock"
+    ETF = "ETF"
+    BOND = "Bond"
+    CASH = "Cash"
+    ALTERNATIVE = "Alternative"
+    COMMODITY = "Commodity"
+    REAL_ESTATE = "Real Estate"
 
 
-class TransactionType(str, Enum):
-    """Transaction type enumeration."""
+class RiskLevel(Enum):
+    """Risk level enumeration."""
 
-    BUY = "buy"
-    SELL = "sell"
-    DIVIDEND = "dividend"
-    SPLIT = "split"
-    MERGE = "merge"
-    TRANSFER_IN = "transfer_in"
-    TRANSFER_OUT = "transfer_out"
+    LOW = "Low"
+    MEDIUM = "Medium"
+    HIGH = "High"
 
 
-class RiskProfile(str, Enum):
-    """Risk profile enumeration."""
+class PortfolioStatus(Enum):
+    """Portfolio status enumeration."""
 
-    CONSERVATIVE = "conservative"
-    MODERATE = "moderate"
-    AGGRESSIVE = "aggressive"
-
-
-class PortfolioBase(BaseModel):
-    """Base portfolio model."""
-
-    name: str = Field(..., min_length=1, max_length=100, description="Portfolio name")
-    description: Optional[str] = Field(
-        None, max_length=500, description="Portfolio description"
-    )
-    risk_profile: RiskProfile = Field(
-        default=RiskProfile.MODERATE, description="Risk tolerance level"
-    )
-    target_allocation: Optional[dict] = Field(
-        None, description="Target asset allocation percentages"
-    )
-    is_active: bool = Field(default=True, description="Whether portfolio is active")
+    DRAFT = "Draft"
+    ACTIVE = "Active"
+    ARCHIVED = "Archived"
 
 
-class PortfolioCreate(PortfolioBase):
-    """Portfolio creation model."""
+class Portfolio(Base):
+    """Portfolio model for storing user portfolios."""
 
-    pass
+    __tablename__ = "portfolios"
 
+    # Primary key
+    id = Column(String, primary_key=True, default=lambda: str(uuid4()))
 
-class PortfolioUpdate(BaseModel):
-    """Portfolio update model."""
+    # User identification
+    user_id = Column(String, nullable=False, index=True)
 
-    name: Optional[str] = Field(None, min_length=1, max_length=100)
-    description: Optional[str] = Field(None, max_length=500)
-    risk_profile: Optional[RiskProfile] = None
-    target_allocation: Optional[dict] = None
-    is_active: Optional[bool] = None
+    # Portfolio basic info
+    name = Column(String(255), nullable=False)
+    description = Column(Text)
 
+    # Portfolio values
+    value = Column(Float, default=0.0)
+    change = Column(Float, default=0.0)
+    change_percent = Column(Float, default=0.0)
 
-class Portfolio(PortfolioBase):
-    """Portfolio model with ID and timestamps."""
+    # Allocation data (stored as JSON)
+    allocation = Column(JSON, default=dict)
 
-    id: int = Field(..., description="Unique portfolio ID")
-    user_id: int = Field(..., description="Owner user ID")
-    created_at: datetime = Field(..., description="Creation timestamp")
-    updated_at: datetime = Field(..., description="Last update timestamp")
-    total_value: Decimal = Field(
-        default=Decimal("0.00"), description="Total portfolio value"
-    )
-    total_cost: Decimal = Field(default=Decimal("0.00"), description="Total cost basis")
-    total_gain_loss: Decimal = Field(
-        default=Decimal("0.00"), description="Total unrealized gain/loss"
-    )
-    total_gain_loss_pct: Decimal = Field(
-        default=Decimal("0.00"), description="Total gain/loss percentage"
-    )
+    # Risk and status
+    risk_level = Column(String(20), default="Medium")  # Low, Medium, High
+    status = Column(String(20), default="Draft")  # Draft, Active, Archived
 
-    class Config:
-        from_attributes = True
+    # Workflow integration
+    workflow_id = Column(String, nullable=True)
+    execution_id = Column(String, nullable=True)
 
+    # Timestamps
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    last_updated = Column(DateTime, default=datetime.utcnow)
 
-class HoldingBase(BaseModel):
-    """Base holding model."""
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert portfolio to dictionary."""
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "value": self.value,
+            "change": self.change,
+            "changePercent": self.change_percent,
+            "allocation": self.allocation or {},
+            "riskLevel": self.risk_level,
+            "status": self.status,
+            "workflowId": self.workflow_id,
+            "executionId": self.execution_id,
+            "lastUpdated": self.last_updated.isoformat() + "Z"
+            if self.last_updated
+            else None,
+            "createdAt": self.created_at.isoformat() + "Z" if self.created_at else None,
+            "updatedAt": self.updated_at.isoformat() + "Z" if self.updated_at else None,
+        }
 
-    symbol: str = Field(
-        ..., min_length=1, max_length=20, description="Stock/ETF symbol"
-    )
-    asset_type: AssetType = Field(..., description="Type of asset")
-    quantity: Decimal = Field(..., gt=0, description="Number of shares/units")
-    cost_basis: Decimal = Field(..., ge=0, description="Average cost per share")
-    current_price: Optional[Decimal] = Field(
-        None, ge=0, description="Current market price"
-    )
-    notes: Optional[str] = Field(None, max_length=500, description="Additional notes")
-
-
-class HoldingCreate(HoldingBase):
-    """Holding creation model."""
-
-    pass
-
-
-class HoldingUpdate(BaseModel):
-    """Holding update model."""
-
-    quantity: Optional[Decimal] = Field(None, gt=0)
-    cost_basis: Optional[Decimal] = Field(None, ge=0)
-    current_price: Optional[Decimal] = Field(None, ge=0)
-    notes: Optional[str] = Field(None, max_length=500)
-
-
-class Holding(HoldingBase):
-    """Holding model with calculated fields."""
-
-    id: int = Field(..., description="Unique holding ID")
-    portfolio_id: int = Field(..., description="Portfolio ID")
-    created_at: datetime = Field(..., description="Creation timestamp")
-    updated_at: datetime = Field(..., description="Last update timestamp")
-    market_value: Decimal = Field(..., description="Current market value")
-    gain_loss: Decimal = Field(..., description="Unrealized gain/loss")
-    gain_loss_pct: Decimal = Field(..., description="Gain/loss percentage")
-
-    @field_validator("market_value", "gain_loss", "gain_loss_pct", mode="before")
     @classmethod
-    def calculate_derived_fields(cls, v, info):
-        """Calculate derived fields if not provided."""
-        if (
-            info.data
-            and "quantity" in info.data
-            and "current_price" in info.data
-            and info.data["current_price"]
-        ):
-            quantity = info.data["quantity"]
-            current_price = info.data["current_price"]
-            cost_basis = info.data.get("cost_basis", 0)
+    def from_dict(cls, data: Dict[str, Any]) -> "Portfolio":
+        """Create portfolio from dictionary."""
+        portfolio = cls()
+        portfolio.id = data.get("id", str(uuid4()))
+        portfolio.user_id = data.get("user_id", "current_user")
+        portfolio.name = data.get("name", "Unnamed Portfolio")
+        portfolio.description = data.get("description", "")
+        portfolio.value = data.get("value", 0.0)
+        portfolio.change = data.get("change", 0.0)
+        portfolio.change_percent = data.get("changePercent", 0.0)
+        portfolio.allocation = data.get("allocation", {})
+        portfolio.risk_level = data.get("riskLevel", "Medium")
+        portfolio.status = data.get("status", "Draft")
+        portfolio.workflow_id = data.get("workflowId")
+        portfolio.execution_id = data.get("executionId")
 
-            market_value = quantity * current_price
-            gain_loss = market_value - (quantity * cost_basis)
-            gain_loss_pct = (
-                (gain_loss / (quantity * cost_basis)) * 100 if cost_basis > 0 else 0
+        # Handle timestamps
+        if "lastUpdated" in data and data["lastUpdated"]:
+            portfolio.last_updated = datetime.fromisoformat(
+                data["lastUpdated"].replace("Z", "+00:00")
+            )
+        if "createdAt" in data and data["createdAt"]:
+            portfolio.created_at = datetime.fromisoformat(
+                data["createdAt"].replace("Z", "+00:00")
+            )
+        if "updatedAt" in data and data["updatedAt"]:
+            portfolio.updated_at = datetime.fromisoformat(
+                data["updatedAt"].replace("Z", "+00:00")
             )
 
-            # Return the appropriate field value based on which field is being validated
-            field_name = info.field_name
-            if field_name == "market_value":
-                return market_value
-            elif field_name == "gain_loss":
-                return gain_loss
-            elif field_name == "gain_loss_pct":
-                return gain_loss_pct
-        return v
-
-    class Config:
-        from_attributes = True
+        return portfolio
 
 
-class TransactionBase(BaseModel):
-    """Base transaction model."""
+class PortfolioHolding(Base):
+    """Portfolio holding model for individual positions."""
 
-    transaction_type: TransactionType = Field(..., description="Type of transaction")
-    symbol: str = Field(
-        ..., min_length=1, max_length=20, description="Stock/ETF symbol"
-    )
-    quantity: Decimal = Field(..., description="Number of shares/units")
-    price: Decimal = Field(..., ge=0, description="Transaction price per share")
-    fees: Decimal = Field(default=Decimal("0.00"), ge=0, description="Transaction fees")
-    notes: Optional[str] = Field(None, max_length=500, description="Transaction notes")
-    transaction_date: datetime = Field(
-        default_factory=datetime.utcnow, description="Transaction date"
-    )
+    __tablename__ = "portfolio_holdings"
 
+    # Primary key
+    id = Column(String, primary_key=True, default=lambda: str(uuid4()))
 
-class TransactionCreate(TransactionBase):
-    """Transaction creation model."""
+    # Foreign key to portfolio
+    portfolio_id = Column(String, nullable=False, index=True)
 
-    pass
+    # Holding details
+    symbol = Column(String(20), nullable=False)
+    name = Column(String(255))
+    asset_type = Column(String(50))  # Stock, ETF, Bond, etc.
 
+    # Position details
+    quantity = Column(Float, default=0.0)
+    average_price = Column(Float, default=0.0)
+    current_price = Column(Float, default=0.0)
+    market_value = Column(Float, default=0.0)
 
-class Transaction(TransactionBase):
-    """Transaction model with ID and timestamps."""
+    # Allocation
+    target_weight = Column(Float, default=0.0)
+    actual_weight = Column(Float, default=0.0)
 
-    id: int = Field(..., description="Unique transaction ID")
-    portfolio_id: int = Field(..., description="Portfolio ID")
-    created_at: datetime = Field(..., description="Creation timestamp")
-    updated_at: datetime = Field(..., description="Last update timestamp")
-    total_amount: Decimal = Field(..., description="Total transaction amount")
+    # Timestamps
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    @field_validator("total_amount", mode="before")
-    @classmethod
-    def calculate_total_amount(cls, v, info):
-        """Calculate total transaction amount."""
-        if info.data and "quantity" in info.data and "price" in info.data:
-            quantity = info.data["quantity"]
-            price = info.data["price"]
-            fees = info.data.get("fees", 0)
-            return (quantity * price) + fees
-        return v
-
-    class Config:
-        from_attributes = True
-
-
-class PortfolioSummary(BaseModel):
-    """Portfolio summary with key metrics."""
-
-    id: int
-    name: str
-    total_value: Decimal
-    total_cost: Decimal
-    total_gain_loss: Decimal
-    total_gain_loss_pct: Decimal
-    holdings_count: int
-    last_updated: datetime
-    risk_profile: RiskProfile
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert holding to dictionary."""
+        return {
+            "id": self.id,
+            "portfolioId": self.portfolio_id,
+            "symbol": self.symbol,
+            "name": self.name,
+            "assetType": self.asset_type,
+            "quantity": self.quantity,
+            "averagePrice": self.average_price,
+            "currentPrice": self.current_price,
+            "marketValue": self.market_value,
+            "targetWeight": self.target_weight,
+            "actualWeight": self.actual_weight,
+            "createdAt": self.created_at.isoformat() + "Z" if self.created_at else None,
+            "updatedAt": self.updated_at.isoformat() + "Z" if self.updated_at else None,
+        }
 
 
-class PortfolioDetail(Portfolio):
-    """Portfolio with holdings and transactions."""
+class PortfolioPerformance(Base):
+    """Portfolio performance tracking model."""
 
-    holdings: List[Holding] = Field(default_factory=list)
-    transactions: List[Transaction] = Field(default_factory=list)
+    __tablename__ = "portfolio_performance"
+
+    # Primary key
+    id = Column(String, primary_key=True, default=lambda: str(uuid4()))
+
+    # Foreign key to portfolio
+    portfolio_id = Column(String, nullable=False, index=True)
+
+    # Performance metrics
+    date = Column(DateTime, nullable=False, index=True)
+    total_value = Column(Float, nullable=False)
+    daily_return = Column(Float, default=0.0)
+    cumulative_return = Column(Float, default=0.0)
+
+    # Risk metrics
+    volatility = Column(Float, default=0.0)
+    sharpe_ratio = Column(Float, default=0.0)
+    max_drawdown = Column(Float, default=0.0)
+
+    # Benchmark comparison
+    benchmark_return = Column(Float, default=0.0)
+    alpha = Column(Float, default=0.0)
+    beta = Column(Float, default=0.0)
+
+    # Timestamps
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert performance record to dictionary."""
+        return {
+            "id": self.id,
+            "portfolioId": self.portfolio_id,
+            "date": self.date.isoformat() + "Z" if self.date else None,
+            "totalValue": self.total_value,
+            "dailyReturn": self.daily_return,
+            "cumulativeReturn": self.cumulative_return,
+            "volatility": self.volatility,
+            "sharpeRatio": self.sharpe_ratio,
+            "maxDrawdown": self.max_drawdown,
+            "benchmarkReturn": self.benchmark_return,
+            "alpha": self.alpha,
+            "beta": self.beta,
+            "createdAt": self.created_at.isoformat() + "Z" if self.created_at else None,
+        }
