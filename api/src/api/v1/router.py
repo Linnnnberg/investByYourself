@@ -18,6 +18,7 @@ from src.api.v1.endpoints import (
     portfolio,
     watchlist,
     websocket,
+    workflows,
 )
 
 # Create main API router
@@ -46,6 +47,10 @@ api_router.include_router(etl.router, prefix="/etl", tags=["ETL Pipeline"])
 
 api_router.include_router(
     notifications.router, prefix="/notifications", tags=["Notifications"]
+)
+
+api_router.include_router(
+    workflows.router, prefix="/workflows", tags=["Workflow Management"]
 )
 
 api_router.include_router(websocket.router, prefix="/ws", tags=["WebSocket"])
