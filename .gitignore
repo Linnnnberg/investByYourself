@@ -307,3 +307,6 @@ dmypy.json
 ehthumbs.db
 Thumbs.db
 .env
+
+# Data files
+*.csv
