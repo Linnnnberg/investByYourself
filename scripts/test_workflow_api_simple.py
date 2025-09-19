@@ -12,9 +12,9 @@ import sys
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from core.workflow_engine_minimal import MinimalWorkflowEngine
-from core.workflow_minimal import create_workflow_context
-from workflows.allocation_framework_steps import AllocationFrameworkSteps
+from core.workflow_engine_minimal import MinimalWorkflowEngine  # noqa: E402
+from core.workflow_minimal import create_workflow_context  # noqa: E402
+from workflows.allocation_framework_steps import AllocationFrameworkSteps  # noqa: E402
 
 
 def test_workflow_api_components():

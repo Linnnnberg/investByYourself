@@ -3,20 +3,42 @@
 InvestByYourself API Workflow Management Endpoints
 Tech-028: API Implementation
 
-Workflow management endpoints for execution and monitoring.
+Workflow management endpoints with database integration.
 """
 
 import os
 import sys
 from datetime import datetime
-from typing import Dict, List, Optional
-from uuid import uuid4
+from typing import Any, Dict, List, Optional
+from uuid import UUID, uuid4
 
-from fastapi import APIRouter, HTTPException, Path, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Path, Query, status
+from sqlalchemy.orm import Session
+
+# Add src to path for imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+
+from src.database import get_db
+from src.models.workflow import (
+    StepExecutionRequest,
+    WorkflowCancelRequest,
+    WorkflowDefinition,
+    WorkflowExecutionRequest,
+    WorkflowExecutionResponse,
+    WorkflowListResponse,
+    WorkflowPauseRequest,
+    WorkflowResumeRequest,
+    WorkflowStatus,
+    WorkflowStatusResponse,
+)
+from src.models.workflow_execution import WorkflowExecution, WorkflowStepExecution
+from src.services.workflow_database_service import WorkflowDatabaseService
+
+# Create router
+router = APIRouter()
 
 
-# For now, create dummy classes for API to work
-# TODO: Fix import paths when workflow engine is properly integrated
+# Initialize workflow engine (dummy for now)
 class MinimalWorkflowEngine:
     def execute_workflow(self, workflow, context):
         """Execute a workflow with dummy implementation."""
@@ -144,67 +166,38 @@ def create_workflow_context(user_id, session_id):
     return DummyWorkflowContext(user_id, session_id)
 
 
-from src.models.workflow import (
-    StepExecutionRequest,
-    StepExecutionResponse,
-    WorkflowCancelRequest,
-    WorkflowDefinition,
-    WorkflowErrorResponse,
-    WorkflowExecutionRequest,
-    WorkflowExecutionResponse,
-    WorkflowListResponse,
-    WorkflowPauseRequest,
-    WorkflowResumeRequest,
-    WorkflowStatus,
-    WorkflowStatusResponse,
-)
-
-# Create router
-router = APIRouter()
-
 # Initialize workflow engine
 workflow_engine = MinimalWorkflowEngine()
 
-# In-memory storage for workflow executions (in production, use database)
-workflow_executions: Dict[str, WorkflowExecutionResponse] = {}
+
+@router.get("/health", response_model=Dict[str, str])
+async def health_check():
+    """Health check endpoint for workflow service."""
+    return {"status": "healthy", "service": "workflow-engine"}
 
 
 @router.get("/", response_model=WorkflowListResponse)
-async def list_workflows():
+async def list_workflows(db: Session = Depends(get_db)):
     """List all available workflow templates."""
     try:
-        # Get available workflows from AllocationFrameworkSteps
-        workflows_data = AllocationFrameworkSteps.list_available_workflows()
+        # Get workflow definitions from database
+        db_service = WorkflowDatabaseService(db)
+        workflow_defs = db_service.get_workflow_definitions()
 
-        # Convert to WorkflowDefinition objects
+        # Convert to API response format
         workflows = []
-        for workflow_data in workflows_data:
-            # Get the actual workflow definition
-            workflow_def = AllocationFrameworkSteps.get_workflow_by_id(
-                workflow_data["id"]
-            )
-            if workflow_def:
-                workflows.append(
-                    WorkflowDefinition(
-                        id=workflow_def["id"],
-                        name=workflow_def["name"],
-                        description=workflow_def["description"],
-                        steps=[
-                            {
-                                "id": step["id"],
-                                "name": step["name"],
-                                "step_type": step["step_type"],
-                                "description": step["description"],
-                                "config": step["config"],
-                                "dependencies": step["dependencies"],
-                            }
-                            for step in workflow_def["steps"]
-                        ],
-                        entry_points=workflow_def["entry_points"],
-                        exit_points=workflow_def["exit_points"],
-                        created_at=workflow_def["created_at"],
-                    )
+        for workflow_def in workflow_defs:
+            workflows.append(
+                WorkflowDefinition(
+                    id=workflow_def.id,
+                    name=workflow_def.name,
+                    description=workflow_def.description,
+                    steps=workflow_def.get_workflow_steps(),
+                    entry_points=workflow_def.get_entry_points(),
+                    exit_points=workflow_def.get_exit_points(),
+                    created_at=workflow_def.created_at,
                 )
+            )
 
         return WorkflowListResponse(workflows=workflows, total=len(workflows))
 
@@ -215,83 +208,16 @@ async def list_workflows():
         )
 
 
-@router.get("/health", response_model=Dict[str, str])
-async def health_check():
-    """Health check endpoint for workflow service."""
-    return {"status": "healthy", "service": "workflow-engine"}
-
-
-@router.get("/executions", response_model=List[WorkflowExecutionResponse])
-async def list_workflow_executions(
-    user_id: Optional[str] = Query(None, description="Filter by user ID"),
-    workflow_id: Optional[str] = Query(None, description="Filter by workflow ID"),
-    status: Optional[WorkflowStatus] = Query(None, description="Filter by status"),
-    limit: int = Query(10, description="Number of executions to return"),
-    offset: int = Query(0, description="Number of executions to skip"),
-):
-    """List workflow executions with optional filtering."""
-    try:
-        executions = list(workflow_executions.values())
-
-        # Apply filters
-        if user_id:
-            executions = [e for e in executions if e.workflow_id == user_id]
-        if workflow_id:
-            executions = [e for e in executions if e.workflow_id == workflow_id]
-        if status:
-            executions = [e for e in executions if e.status == status]
-
-        # Apply pagination
-        executions = executions[offset : offset + limit]
-
-        return executions
-
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to list workflow executions: {str(e)}",
-        )
-
-
-@router.get("/executions/{execution_id}", response_model=WorkflowStatusResponse)
-async def get_workflow_status(
-    execution_id: str = Path(..., description="Execution ID")
-):
-    """Get workflow execution status."""
-    try:
-        execution = workflow_executions.get(execution_id)
-        if not execution:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Workflow execution '{execution_id}' not found",
-            )
-
-        return WorkflowStatusResponse(
-            execution_id=execution.execution_id,
-            workflow_id=execution.workflow_id,
-            status=execution.status,
-            current_step=None,  # For MVP, we don't track current step
-            progress=execution.progress,
-            step_results=execution.results,
-            error_message=execution.error_message,
-            started_at=execution.started_at,
-            completed_at=execution.completed_at,
-        )
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get workflow status: {str(e)}",
-        )
-
-
 @router.get("/{workflow_id}", response_model=WorkflowDefinition)
-async def get_workflow(workflow_id: str = Path(..., description="Workflow ID")):
+async def get_workflow(
+    workflow_id: str = Path(..., description="Workflow ID"),
+    db: Session = Depends(get_db),
+):
     """Get a specific workflow definition."""
     try:
-        workflow_def = AllocationFrameworkSteps.get_workflow_by_id(workflow_id)
+        db_service = WorkflowDatabaseService(db)
+        workflow_def = db_service.get_workflow_definition(workflow_id)
+
         if not workflow_def:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -299,23 +225,13 @@ async def get_workflow(workflow_id: str = Path(..., description="Workflow ID")):
             )
 
         return WorkflowDefinition(
-            id=workflow_def["id"],
-            name=workflow_def["name"],
-            description=workflow_def["description"],
-            steps=[
-                {
-                    "id": step["id"],
-                    "name": step["name"],
-                    "step_type": step["step_type"],
-                    "description": step["description"],
-                    "config": step["config"],
-                    "dependencies": step["dependencies"],
-                }
-                for step in workflow_def["steps"]
-            ],
-            entry_points=workflow_def["entry_points"],
-            exit_points=workflow_def["exit_points"],
-            created_at=workflow_def["created_at"],
+            id=workflow_def.id,
+            name=workflow_def.name,
+            description=workflow_def.description,
+            steps=workflow_def.get_workflow_steps(),
+            entry_points=workflow_def.get_entry_points(),
+            exit_points=workflow_def.get_exit_points(),
+            created_at=workflow_def.created_at,
         )
 
     except HTTPException:
@@ -328,102 +244,131 @@ async def get_workflow(workflow_id: str = Path(..., description="Workflow ID")):
 
 
 @router.post("/execute", response_model=WorkflowExecutionResponse)
-async def execute_workflow(request: WorkflowExecutionRequest):
+async def execute_workflow(
+    request: WorkflowExecutionRequest, db: Session = Depends(get_db)
+):
     """Execute a workflow."""
     try:
-        # Get workflow definition
-        workflow_def = AllocationFrameworkSteps.get_workflow_by_id(request.workflow_id)
+        # Get workflow definition from database
+        db_service = WorkflowDatabaseService(db)
+        workflow_def = db_service.get_workflow_definition(request.workflow_id)
+
         if not workflow_def:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Workflow '{request.workflow_id}' not found",
             )
 
-        # Create workflow context
-        context = create_workflow_context(
-            user_id=request.context.user_id, session_id=request.context.session_id
-        )
-
-        # Update context with provided data
-        for key, value in request.context.data.items():
-            context.update_data(key, value)
-
-        # Generate execution ID
-        execution_id = str(uuid4())
-
-        # Execute workflow
-        results = workflow_engine.execute_workflow(workflow_def, context)
-
-        # Create execution response
-        execution_response = WorkflowExecutionResponse(
-            execution_id=execution_id,
+        # Create workflow execution in database
+        execution = db_service.create_execution(
             workflow_id=request.workflow_id,
-            status=WorkflowStatus.COMPLETED,
-            progress=100.0,
-            results=results,
-            started_at=datetime.utcnow(),
-            completed_at=datetime.utcnow(),
+            user_id=request.context.user_id,
+            session_id=request.context.session_id,
+            context_data=request.context.data,
         )
 
-        # Store execution (in production, save to database)
-        workflow_executions[execution_id] = execution_response
+        # Update status to running
+        db_service.update_execution_status(
+            execution.id,
+            WorkflowStatus.RUNNING,
+            current_step_id=workflow_def.get_entry_points()[0]
+            if workflow_def.get_entry_points()
+            else None,
+        )
 
-        return execution_response
+        # Execute workflow (dummy implementation for now)
+        context = create_workflow_context(
+            request.context.user_id, request.context.session_id
+        )
+        if request.context.data:
+            for key, value in request.context.data.items():
+                context.update_data(key, value)
+
+        results = workflow_engine.execute_workflow(workflow_def.definition, context)
+
+        # Update execution with results
+        db_service.update_execution_results(execution.id, results)
+        db_service.update_execution_status(execution.id, WorkflowStatus.COMPLETED)
+
+        # Get updated execution
+        execution = db_service.get_execution(execution.id)
+
+        return WorkflowExecutionResponse(
+            execution_id=execution.id,
+            workflow_id=execution.workflow_id,
+            status=WorkflowStatus(execution.status),
+            progress=float(execution.progress) if execution.progress else 0.0,
+            results=execution.results,
+            error_message=execution.error_message,
+            started_at=execution.started_at,
+            completed_at=execution.completed_at,
+        )
 
     except HTTPException:
         raise
     except Exception as e:
-        # Create error response
-        execution_id = str(uuid4())
-        error_response = WorkflowExecutionResponse(
-            execution_id=execution_id,
-            workflow_id=request.workflow_id,
-            status=WorkflowStatus.FAILED,
-            error_message=str(e),
-            started_at=datetime.utcnow(),
-            completed_at=datetime.utcnow(),
-        )
-
-        workflow_executions[execution_id] = error_response
-
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Workflow execution failed: {str(e)}",
         )
 
 
-@router.post("/execute-step", response_model=StepExecutionResponse)
-async def execute_step(request: StepExecutionRequest):
+@router.post("/execute-step", response_model=Dict[str, Any])
+async def execute_step(request: StepExecutionRequest, db: Session = Depends(get_db)):
     """Execute a single workflow step."""
     try:
+        # Get execution from database
+        db_service = WorkflowDatabaseService(db)
+        execution = db_service.get_execution(UUID(request.execution_id))
+
+        if not execution:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Workflow execution '{request.execution_id}' not found",
+            )
+
         # Get workflow definition
-        workflow_def = AllocationFrameworkSteps.get_workflow_by_id(request.workflow_id)
+        workflow_def = db_service.get_workflow_definition(execution.workflow_id)
         if not workflow_def:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Workflow '{request.workflow_id}' not found",
+                detail=f"Workflow definition not found",
             )
 
-        # Create workflow context
-        context = create_workflow_context(
-            user_id=request.context.user_id, session_id=request.context.session_id
-        )
-
-        # Update context with provided data
-        for key, value in request.context.data.items():
-            context.update_data(key, value)
-
-        # Execute step
-        result = workflow_engine.execute_step(
-            workflow_def, request.step_id, context, request.results
-        )
-
-        return StepExecutionResponse(
+        # Create step execution
+        step_execution = db_service.create_step_execution(
+            execution_id=execution.id,
             step_id=request.step_id,
-            status=result.get("status", "completed"),
-            result=result,
-            executed_at=datetime.utcnow(),
+            step_name=f"Step {request.step_id}",
+            step_type="data_collection",  # Default type
+            input_data=request.step_input,
         )
+
+        # Execute step (dummy implementation)
+        context = create_workflow_context(
+            request.context.user_id, request.context.session_id
+        )
+        if request.context.data:
+            for key, value in request.context.data.items():
+                context.update_data(key, value)
+
+        step_results = workflow_engine.execute_step(
+            workflow_def.definition, request.step_id, context, execution.results
+        )
+
+        # Update step execution
+        db_service.update_step_execution(
+            execution.id, request.step_id, "completed", output_data=step_results
+        )
+
+        return {
+            "execution_id": request.execution_id,
+            "workflow_id": execution.workflow_id,
+            "step_id": request.step_id,
+            "status": "completed",
+            "result": step_results,
+            "executed_at": datetime.utcnow().isoformat(),
+        }
 
     except HTTPException:
         raise
@@ -434,26 +379,74 @@ async def execute_step(request: StepExecutionRequest):
         )
 
 
+@router.get("/executions", response_model=List[WorkflowExecutionResponse])
+async def list_workflow_executions(
+    user_id: Optional[str] = Query(None, description="Filter by user ID"),
+    workflow_id: Optional[str] = Query(None, description="Filter by workflow ID"),
+    status: Optional[WorkflowStatus] = Query(None, description="Filter by status"),
+    limit: int = Query(10, description="Number of executions to return"),
+    offset: int = Query(0, description="Number of executions to skip"),
+    db: Session = Depends(get_db),
+):
+    """List workflow executions with optional filtering."""
+    try:
+        db_service = WorkflowDatabaseService(db)
+        executions = db_service.get_executions(
+            user_id=user_id,
+            workflow_id=workflow_id,
+            status=status,
+            limit=limit,
+            offset=offset,
+        )
+
+        return [
+            WorkflowExecutionResponse(
+                execution_id=execution.id,
+                workflow_id=execution.workflow_id,
+                status=WorkflowStatus(execution.status),
+                progress=float(execution.progress) if execution.progress else 0.0,
+                results=execution.results,
+                error_message=execution.error_message,
+                started_at=execution.started_at,
+                completed_at=execution.completed_at,
+            )
+            for execution in executions
+        ]
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to list workflow executions: {str(e)}",
+        )
+
+
 @router.get("/executions/{execution_id}", response_model=WorkflowStatusResponse)
 async def get_workflow_status(
-    execution_id: str = Path(..., description="Execution ID")
+    execution_id: str = Path(..., description="Execution ID"),
+    db: Session = Depends(get_db),
 ):
     """Get workflow execution status."""
     try:
-        execution = workflow_executions.get(execution_id)
+        db_service = WorkflowDatabaseService(db)
+        execution = db_service.get_execution(UUID(execution_id))
+
         if not execution:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Workflow execution '{execution_id}' not found",
             )
 
+        # Get step executions
+        step_executions = db_service.get_step_executions(execution.id)
+        step_results = {step.step_id: step.to_dict() for step in step_executions}
+
         return WorkflowStatusResponse(
-            execution_id=execution.execution_id,
+            execution_id=execution.id,
             workflow_id=execution.workflow_id,
-            status=execution.status,
-            current_step=None,  # For MVP, we don't track current step
-            progress=execution.progress,
-            step_results=execution.results,
+            status=WorkflowStatus(execution.status),
+            current_step=execution.current_step_id,
+            progress=float(execution.progress) if execution.progress else 0.0,
+            step_results=step_results,
             error_message=execution.error_message,
             started_at=execution.started_at,
             completed_at=execution.completed_at,
@@ -469,25 +462,25 @@ async def get_workflow_status(
 
 
 @router.post("/pause", response_model=Dict[str, str])
-async def pause_workflow(request: WorkflowPauseRequest):
+async def pause_workflow(request: WorkflowPauseRequest, db: Session = Depends(get_db)):
     """Pause a running workflow."""
     try:
-        execution = workflow_executions.get(request.execution_id)
+        db_service = WorkflowDatabaseService(db)
+        execution = db_service.get_execution(UUID(request.execution_id))
+
         if not execution:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Workflow execution '{request.execution_id}' not found",
             )
 
-        if execution.status != WorkflowStatus.RUNNING:
+        if not execution.can_be_paused():
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Cannot pause workflow in status: {execution.status}",
+                detail=f"Workflow execution '{request.execution_id}' cannot be paused from status {execution.status}",
             )
 
-        # Update status
-        execution.status = WorkflowStatus.PAUSED
-
+        db_service.update_execution_status(execution.id, WorkflowStatus.PAUSED)
         return {"message": "Workflow paused successfully"}
 
     except HTTPException:
@@ -500,25 +493,27 @@ async def pause_workflow(request: WorkflowPauseRequest):
 
 
 @router.post("/resume", response_model=Dict[str, str])
-async def resume_workflow(request: WorkflowResumeRequest):
+async def resume_workflow(
+    request: WorkflowResumeRequest, db: Session = Depends(get_db)
+):
     """Resume a paused workflow."""
     try:
-        execution = workflow_executions.get(request.execution_id)
+        db_service = WorkflowDatabaseService(db)
+        execution = db_service.get_execution(UUID(request.execution_id))
+
         if not execution:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Workflow execution '{request.execution_id}' not found",
             )
 
-        if execution.status != WorkflowStatus.PAUSED:
+        if not execution.can_be_resumed():
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Cannot resume workflow in status: {execution.status}",
+                detail=f"Workflow execution '{request.execution_id}' cannot be resumed from status {execution.status}",
             )
 
-        # Update status
-        execution.status = WorkflowStatus.RUNNING
-
+        db_service.update_execution_status(execution.id, WorkflowStatus.RUNNING)
         return {"message": "Workflow resumed successfully"}
 
     except HTTPException:
@@ -531,26 +526,27 @@ async def resume_workflow(request: WorkflowResumeRequest):
 
 
 @router.post("/cancel", response_model=Dict[str, str])
-async def cancel_workflow(request: WorkflowCancelRequest):
+async def cancel_workflow(
+    request: WorkflowCancelRequest, db: Session = Depends(get_db)
+):
     """Cancel a running or paused workflow."""
     try:
-        execution = workflow_executions.get(request.execution_id)
+        db_service = WorkflowDatabaseService(db)
+        execution = db_service.get_execution(UUID(request.execution_id))
+
         if not execution:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Workflow execution '{request.execution_id}' not found",
             )
 
-        if execution.status not in [WorkflowStatus.RUNNING, WorkflowStatus.PAUSED]:
+        if not execution.can_be_cancelled():
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Cannot cancel workflow in status: {execution.status}",
+                detail=f"Workflow execution '{request.execution_id}' cannot be cancelled from status {execution.status}",
             )
 
-        # Update status
-        execution.status = WorkflowStatus.CANCELLED
-        execution.completed_at = datetime.utcnow()
-
+        db_service.update_execution_status(execution.id, WorkflowStatus.CANCELLED)
         return {"message": "Workflow cancelled successfully"}
 
     except HTTPException:

@@ -4,6 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import {
+  DecisionStepComponent,
+  DataCollectionStepComponent,
+  ValidationStepComponent,
+  UserInteractionStepComponent
+} from './steps';
 
 // Types for workflow engine
 interface WorkflowStep {
@@ -203,7 +209,7 @@ const MinimalWorkflowEngine: React.FC<MinimalWorkflowEngineProps> = ({
             <p className="text-muted-foreground mb-4">
               This workflow will guide you through the portfolio creation process with allocation framework support.
             </p>
-            <Button onClick={startWorkflow} size="lg">
+            <Button onClick={startWorkflow} className="text-lg px-6 py-3">
               Start Workflow
             </Button>
           </div>
@@ -290,7 +296,7 @@ const MinimalWorkflowEngine: React.FC<MinimalWorkflowEngineProps> = ({
               </Badge>
             </div>
 
-            <WorkflowStepComponent
+            <EnhancedWorkflowStepComponent
               step={currentStepObj}
               context={context}
               onAction={handleStepAction}
@@ -309,85 +315,132 @@ const MinimalWorkflowEngine: React.FC<MinimalWorkflowEngineProps> = ({
   );
 };
 
-// Basic step component (will be enhanced in next step)
-interface WorkflowStepComponentProps {
+// Enhanced step component using the new step components
+interface EnhancedWorkflowStepComponentProps {
   step: WorkflowStep;
   context: WorkflowContext;
   onAction: (action: string, data?: any) => void;
   isLoading: boolean;
 }
 
-const WorkflowStepComponent: React.FC<WorkflowStepComponentProps> = ({
+const EnhancedWorkflowStepComponent: React.FC<EnhancedWorkflowStepComponentProps> = ({
   step,
   context,
   onAction,
   isLoading
 }) => {
+  const handleStepAction = (action: string, data?: any) => {
+    onAction(action, data);
+  };
+
+  const handleContinue = () => {
+    handleStepAction('continue');
+  };
+
+  const handleBack = () => {
+    handleStepAction('back');
+  };
+
+  const handleDataChange = (data: any) => {
+    handleStepAction('data_change', data);
+  };
+
+  const handleSelectionChange = (selection: any) => {
+    handleStepAction('selection_change', selection);
+  };
+
   const renderStepByType = () => {
     switch (step.step_type) {
       case 'data_collection':
-        return <DataCollectionStep step={step} context={context} onAction={onAction} isLoading={isLoading} />;
+        return (
+          <DataCollectionStepComponent
+            stepId={step.id}
+            title={step.name}
+            description={step.description}
+            fields={step.config.fields || []}
+            progress={step.config.progress}
+            helpText={step.config.helpText}
+            onDataChange={handleDataChange}
+            onContinue={handleContinue}
+            onBack={handleBack}
+            isLoading={isLoading}
+            initialData={context.data}
+          />
+        );
       case 'decision':
-        return <DecisionStep step={step} context={context} onAction={onAction} isLoading={isLoading} />;
+        return (
+          <DecisionStepComponent
+            stepId={step.id}
+            title={step.name}
+            description={step.description}
+            options={step.config.options || []}
+            inputType={step.config.inputType || 'radio'}
+            required={step.config.required !== false}
+            helpText={step.config.helpText}
+            validation={step.config.validation}
+            onSelectionChange={handleSelectionChange}
+            onContinue={handleContinue}
+            onBack={handleBack}
+            isLoading={isLoading}
+            selectedValue={context.data[`decision_${step.id}`]}
+          />
+        );
       case 'validation':
-        return <ValidationStep step={step} context={context} onAction={onAction} isLoading={isLoading} />;
+        return (
+          <ValidationStepComponent
+            stepId={step.id}
+            title={step.name}
+            description={step.description}
+            results={step.config.results || []}
+            overallStatus={step.config.overallStatus || 'pending'}
+            summary={step.config.summary}
+            onRetry={step.config.allowRetry ? () => handleStepAction('retry') : undefined}
+            onContinue={handleContinue}
+            onBack={handleBack}
+            isLoading={isLoading}
+            showDetails={step.config.showDetails !== false}
+          />
+        );
       case 'user_interaction':
-        return <UserInteractionStep step={step} context={context} onAction={onAction} isLoading={isLoading} />;
+        return (
+          <UserInteractionStepComponent
+            stepId={step.id}
+            title={step.name}
+            description={step.description}
+            items={step.config.items || []}
+            selectionType={step.config.selectionType || 'single'}
+            searchEnabled={step.config.searchEnabled !== false}
+            filters={step.config.filters || []}
+            maxSelections={step.config.maxSelections}
+            minSelections={step.config.minSelections || 1}
+            helpText={step.config.helpText}
+            onSelectionChange={handleSelectionChange}
+            onContinue={handleContinue}
+            onBack={handleBack}
+            isLoading={isLoading}
+            initialSelection={context.data[`selection_${step.id}`] || []}
+          />
+        );
       default:
-        return <div>Unknown step type: {step.step_type}</div>;
+        return (
+          <div className="p-4 border rounded-lg">
+            <h3 className="font-semibold">{step.name}</h3>
+            <p className="text-muted-foreground">{step.description}</p>
+            <p className="text-sm text-red-500 mt-2">Unknown step type: {step.step_type}</p>
+            <Button onClick={handleContinue} className="mt-4">
+              Continue
+            </Button>
+          </div>
+        );
     }
   };
 
   return (
-    <div className="workflow-step">
+    <div className="space-y-4">
       {renderStepByType()}
     </div>
   );
 };
 
-// Placeholder step components (will be implemented in next step)
-const DataCollectionStep: React.FC<any> = ({ step, onAction, isLoading }) => (
-  <div className="space-y-4">
-    <p className="text-sm text-muted-foreground">
-      This step will collect your investment profile data.
-    </p>
-    <Button onClick={() => onAction('execute')} disabled={isLoading}>
-      {isLoading ? 'Collecting Data...' : 'Collect Data'}
-    </Button>
-  </div>
-);
-
-const DecisionStep: React.FC<any> = ({ step, onAction, isLoading }) => (
-  <div className="space-y-4">
-    <p className="text-sm text-muted-foreground">
-      This step requires a decision. Choose your preferred option.
-    </p>
-    <Button onClick={() => onAction('execute')} disabled={isLoading}>
-      {isLoading ? 'Processing Decision...' : 'Make Decision'}
-    </Button>
-  </div>
-);
-
-const ValidationStep: React.FC<any> = ({ step, onAction, isLoading }) => (
-  <div className="space-y-4">
-    <p className="text-sm text-muted-foreground">
-      This step will validate your portfolio configuration.
-    </p>
-    <Button onClick={() => onAction('execute')} disabled={isLoading}>
-      {isLoading ? 'Validating...' : 'Validate Portfolio'}
-    </Button>
-  </div>
-);
-
-const UserInteractionStep: React.FC<any> = ({ step, onAction, isLoading }) => (
-  <div className="space-y-4">
-    <p className="text-sm text-muted-foreground">
-      This step requires user interaction. Please provide your input.
-    </p>
-    <Button onClick={() => onAction('execute')} disabled={isLoading}>
-      {isLoading ? 'Processing...' : 'Continue'}
-    </Button>
-  </div>
-);
 
 export default MinimalWorkflowEngine;
