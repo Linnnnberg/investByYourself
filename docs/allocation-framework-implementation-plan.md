@@ -3,8 +3,8 @@
 
 **Date**: January 21, 2025
 **Priority**: HIGH (Story-008)
-**Dependencies**: Story-007 (Portfolio Page) - PENDING, Tech-036 (Authentication) - PENDING
-**Timeline**: 4-6 weeks (Weeks 33-35)
+**Dependencies**: Story-009 (Workflow Engine) - PENDING, Story-007 (Portfolio Page) - PENDING, Tech-036 (Authentication) - PENDING
+**Timeline**: 4-6 weeks (Weeks 36-39)
 
 ---
 
@@ -53,7 +53,7 @@ The allocation framework **cleanly extends** the existing portfolio journey:
 
 ## 🎯 **Implementation Plan**
 
-### **Phase 1: Core Framework System (Weeks 33-34)**
+### **Phase 1: Core Framework System (Weeks 36-37)**
 
 #### **1.1 Data Model Implementation**
 ```sql
@@ -230,7 +230,7 @@ const FrameworkBuilder: React.FC = () => {
 };
 ```
 
-### **Phase 2: Product Mapping & Validation (Weeks 34-35)**
+### **Phase 2: Product Mapping & Validation (Weeks 37-38)**
 
 #### **2.1 Product Mapping Engine**
 ```python
@@ -320,7 +320,7 @@ class FrameworkValidator:
         )
 ```
 
-### **Phase 3: Integration & Advanced Features (Weeks 35-36)**
+### **Phase 3: Integration & Advanced Features (Weeks 38-39)**
 
 #### **3.1 Portfolio Integration**
 ```python
@@ -721,15 +721,148 @@ const DiagnosticsDrawer: React.FC = () => {
 
 ---
 
+## 🤖 **Workflow Engine Integration**
+
+### **Allocation Framework as Workflow Steps**
+
+The allocation framework system integrates seamlessly with the generalized workflow engine, allowing for AI-powered customization and flexible user experiences.
+
+#### **Workflow Step Integration**
+```python
+# Allocation Framework Workflow Steps
+class AllocationFrameworkWorkflowSteps:
+    @staticmethod
+    def get_framework_selection_step() -> WorkflowStep:
+        return WorkflowStep(
+            id="framework_selection",
+            name="Allocation Framework Selection",
+            step_type=WorkflowStepType.DECISION,
+            description="Select or create allocation framework",
+            config={
+                "ai_suggestions": True,
+                "template_integration": True,
+                "custom_framework_builder": True
+            },
+            dependencies=["profile_assessment"]
+        )
+
+    @staticmethod
+    def get_product_mapping_step() -> WorkflowStep:
+        return WorkflowStep(
+            id="product_mapping",
+            name="Product Mapping",
+            step_type=WorkflowStepType.AI_GENERATED,
+            description="AI-powered product mapping to framework buckets",
+            config={
+                "ai_model": "product_mapper",
+                "data_health_indicators": True,
+                "constraint_validation": True
+            },
+            dependencies=["framework_selection"],
+            ai_generated=True,
+            ai_prompt="Map investment products to allocation framework buckets based on user profile and constraints"
+        )
+```
+
+#### **AI-Powered Framework Generation**
+```python
+# AI Framework Generator Integration
+class AIAllocationFrameworkGenerator:
+    """Generates custom allocation frameworks using AI."""
+
+    def generate_framework(self, user_requirements: Dict[str, Any]) -> AllocationFramework:
+        """Generate custom allocation framework based on user needs."""
+        prompt = f"""
+        Generate an allocation framework based on these requirements:
+
+        User Profile: {user_requirements.get('profile')}
+        Risk Tolerance: {user_requirements.get('risk_tolerance')}
+        Investment Goals: {user_requirements.get('goals')}
+        Preferences: {user_requirements.get('preferences')}
+
+        Create a framework that includes:
+        1. Appropriate asset class allocation
+        2. Regional diversification
+        3. Sector allocation if needed
+        4. Rebalancing rules
+        5. Constraint definitions
+
+        Return a structured allocation framework.
+        """
+
+        ai_response = self.llm_client.generate_framework(prompt)
+        return self._parse_framework_response(ai_response)
+```
+
+#### **Workflow-Driven Portfolio Creation**
+```python
+# Enhanced Portfolio Creation with Framework Integration
+class PortfolioCreationWorkflow:
+    @staticmethod
+    def create_with_allocation_framework(user_requirements: Dict[str, Any]) -> WorkflowDefinition:
+        """Create portfolio creation workflow with allocation framework integration."""
+        return WorkflowDefinition(
+            id="portfolio_creation_with_framework",
+            name="Portfolio Creation with Allocation Framework",
+            description="Complete portfolio creation workflow with AI-powered allocation framework",
+            version="1.0",
+            category="portfolio_creation",
+            steps=[
+                WorkflowStep(
+                    id="profile_assessment",
+                    name="Investment Profile Assessment",
+                    step_type=WorkflowStepType.DATA_COLLECTION,
+                    description="Collect user investment profile",
+                    config={"ai_questions": True},
+                    dependencies=[]
+                ),
+                WorkflowStep(
+                    id="framework_generation",
+                    name="AI Framework Generation",
+                    step_type=WorkflowStepType.AI_GENERATED,
+                    description="Generate custom allocation framework",
+                    config={"ai_model": "framework_generator"},
+                    dependencies=["profile_assessment"],
+                    ai_generated=True
+                ),
+                WorkflowStep(
+                    id="product_mapping",
+                    name="Product Mapping",
+                    step_type=WorkflowStepType.AI_GENERATED,
+                    description="Map products to framework buckets",
+                    config={"ai_model": "product_mapper"},
+                    dependencies=["framework_generation"],
+                    ai_generated=True
+                ),
+                WorkflowStep(
+                    id="portfolio_validation",
+                    name="Portfolio Validation",
+                    step_type=WorkflowStepType.VALIDATION,
+                    description="Validate final portfolio",
+                    config={"ai_validation": True},
+                    dependencies=["product_mapping"]
+                )
+            ],
+            entry_points=["profile_assessment"],
+            exit_points=["portfolio_validation"],
+            ai_configurable=True
+        )
+```
+
+---
+
 ## 📋 **Dependencies & Integration**
 
 ### **Required Dependencies**
+- **Story-009 (Workflow Engine)**: AI-powered workflow generation and execution
 - **Story-007 (Portfolio Page)**: Framework integration with portfolios
 - **Tech-036 (Authentication)**: User management and security
 - **Story-038 (Historical Data)**: Product data for mapping
 - **Story-005 (Company Analysis)**: Security metadata and classification
 
 ### **Integration Points**
+- **Workflow Engine**: Allocation framework as workflow steps
+- **AI Generation**: AI-powered custom framework creation
 - **Portfolio Creation**: Framework selection during portfolio setup
 - **Portfolio Editing**: Framework application and weight adjustment
 - **Rebalancing**: Band-based rebalancing integration

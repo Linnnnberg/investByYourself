@@ -186,27 +186,82 @@ try {
 - **Implementation Plan**: `docs/portfolio-page-implementation-plan.md`
 - **Specification Analysis**: `docs/portfolio-specification-analysis.md`
 
-#### **Priority 4: Allocation Framework System (Story-008) - HIGH** 🏗️
-- **Why Fourth Priority**: Enables structured, rule-based portfolio construction with professional-grade allocation management
-- **Timeline**: Weeks 33-35 (4-6 weeks)
+#### **Priority 4: Minimal Workflow Engine for Allocation Framework (Story-009-MVP) - CRITICAL** 🤖
+- **Why Fourth Priority**: Essential foundation for allocation framework implementation - enables workflow-driven portfolio creation
+- **Timeline**: Weeks 33-34 (2-3 weeks)
 - **Dependencies**: Story-007 (Portfolio Page) - PENDING, Tech-036 (Authentication) - PENDING
+- **Risk Level**: Low - Focused, minimal implementation
+- **Business Value**: Critical - Enables allocation framework functionality
+- **Implementation Plan**: `docs/workflow-minimal-implementation.md`
+
+**Phase 1: Core Engine (Week 33)**
+- Minimal workflow engine with basic step execution
+- Allocation framework specific workflow steps
+- Basic step executors (data collection, decision, validation)
+- Simple workflow context management
+
+**Phase 2: Frontend & Integration (Week 34)**
+- Basic workflow engine React component
+- Step-specific UI components (decision, validation, etc.)
+- API endpoints for workflow execution
+- Integration with portfolio creation flow
+
+**Key Features (MVP Only)**:
+- **Basic Workflow Engine**: Execute simple step-by-step workflows
+- **Allocation Framework Steps**: Framework selection and product mapping steps
+- **Simple UI**: Basic workflow execution interface
+- **Core API**: Essential endpoints for workflow management
+- **Portfolio Integration**: Workflow-driven portfolio creation
+
+#### **Priority 5: Full Workflow Engine (Story-009-Full) - MEDIUM** 🤖
+- **Why Fifth Priority**: Advanced workflow features after basic allocation framework is working
+- **Timeline**: Weeks 35-38 (4-6 weeks)
+- **Dependencies**: Story-009-MVP (Minimal Workflow) - PENDING, Story-008 (Allocation Framework) - PENDING
+- **Risk Level**: Medium - Complex AI integration and advanced features
+- **Business Value**: High - AI-powered customization and advanced workflows
+- **Implementation Plan**: `docs/workflow-engine-implementation-plan.md`
+
+**Phase 1: AI Integration (Weeks 35-36)**
+- AI workflow generation system
+- AI-powered step execution
+- Dynamic workflow customization
+- AI recommendation engine for workflows
+
+**Phase 2: Advanced Features (Weeks 37-38)**
+- Workflow analytics and optimization
+- User workflow preferences and learning
+- Advanced AI workflow generation
+- Workflow marketplace and sharing
+
+**Key Features**:
+- **Workflow Engine**: Pluggable, extensible workflow execution system
+- **AI Generation**: AI-powered custom workflow creation based on user needs
+- **Step Library**: Reusable workflow steps for different use cases
+- **Dynamic Adaptation**: Workflows that adapt based on user behavior and preferences
+- **Integration Ready**: Easy integration with existing features (portfolio, allocation, etc.)
+- **User Experience**: Seamless workflow execution with progress tracking and guidance
+
+#### **Priority 6: Allocation Framework System (Story-008) - HIGH** 🏗️
+- **Why Sixth Priority**: Enables structured, rule-based portfolio construction with professional-grade allocation management
+- **Timeline**: Weeks 35-38 (4-6 weeks)
+- **Dependencies**: Story-009-MVP (Minimal Workflow) - PENDING, Story-007 (Portfolio Page) - PENDING, Tech-036 (Authentication) - PENDING
 - **Risk Level**: Medium - Complex framework logic and mapping system
 - **Business Value**: High - Professional portfolio management with allocation templates and constraints
 - **Implementation Plan**: `docs/allocation-framework-implementation-plan.md`
 
-**Phase 1: Core Framework System (Weeks 33-34)**
+**Phase 1: Core Framework System (Weeks 35-36)**
 - Data model for allocation frameworks and buckets
 - Template system (Conservative/Balanced/Growth/Core-Satellite)
 - Framework builder UI with tree structure and validation
 - Product mapping engine with rule-based filtering
 
-**Phase 2: Integration & Advanced Features (Weeks 34-35)**
+**Phase 2: Integration & Advanced Features (Weeks 36-37)**
 - Portfolio integration with framework application
 - Band-based rebalancing with drift detection
 - Constraint management (global and per-bucket)
 - Framework-aware backtesting and analytics
 
-**Phase 3: Education & Polish (Weeks 35-36)**
+**Phase 3: Education & Polish (Weeks 37-38)**
 - Education system with tooltips and explainers
 - Advanced analytics and allocation reporting
 - Export functionality for framework definitions
