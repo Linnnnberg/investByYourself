@@ -76,10 +76,11 @@ class WorkflowExecutionRequest(BaseModel):
 class StepExecutionRequest(BaseModel):
     """Request to execute a single workflow step."""
 
+    execution_id: str
     workflow_id: str
     step_id: str
     context: WorkflowContext
-    results: Dict[str, Any] = Field(default_factory=dict)
+    step_input: Optional[Dict[str, Any]] = Field(default_factory=dict)
 
 
 class WorkflowExecutionResponse(BaseModel):

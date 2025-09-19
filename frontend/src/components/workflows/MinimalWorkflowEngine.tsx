@@ -4,43 +4,31 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
   DecisionStepComponent,
   DataCollectionStepComponent,
   ValidationStepComponent,
   UserInteractionStepComponent
 } from './steps';
+import { useWorkflowExecution } from '@/hooks/useWorkflowExecution';
+import {
+  WorkflowDefinition,
+  WorkflowContext,
+  WorkflowStatus,
+  WorkflowError
+} from '@/types/workflow';
 
 // Types for workflow engine
+import { WorkflowStep as WorkflowStepType, WorkflowStepType as StepType } from '@/types/workflow';
+
 interface WorkflowStep {
   id: string;
   name: string;
-  step_type: 'data_collection' | 'decision' | 'validation' | 'user_interaction';
-  description: string;
+  step_type: StepType;
+  description?: string;
   config: Record<string, any>;
   dependencies: string[];
-}
-
-interface WorkflowDefinition {
-  id: string;
-  name: string;
-  description: string;
-  steps: WorkflowStep[];
-  entry_points: string[];
-  exit_points: string[];
-}
-
-interface WorkflowContext {
-  user_id: string;
-  session_id: string;
-  data: Record<string, any>;
-  created_at: string;
-}
-
-interface WorkflowExecutionResult {
-  status: 'completed' | 'failed' | 'running';
-  result?: any;
-  error?: string;
 }
 
 interface MinimalWorkflowEngineProps {
@@ -60,9 +48,52 @@ const MinimalWorkflowEngine: React.FC<MinimalWorkflowEngineProps> = ({
 }) => {
   const [currentStep, setCurrentStep] = useState<string | null>(workflow.entry_points[0]);
   const [stepResults, setStepResults] = useState<Record<string, any>>({});
-  const [isLoading, setIsLoading] = useState(false);
   const [workflowStatus, setWorkflowStatus] = useState<'pending' | 'running' | 'completed' | 'failed'>('pending');
   const [error, setError] = useState<string | null>(null);
+
+  // Use the workflow execution hook
+  const {
+    execution,
+    status,
+    isLoading,
+    error: apiError,
+    executeWorkflow,
+    executeStep: executeStepApi,
+    pauseWorkflow,
+    resumeWorkflow,
+    cancelWorkflow,
+    refreshStatus
+  } = useWorkflowExecution({
+    onComplete: (result) => {
+      setWorkflowStatus('completed');
+      onComplete(result);
+    },
+    onError: (err) => {
+      setWorkflowStatus('failed');
+      setError(err.message);
+      onError(err);
+    },
+    onStepComplete: (stepId, result) => {
+      setStepResults(prev => ({ ...prev, [stepId]: result }));
+      onStepComplete?.(stepId, result);
+    },
+    onStatusUpdate: (status) => {
+      // Update current step based on status
+      if (status.current_step) {
+        setCurrentStep(status.current_step);
+      }
+
+      // Update workflow status
+      if (status.status === 'completed') {
+        setWorkflowStatus('completed');
+      } else if (status.status === 'failed') {
+        setWorkflowStatus('failed');
+        setError(status.error_message || 'Workflow execution failed');
+      } else if (status.status === 'running') {
+        setWorkflowStatus('running');
+      }
+    }
+  });
 
   // Get current step object
   const currentStepObj = workflow.steps.find(step => step.id === currentStep);
@@ -71,39 +102,40 @@ const MinimalWorkflowEngine: React.FC<MinimalWorkflowEngineProps> = ({
   const progress = currentStep ?
     ((workflow.steps.findIndex(step => step.id === currentStep) + 1) / workflow.steps.length) * 100 : 0;
 
-  const executeStep = async (stepId: string) => {
-    if (!currentStepObj) return;
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // For MVP, we'll simulate step execution
-      // In the future, this will call the actual API
-      const result = await simulateStepExecution(currentStepObj, context, stepResults);
-
-      setStepResults(prev => ({ ...prev, [stepId]: result }));
-
-      if (onStepComplete) {
-        onStepComplete(stepId, result);
-      }
-
+  const handleStepAction = (action: string, data?: any) => {
+    if (action === 'continue') {
       // Move to next step
-      const nextStep = getNextStep(workflow, stepId);
+      const nextStep = getNextStep(workflow, currentStep!);
       if (nextStep) {
         setCurrentStep(nextStep);
       } else {
-        // Workflow completed
         setWorkflowStatus('completed');
         onComplete(stepResults);
       }
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      setError(errorMessage);
-      setWorkflowStatus('failed');
-      onError(error);
-    } finally {
-      setIsLoading(false);
+    } else if (action === 'back') {
+      // Move to previous step
+      const prevStep = getPreviousStep(workflow, currentStep!);
+      if (prevStep) {
+        setCurrentStep(prevStep);
+      }
+    } else if (action === 'data_change') {
+      // Update context data
+      // This would typically update the execution context via API
+      console.log('Data changed:', data);
+    } else if (action === 'selection_change') {
+      // Update selection data
+      console.log('Selection changed:', data);
+    } else if (action === 'retry') {
+      // Retry current step
+      if (currentStep && execution) {
+        executeStepApi({
+          execution_id: execution.execution_id,
+          workflow_id: workflow.id,
+          step_id: currentStep,
+          context: context,
+          step_input: data || {}
+        });
+      }
     }
   };
 
@@ -115,79 +147,29 @@ const MinimalWorkflowEngine: React.FC<MinimalWorkflowEngineProps> = ({
     return workflow.steps[currentIndex + 1].id;
   };
 
-  const simulateStepExecution = async (step: WorkflowStep, context: WorkflowContext, results: Record<string, any>) => {
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // Mock step execution based on step type
-    switch (step.step_type) {
-      case 'data_collection':
-        return {
-          status: 'completed',
-          step_type: 'data_collection',
-          collected_data: {
-            risk_tolerance: 'moderate',
-            time_horizon: '10_years',
-            investment_goals: 'retirement'
-          },
-          executed_at: new Date().toISOString()
-        };
-
-      case 'decision':
-        return {
-          status: 'completed',
-          step_type: 'decision',
-          decision: 'framework',
-          options: step.config.options || [],
-          executed_at: new Date().toISOString()
-        };
-
-      case 'validation':
-        return {
-          status: 'completed',
-          step_type: 'validation',
-          validation_results: {
-            weight_validation: { passed: true },
-            constraint_validation: { passed: true }
-          },
-          all_passed: true,
-          executed_at: new Date().toISOString()
-        };
-
-      case 'user_interaction':
-        return {
-          status: 'completed',
-          step_type: 'user_interaction',
-          user_input: {
-            selected_products: ['VTI', 'BND', 'VXUS'],
-            weights: { VTI: 0.6, BND: 0.3, VXUS: 0.1 }
-          },
-          executed_at: new Date().toISOString()
-        };
-
-      default:
-        throw new Error(`Unknown step type: ${step.step_type}`);
+  const getPreviousStep = (workflow: WorkflowDefinition, currentStepId: string): string | null => {
+    const currentIndex = workflow.steps.findIndex(step => step.id === currentStepId);
+    if (currentIndex <= 0) {
+      return null;
     }
+    return workflow.steps[currentIndex - 1].id;
   };
 
-  const handleStepAction = (action: string, data?: any) => {
-    if (action === 'execute') {
-      executeStep(currentStep!);
-    } else if (action === 'skip') {
-      // Skip current step and move to next
-      const nextStep = getNextStep(workflow, currentStep!);
-      if (nextStep) {
-        setCurrentStep(nextStep);
-      } else {
-        setWorkflowStatus('completed');
-        onComplete(stepResults);
-      }
-    }
-  };
+  const startWorkflow = async () => {
+    try {
+      setWorkflowStatus('running');
+      setError(null);
 
-  const startWorkflow = () => {
-    setWorkflowStatus('running');
-    executeStep(currentStep!);
+      await executeWorkflow({
+        workflow_id: workflow.id,
+        context: context
+      });
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      setError(errorMessage);
+      setWorkflowStatus('failed');
+      onError(err);
+    }
   };
 
   const resetWorkflow = () => {
@@ -196,6 +178,14 @@ const MinimalWorkflowEngine: React.FC<MinimalWorkflowEngineProps> = ({
     setWorkflowStatus('pending');
     setError(null);
   };
+
+  // Handle API errors
+  useEffect(() => {
+    if (apiError) {
+      setError(apiError.message);
+      setWorkflowStatus('failed');
+    }
+  }, [apiError]);
 
   if (workflowStatus === 'pending') {
     return (
@@ -209,8 +199,12 @@ const MinimalWorkflowEngine: React.FC<MinimalWorkflowEngineProps> = ({
             <p className="text-muted-foreground mb-4">
               This workflow will guide you through the portfolio creation process with allocation framework support.
             </p>
-            <Button onClick={startWorkflow} className="text-lg px-6 py-3">
-              Start Workflow
+            <Button
+              onClick={startWorkflow}
+              className="text-lg px-6 py-3"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Starting...' : 'Start Workflow'}
             </Button>
           </div>
         </CardContent>
@@ -253,12 +247,17 @@ const MinimalWorkflowEngine: React.FC<MinimalWorkflowEngineProps> = ({
           <CardDescription>An error occurred during workflow execution.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="p-4 bg-red-50 border border-red-200 rounded">
-            <p className="text-red-800">{error}</p>
+          <Alert variant="destructive">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+          <div className="flex gap-2">
+            <Button onClick={resetWorkflow} variant="outline">
+              Try Again
+            </Button>
+            <Button onClick={refreshStatus} variant="outline">
+              Refresh Status
+            </Button>
           </div>
-          <Button onClick={resetWorkflow} variant="outline">
-            Try Again
-          </Button>
         </CardContent>
       </Card>
     );
@@ -280,9 +279,16 @@ const MinimalWorkflowEngine: React.FC<MinimalWorkflowEngineProps> = ({
             </div>
             <span className="text-sm text-muted-foreground">{Math.round(progress)}%</span>
           </div>
-          <Badge variant="outline">
-            Step {workflow.steps.findIndex(step => step.id === currentStep) + 1} of {workflow.steps.length}
-          </Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant="outline">
+              Step {workflow.steps.findIndex(step => step.id === currentStep) + 1} of {workflow.steps.length}
+            </Badge>
+            {status && (
+              <Badge variant={status.status === 'running' ? 'default' : 'secondary'}>
+                {status.status}
+              </Badge>
+            )}
+          </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -304,10 +310,47 @@ const MinimalWorkflowEngine: React.FC<MinimalWorkflowEngineProps> = ({
             />
 
             {error && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded">
-                <p className="text-red-800">{error}</p>
-              </div>
+              <Alert variant="destructive">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
             )}
+
+            {/* Workflow Controls */}
+            <div className="flex justify-between items-center pt-4 border-t">
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  onClick={pauseWorkflow}
+                  disabled={isLoading || !execution}
+                >
+                  Pause
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={resumeWorkflow}
+                  disabled={isLoading || !execution}
+                >
+                  Resume
+                </Button>
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  onClick={refreshStatus}
+                  disabled={isLoading}
+                >
+                  Refresh
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={cancelWorkflow}
+                  disabled={isLoading || !execution}
+                  className="text-red-600 border-red-600 hover:bg-red-50"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
           </div>
         )}
       </CardContent>
@@ -356,7 +399,7 @@ const EnhancedWorkflowStepComponent: React.FC<EnhancedWorkflowStepComponentProps
           <DataCollectionStepComponent
             stepId={step.id}
             title={step.name}
-            description={step.description}
+            description={step.description || ''}
             fields={step.config.fields || []}
             progress={step.config.progress}
             helpText={step.config.helpText}
@@ -372,7 +415,7 @@ const EnhancedWorkflowStepComponent: React.FC<EnhancedWorkflowStepComponentProps
           <DecisionStepComponent
             stepId={step.id}
             title={step.name}
-            description={step.description}
+            description={step.description || ''}
             options={step.config.options || []}
             inputType={step.config.inputType || 'radio'}
             required={step.config.required !== false}
@@ -390,7 +433,7 @@ const EnhancedWorkflowStepComponent: React.FC<EnhancedWorkflowStepComponentProps
           <ValidationStepComponent
             stepId={step.id}
             title={step.name}
-            description={step.description}
+            description={step.description || ''}
             results={step.config.results || []}
             overallStatus={step.config.overallStatus || 'pending'}
             summary={step.config.summary}
@@ -406,7 +449,7 @@ const EnhancedWorkflowStepComponent: React.FC<EnhancedWorkflowStepComponentProps
           <UserInteractionStepComponent
             stepId={step.id}
             title={step.name}
-            description={step.description}
+            description={step.description || ''}
             items={step.config.items || []}
             selectionType={step.config.selectionType || 'single'}
             searchEnabled={step.config.searchEnabled !== false}
@@ -441,6 +484,5 @@ const EnhancedWorkflowStepComponent: React.FC<EnhancedWorkflowStepComponentProps
     </div>
   );
 };
-
 
 export default MinimalWorkflowEngine;

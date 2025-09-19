@@ -30,8 +30,8 @@ export default function CompanyPage() {
           if (companyData.financial_metrics) {
             const metrics = companyData.financial_metrics;
             Object.keys(metrics).forEach(key => {
-              if (metrics[key] && typeof metrics[key] === 'string') {
-                metrics[key] = parseFloat(metrics[key]);
+              if (metrics[key as keyof typeof metrics] && typeof metrics[key as keyof typeof metrics] === 'string') {
+                (metrics as any)[key] = parseFloat(metrics[key as keyof typeof metrics] as string);
               }
             });
           }

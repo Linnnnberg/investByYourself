@@ -394,14 +394,14 @@ class CompanyAnalysisService:
 
         # Compare key metrics
         if company.financial_metrics.pe_ratio and sector.pe_ratio:
-            comparison.pe_ratio_vs_sector = (
-                company.financial_metrics.pe_ratio / sector.pe_ratio
-            )
+            comparison.pe_ratio_vs_sector = float(
+                company.financial_metrics.pe_ratio
+            ) / float(sector.pe_ratio)
 
         if company.financial_metrics.price_to_book and sector.pb_ratio:
-            comparison.pb_ratio_vs_sector = (
-                company.financial_metrics.price_to_book / sector.pb_ratio
-            )
+            comparison.pb_ratio_vs_sector = float(
+                company.financial_metrics.price_to_book
+            ) / float(sector.pb_ratio)
 
         # Calculate relative performance (simplified)
         if company.market_cap and sector.market_cap:

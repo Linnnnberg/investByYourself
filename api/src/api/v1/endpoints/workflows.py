@@ -18,7 +18,7 @@ from sqlalchemy.orm import Session
 # Add src to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 
-from src.database import get_db
+from src.database.sync_connection import get_db
 from src.models.workflow import (
     StepExecutionRequest,
     WorkflowCancelRequest,
@@ -31,6 +31,7 @@ from src.models.workflow import (
     WorkflowStatus,
     WorkflowStatusResponse,
 )
+from src.models.workflow_execution import WorkflowDefinition as DBWorkflowDefinition
 from src.models.workflow_execution import WorkflowExecution, WorkflowStepExecution
 from src.services.workflow_database_service import WorkflowDatabaseService
 
@@ -170,6 +171,130 @@ def create_workflow_context(user_id, session_id):
 workflow_engine = MinimalWorkflowEngine()
 
 
+@router.post("/definitions", response_model=Dict[str, Any])
+async def create_workflow_definition(
+    workflow_def: Dict[str, Any],
+    db: Session = Depends(get_db),
+):
+    """Create a new workflow definition."""
+    try:
+        # Create workflow definition in database
+        db_workflow_def = DBWorkflowDefinition(
+            id=workflow_def.get("id", str(uuid4())),
+            name=workflow_def.get("name", "Unnamed Workflow"),
+            description=workflow_def.get("description", ""),
+            version=workflow_def.get("version", "1.0"),
+            category=workflow_def.get("category", "general"),
+            definition=workflow_def.get("definition", {}),
+            is_active=workflow_def.get("is_active", True),
+            created_by=workflow_def.get("created_by", "system"),
+        )
+
+        db.add(db_workflow_def)
+        db.commit()
+        db.refresh(db_workflow_def)
+
+        return {
+            "id": db_workflow_def.id,
+            "name": db_workflow_def.name,
+            "description": db_workflow_def.description,
+            "version": db_workflow_def.version,
+            "category": db_workflow_def.category,
+            "is_active": db_workflow_def.is_active,
+            "created_at": db_workflow_def.created_at.isoformat()
+            if db_workflow_def.created_at
+            else None,
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to create workflow definition: {str(e)}",
+        )
+
+
+@router.get("/definitions", response_model=List[Dict[str, Any]])
+async def list_workflow_definitions(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=1000),
+    category: Optional[str] = Query(None),
+    db: Session = Depends(get_db),
+):
+    """List workflow definitions."""
+    try:
+        query = db.query(DBWorkflowDefinition).filter(
+            DBWorkflowDefinition.is_active == True
+        )
+
+        if category:
+            query = query.filter(DBWorkflowDefinition.category == category)
+
+        definitions = query.offset(skip).limit(limit).all()
+
+        return [
+            {
+                "id": defn.id,
+                "name": defn.name,
+                "description": defn.description,
+                "version": defn.version,
+                "category": defn.category,
+                "is_active": defn.is_active,
+                "created_at": defn.created_at.isoformat() if defn.created_at else None,
+            }
+            for defn in definitions
+        ]
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to list workflow definitions: {str(e)}",
+        )
+
+
+@router.get("/definitions/{workflow_id}", response_model=Dict[str, Any])
+async def get_workflow_definition(
+    workflow_id: str = Path(..., description="Workflow definition ID"),
+    db: Session = Depends(get_db),
+):
+    """Get a specific workflow definition."""
+    try:
+        definition = (
+            db.query(DBWorkflowDefinition)
+            .filter(
+                DBWorkflowDefinition.id == workflow_id,
+                DBWorkflowDefinition.is_active == True,
+            )
+            .first()
+        )
+
+        if not definition:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Workflow definition '{workflow_id}' not found",
+            )
+
+        return {
+            "id": definition.id,
+            "name": definition.name,
+            "description": definition.description,
+            "version": definition.version,
+            "category": definition.category,
+            "definition": definition.definition,
+            "is_active": definition.is_active,
+            "created_at": definition.created_at.isoformat()
+            if definition.created_at
+            else None,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get workflow definition: {str(e)}",
+        )
+
+
 @router.get("/health", response_model=Dict[str, str])
 async def health_check():
     """Health check endpoint for workflow service."""
@@ -271,8 +396,8 @@ async def execute_workflow(
         db_service.update_execution_status(
             execution.id,
             WorkflowStatus.RUNNING,
-            current_step_id=workflow_def.get_entry_points()[0]
-            if workflow_def.get_entry_points()
+            current_step_id=workflow_def.definition.get("entry_points", [None])[0]
+            if workflow_def.definition.get("entry_points")
             else None,
         )
 
@@ -319,7 +444,7 @@ async def execute_step(request: StepExecutionRequest, db: Session = Depends(get_
     try:
         # Get execution from database
         db_service = WorkflowDatabaseService(db)
-        execution = db_service.get_execution(UUID(request.execution_id))
+        execution = db_service.get_execution(request.execution_id)
 
         if not execution:
             raise HTTPException(
@@ -428,7 +553,7 @@ async def get_workflow_status(
     """Get workflow execution status."""
     try:
         db_service = WorkflowDatabaseService(db)
-        execution = db_service.get_execution(UUID(execution_id))
+        execution = db_service.get_execution(execution_id)
 
         if not execution:
             raise HTTPException(
@@ -466,7 +591,7 @@ async def pause_workflow(request: WorkflowPauseRequest, db: Session = Depends(ge
     """Pause a running workflow."""
     try:
         db_service = WorkflowDatabaseService(db)
-        execution = db_service.get_execution(UUID(request.execution_id))
+        execution = db_service.get_execution(request.execution_id)
 
         if not execution:
             raise HTTPException(
@@ -499,7 +624,7 @@ async def resume_workflow(
     """Resume a paused workflow."""
     try:
         db_service = WorkflowDatabaseService(db)
-        execution = db_service.get_execution(UUID(request.execution_id))
+        execution = db_service.get_execution(request.execution_id)
 
         if not execution:
             raise HTTPException(
@@ -532,7 +657,7 @@ async def cancel_workflow(
     """Cancel a running or paused workflow."""
     try:
         db_service = WorkflowDatabaseService(db)
-        execution = db_service.get_execution(UUID(request.execution_id))
+        execution = db_service.get_execution(request.execution_id)
 
         if not execution:
             raise HTTPException(

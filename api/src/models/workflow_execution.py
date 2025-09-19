@@ -8,7 +8,7 @@ SQLAlchemy models for workflow execution persistence.
 from datetime import datetime
 from decimal import Decimal
 from typing import Any, Dict, List, Optional
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from sqlalchemy import (
     DECIMAL,
@@ -21,13 +21,12 @@ from sqlalchemy import (
     String,
     Text,
 )
-from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.dialects.postgresql import UUID as PostgresUUID
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
-from src.database import Base
+from src.models.database import Base
 
 
 class WorkflowExecution(Base):
@@ -37,9 +36,9 @@ class WorkflowExecution(Base):
 
     # Primary key
     id = Column(
-        PostgresUUID(as_uuid=True),
+        String(36),
         primary_key=True,
-        server_default=func.gen_random_uuid(),
+        default=lambda: str(uuid4()),
     )
 
     # Workflow identification
@@ -53,8 +52,8 @@ class WorkflowExecution(Base):
     progress = Column(DECIMAL(5, 2), default=0.0)
 
     # Data storage
-    context_data = Column(JSONB, default=dict)
-    results = Column(JSONB, default=dict)
+    context_data = Column(JSON, default=dict)
+    results = Column(JSON, default=dict)
     error_message = Column(Text)
 
     # Timestamps
@@ -134,14 +133,14 @@ class WorkflowStepExecution(Base):
 
     # Primary key
     id = Column(
-        PostgresUUID(as_uuid=True),
+        String(36),
         primary_key=True,
-        server_default=func.gen_random_uuid(),
+        default=lambda: str(uuid4()),
     )
 
     # Foreign key
     execution_id = Column(
-        PostgresUUID(as_uuid=True),
+        String(36),
         ForeignKey("workflow_executions.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -156,8 +155,8 @@ class WorkflowStepExecution(Base):
     status = Column(String(50), nullable=False, default="pending", index=True)
 
     # Data storage
-    input_data = Column(JSONB, default=dict)
-    output_data = Column(JSONB, default=dict)
+    input_data = Column(JSON, default=dict)
+    output_data = Column(JSON, default=dict)
     error_message = Column(Text)
 
     # Timestamps
@@ -238,7 +237,7 @@ class WorkflowDefinition(Base):
     category = Column(String(100))
 
     # Workflow definition (JSON)
-    definition = Column(JSONB, nullable=False)
+    definition = Column(JSON, nullable=False)
 
     # Status and metadata
     is_active = Column(Boolean, default=True)
@@ -287,14 +286,14 @@ class WorkflowExecutionLog(Base):
 
     # Primary key
     id = Column(
-        PostgresUUID(as_uuid=True),
+        String(36),
         primary_key=True,
-        server_default=func.gen_random_uuid(),
+        default=lambda: str(uuid4()),
     )
 
     # Foreign key
     execution_id = Column(
-        PostgresUUID(as_uuid=True),
+        String(36),
         ForeignKey("workflow_executions.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -304,7 +303,7 @@ class WorkflowExecutionLog(Base):
     step_id = Column(String(255))
     action = Column(String(100), nullable=False)
     message = Column(Text)
-    data = Column(JSONB, default=dict)
+    data = Column(JSON, default=dict)
 
     # Timestamp
     created_at = Column(
