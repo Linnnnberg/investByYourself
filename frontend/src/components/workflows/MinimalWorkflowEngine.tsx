@@ -46,10 +46,17 @@ const MinimalWorkflowEngine: React.FC<MinimalWorkflowEngineProps> = ({
   onError,
   onStepComplete
 }) => {
-  const [currentStep, setCurrentStep] = useState<string | null>(workflow.entry_points[0]);
+  const [currentStep, setCurrentStep] = useState<string | null>(
+    workflow?.entry_points?.[0] || null
+  );
   const [stepResults, setStepResults] = useState<Record<string, any>>({});
   const [workflowStatus, setWorkflowStatus] = useState<'pending' | 'running' | 'completed' | 'failed'>('pending');
   const [error, setError] = useState<string | null>(null);
+
+  // Early return if workflow is not provided
+  if (!workflow) {
+    return null;
+  }
 
   // Use the workflow execution hook
   const {

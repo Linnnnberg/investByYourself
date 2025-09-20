@@ -47,6 +47,36 @@ class PortfolioService:
         portfolio = self.portfolio_service.get_portfolio(portfolio_id, user_id)
         return portfolio.to_dict() if portfolio else None
 
+    def create_portfolio_direct(
+        self,
+        name: str,
+        description: str,
+        allocation: Dict[str, float],
+        risk_level: str,
+        user_id: str = "current_user",
+    ) -> Dict[str, Any]:
+        """Create a portfolio directly without workflow."""
+        try:
+            # Generate unique portfolio ID
+            portfolio_id = f"portfolio_{uuid4().hex[:12]}"
+
+            # Create portfolio
+            portfolio = self.portfolio_service.create_portfolio_direct(
+                portfolio_id=portfolio_id,
+                name=name,
+                description=description,
+                user_id=user_id,
+                allocation=allocation,
+                risk_level=risk_level,
+            )
+
+            return portfolio.to_dict()
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Failed to create portfolio: {str(e)}",
+            )
+
     def create_portfolio_from_workflow(
         self,
         workflow_id: str,
@@ -118,6 +148,44 @@ async def get_portfolio(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to fetch portfolio: {str(e)}",
+        )
+
+
+@router.post("/create-direct", response_model=Dict[str, Any])
+async def create_portfolio_direct(
+    request: Dict[str, Any],
+    db: Session = Depends(get_db),
+):
+    """Create a new portfolio directly without workflow."""
+    try:
+        name = request.get("name")
+        description = request.get("description", "")
+        allocation = request.get("allocation", {})
+        risk_level = request.get("risk_level", "Medium")
+        user_id = request.get("user_id", "current_user")
+
+        if not name:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="name is required",
+            )
+
+        service = PortfolioService(db)
+        portfolio = service.create_portfolio_direct(
+            name=name,
+            description=description,
+            allocation=allocation,
+            risk_level=risk_level,
+            user_id=user_id,
+        )
+
+        return {"portfolio": portfolio, "message": "Portfolio created successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to create portfolio: {str(e)}",
         )
 
 

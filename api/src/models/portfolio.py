@@ -21,13 +21,9 @@ Base = declarative_base()
 class AssetType(Enum):
     """Asset type enumeration."""
 
+    CASH = "Cash"
     STOCK = "Stock"
     ETF = "ETF"
-    BOND = "Bond"
-    CASH = "Cash"
-    ALTERNATIVE = "Alternative"
-    COMMODITY = "Commodity"
-    REAL_ESTATE = "Real Estate"
 
 
 class RiskLevel(Enum):

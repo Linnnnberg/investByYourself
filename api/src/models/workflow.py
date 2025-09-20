@@ -88,6 +88,7 @@ class WorkflowExecutionResponse(BaseModel):
 
     execution_id: str
     workflow_id: str
+    user_id: Optional[str] = None  # Added to help verify user_id filtering
     status: WorkflowStatus
     current_step: Optional[str] = None
     progress: float = 0.0
@@ -128,6 +129,7 @@ class WorkflowStatusResponse(BaseModel):
 
     execution_id: str
     workflow_id: str
+    user_id: Optional[str] = None  # Added for consistency
     status: WorkflowStatus
     current_step: Optional[str] = None
     progress: float = 0.0

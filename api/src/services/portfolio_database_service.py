@@ -30,6 +30,45 @@ class PortfolioDatabaseService:
         self.db.refresh(portfolio)
         return portfolio
 
+    def create_portfolio_direct(
+        self,
+        portfolio_id: str,
+        name: str,
+        description: str,
+        user_id: str,
+        allocation: Dict[str, float],
+        risk_level: str,
+    ) -> Portfolio:
+        """Create a portfolio directly without workflow."""
+        # Calculate total allocation percentage
+        total_allocation = sum(allocation.values())
+
+        # Ensure cash allocation is calculated correctly
+        cash_allocation = max(0, 100 - total_allocation)
+        if cash_allocation > 0:
+            allocation["Cash"] = cash_allocation
+
+        portfolio_data = {
+            "id": portfolio_id,
+            "name": name,
+            "description": description,
+            "user_id": user_id,
+            "allocation": allocation,
+            "risk_level": risk_level,
+            "status": "Active",
+            "value": 100000,  # Default starting value
+            "change": 0,
+            "change_percent": 0,
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow(),
+        }
+
+        portfolio = Portfolio.from_dict(portfolio_data)
+        self.db.add(portfolio)
+        self.db.commit()
+        self.db.refresh(portfolio)
+        return portfolio
+
     def get_portfolio(
         self, portfolio_id: str, user_id: str = "current_user"
     ) -> Optional[Portfolio]:

@@ -1,12 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { DashboardPageLayout, StatsCard } from '@/components/layouts';
+import { DashboardPageLayout } from '@/components/layouts';
 import PortfolioCreationWizard from '@/components/portfolio/PortfolioCreationWizard';
 import PortfolioList from '@/components/portfolio/PortfolioList';
 import { portfolioApi, Portfolio } from '@/services/portfolioApi';
 import { useWorkflowExecution } from '@/hooks/useWorkflowExecution';
-import { Plus, TrendingUp, PieChart, DollarSign, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 export default function PortfolioPage() {
   const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
@@ -50,25 +50,42 @@ export default function PortfolioPage() {
     try {
       setShowCreationWizard(false);
 
-      // Create proper WorkflowExecutionRequest
-      const workflowRequest = {
-        workflow_id: workflowId,
-        context: {
-          user_id: 'current_user', // TODO: Get from auth context
-          session_id: `session_${Date.now()}`,
-          data: context
-        }
-      };
+      if (workflowId === 'create_portfolio_direct') {
+        // Direct portfolio creation
+        const portfolio = await portfolioApi.createPortfolioDirect({
+          name: context.name,
+          description: context.description,
+          allocation: context.allocation,
+          riskLevel: context.riskLevel
+        });
 
-      // Execute workflow - this is async and will update state via polling
-      await executeWorkflow(workflowRequest);
+        // Refresh portfolio list
+        await loadPortfolios();
+        console.log('Portfolio created successfully:', portfolio);
+      } else {
+        // Workflow-based creation (for other workflows)
+        const workflowRequest = {
+          workflow_id: workflowId,
+          context: {
+            user_id: 'current_user', // TODO: Get from auth context
+            session_id: `session_${Date.now()}`,
+            data: context
+          }
+        };
 
-      // Note: The actual result will be handled by the onComplete callback
-      // We'll reload portfolios when the workflow completes
+        // Execute workflow - this is async and will update state via polling
+        await executeWorkflow(workflowRequest);
+      }
 
     } catch (error) {
-      console.error('Error starting portfolio creation workflow:', error);
+      console.error('Error creating portfolio:', error);
     }
+  };
+
+  const handleWorkflowComplete = async (result: any) => {
+    console.log('Workflow completed:', result);
+    // Reload portfolios to show the new one
+    await loadPortfolios();
   };
 
   const handleViewPortfolio = (portfolioId: string) => {
@@ -99,10 +116,6 @@ export default function PortfolioPage() {
     }
   };
 
-  const handleViewAnalytics = () => {
-    // TODO: Navigate to analytics page or open analytics modal
-    console.log('View analytics clicked');
-  };
 
   if (loading) {
     return (
@@ -148,41 +161,6 @@ export default function PortfolioPage() {
         onCreatePortfolio={handleCreatePortfolio}
       />
 
-      {/* Portfolio Analytics Section */}
-      {portfolios.length > 0 && (
-        <div className="mt-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Portfolio Analytics</h2>
-            <button
-              onClick={handleViewAnalytics}
-              className="text-blue-600 hover:text-blue-800 font-medium"
-            >
-              View Detailed Analytics →
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <StatsCard
-              title="Total Portfolio Value"
-              value={`$${portfolios.reduce((sum, p) => sum + p.value, 0).toLocaleString()}`}
-              description="Combined value of all portfolios"
-              icon={<PieChart className="h-8 w-8 text-blue-600" />}
-            />
-            <StatsCard
-              title="Average Performance"
-              value={`${(portfolios.reduce((sum, p) => sum + p.changePercent, 0) / portfolios.length).toFixed(2)}%`}
-              description="Average return across portfolios"
-              icon={<TrendingUp className="h-8 w-8 text-green-600" />}
-            />
-            <StatsCard
-              title="Active Portfolios"
-              value={portfolios.filter(p => p.status === 'Active').length.toString()}
-              description="Currently active portfolios"
-              icon={<DollarSign className="h-8 w-8 text-yellow-600" />}
-            />
-          </div>
-        </div>
-      )}
 
       {/* Workflow Execution Status */}
       {isLoading && (
@@ -191,6 +169,8 @@ export default function PortfolioPage() {
           <span className="text-sm font-medium">Creating portfolio...</span>
         </div>
       )}
+
+      {/* Workflow execution is handled by useWorkflowExecution hook */}
     </DashboardPageLayout>
   );
 }

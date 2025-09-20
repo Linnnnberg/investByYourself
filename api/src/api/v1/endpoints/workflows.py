@@ -363,6 +363,7 @@ async def list_workflow_executions(
             WorkflowExecutionResponse(
                 execution_id=execution.id,
                 workflow_id=execution.workflow_id,
+                user_id=execution.user_id,  # Added to help verify user_id filtering
                 status=WorkflowStatus(execution.status),
                 progress=float(execution.progress) if execution.progress else 0.0,
                 results=execution.results,
@@ -403,6 +404,7 @@ async def get_workflow_status(
         return WorkflowStatusResponse(
             execution_id=execution.id,
             workflow_id=execution.workflow_id,
+            user_id=execution.user_id,  # Added for consistency
             status=WorkflowStatus(execution.status),
             current_step=execution.current_step_id,
             progress=float(execution.progress) if execution.progress else 0.0,
@@ -554,6 +556,7 @@ async def execute_workflow(
         return WorkflowExecutionResponse(
             execution_id=execution.id,
             workflow_id=execution.workflow_id,
+            user_id=execution.user_id,  # Added for consistency
             status=WorkflowStatus(execution.status),
             progress=float(execution.progress) if execution.progress else 0.0,
             results=execution.results,

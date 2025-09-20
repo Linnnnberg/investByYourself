@@ -1,4 +1,4 @@
-import { WorkflowExecutionRequest, WorkflowExecutionResponse } from './workflowApi';
+import { WorkflowExecutionRequest, WorkflowExecutionResponse } from '@/types/workflow';
 
 export interface Portfolio {
   id: string;
@@ -87,6 +87,42 @@ class PortfolioApiService {
     } catch (error) {
       console.error('Error fetching portfolio:', error);
       return null;
+    }
+  }
+
+  /**
+   * Create a new portfolio directly (without workflow)
+   */
+  async createPortfolioDirect(portfolioData: {
+    name: string;
+    description?: string;
+    allocation: Record<string, number>;
+    riskLevel: string;
+  }): Promise<Portfolio> {
+    try {
+      const response = await fetch(`${this.baseUrl}/portfolios/create-direct`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: portfolioData.name,
+          description: portfolioData.description || '',
+          allocation: portfolioData.allocation,
+          risk_level: portfolioData.riskLevel,
+          user_id: 'current_user', // TODO: Get from auth context
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to create portfolio: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      return data.portfolio;
+    } catch (error) {
+      console.error('Error creating portfolio directly:', error);
+      throw error;
     }
   }
 

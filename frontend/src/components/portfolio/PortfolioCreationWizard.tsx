@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import PortfolioTemplateConfirmation from './PortfolioTemplateConfirmation';
 import {
   Plus,
   Settings,
@@ -26,6 +27,8 @@ export default function PortfolioCreationWizard({
   onClose
 }: PortfolioCreationWizardProps) {
   const [selectedMethod, setSelectedMethod] = useState<string>('');
+  const [selectedTemplate, setSelectedTemplate] = useState<any>(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const creationMethods = [
     {
@@ -102,16 +105,40 @@ export default function PortfolioCreationWizard({
   const handleTemplateSelect = (templateId: string) => {
     const template = templatePortfolios.find(t => t.id === templateId);
     if (template) {
-      handleStartWorkflow('comprehensive_portfolio_creation', {
-        template: template,
-        quickStart: true
-      });
+      setSelectedTemplate(template);
+      setShowConfirmation(true);
     }
   };
 
+  const handleSavePortfolio = async (portfolioData: any) => {
+    try {
+      // Use direct portfolio creation instead of workflow
+      await onWorkflowStart('create_portfolio_direct', portfolioData);
+      setShowConfirmation(false);
+      setSelectedTemplate(null);
+    } catch (error) {
+      console.error('Error saving portfolio:', error);
+      throw error;
+    }
+  };
+
+  const handleDropPortfolio = () => {
+    setShowConfirmation(false);
+    setSelectedTemplate(null);
+  };
+
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <Card className="w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+    <>
+      {showConfirmation && selectedTemplate ? (
+        <PortfolioTemplateConfirmation
+          template={selectedTemplate}
+          onSave={handleSavePortfolio}
+          onDrop={handleDropPortfolio}
+          onClose={() => setShowConfirmation(false)}
+        />
+      ) : (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <Card className="w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -301,5 +328,7 @@ export default function PortfolioCreationWizard({
         </CardContent>
       </Card>
     </div>
+      )}
+    </>
   );
 }

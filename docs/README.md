@@ -1,143 +1,146 @@
 # 📚 InvestByYourself Documentation
 
-*Last Updated: September 2, 2025*
+*Last Updated: Current Sprint - Modular Documentation Structure*
 
 ## 🎯 **Documentation Overview**
 
-This directory contains comprehensive documentation for the InvestByYourself project - a personal wealth planning & trading analysis system. The documentation is organized to provide clear navigation between planning, implementation, and technical details.
+This directory contains comprehensive documentation for the InvestByYourself project - a personal wealth planning & trading analysis system. The documentation is now organized in a modular structure for better maintainability and scalability.
 
 ---
 
 ## 📖 **Documentation Structure**
 
-### **🚀 Planning & Roadmap**
-- **[📈 Development Plan](investbyyourself_plan.md)** - Main project roadmap, architecture decisions, and implementation phases
-- **[📋 Master TODO List](../MASTER_TODO.md)** - Complete task tracking, progress status, and development timeline *(Single Source of Truth)*
+### **🏗️ Modular Documentation**
+Each major system module has its own dedicated documentation:
 
-### **🔍 Feature Analysis & Planning**
-- **[🔍 Company Analysis Enhancement Summary](company_analysis_enhancement_summary.md)** - Enhanced company analysis capabilities and implementation details
-- **[🔍 Data Source Analysis](data_source_analysis.md)** - API strategy, data source comparison, and decision framework
+- **[📋 Module Structure](modules/README.md)** - Overview of modular documentation approach
+- **[💼 Portfolio Management](modules/portfolio-management/)** - Portfolio system documentation
+- **[🏢 Company Analysis](modules/company-analysis/)** - Company analysis documentation
+- **[🔄 ETL Pipeline](modules/etl-pipeline/)** - Data pipeline documentation
+- **[🌐 API Gateway](modules/api-gateway/)** - API gateway documentation
+- **[🎨 Frontend Core](modules/frontend-core/)** - Frontend application documentation
 
-### **🏗️ Technical Implementation**
-- **[🏗️ TECH-009 ETL Pipeline Implementation](TECH-009-ETL-Pipeline-Implementation-Complete.md)** - Complete ETL pipeline implementation documentation
-- **[🏗️ Microservices Architecture Plan](microservices_architecture_plan.md)** - Strategic plan for microservices transformation
-- **[✅ Story-015 Complete Implementation](story-015-completion-report.md)** - Investment Strategy Module - COMPLETED (100%)
-- **[✅ Docker & Redis Infrastructure](docker-redis-setup-completion-report.md)** - Infrastructure setup - COMPLETED (100%)
-- **[📊 Project Organization](project_organization.md)** - Code structure, file organization, and development workflow
+### **🌐 Cross-Platform Documentation**
+System-wide documentation that spans multiple modules:
 
-### **📊 Analysis Reports & Examples**
-- **[📈 Company Profiles Report](reports/company_profiles_report.md)** - Company analysis examples and methodology
-- **[📊 Inflation Analysis Report](reports/inflation_analysis_report.md)** - Economic indicators analysis and insights
-- **[🔍 Data Source Analysis](data_source_analysis.md)** - API strategy and data source decisions
+- **[📋 Cross-Platform Docs](cross-platform/README.md)** - System-wide documentation overview
+- **[🏗️ Architecture](cross-platform/architecture/)** - System architecture and design
+- **[🔌 API & Integration](cross-platform/api/)** - API design and integration
+- **[🚀 DevOps & Operations](cross-platform/devops/)** - CI/CD and deployment
+- **[📊 Reports & Analysis](cross-platform/reports/)** - System reports and analysis
+- **[🔧 Troubleshooting](cross-platform/troubleshooting/)** - Cross-module troubleshooting
+
+### **📈 Project Overview**
+- **[Project Plan](investbyyourself_plan.md)** - Main project roadmap and development plan
+- **[Portfolio Product Vision](portfolio-management-product-vision.md)** - Portfolio management system vision
+- **[Master TODO List](../MASTER_TODO.md)** - Current tasks and priorities
 
 ---
 
 ## 🧭 **Navigation Guide**
 
 ### **For New Team Members**
-1. **Start Here** → [Master TODO](../MASTER_TODO.md) - Get current project overview and status *(Single Source of Truth)*
-2. **Check Progress** → [Master TODO](../MASTER_TODO.md) - See current status and next steps
-3. **Review Structure** → [Project Organization](project_organization.md) - Understand code organization
-4. **Technical Details** → [ETL Architecture Plan](etl_architecture_plan.md) - Implementation specifics
+1. **Start Here** → [Master TODO](../MASTER_TODO.md) - Get current project overview and status
+2. **Module Overview** → [Module Structure](modules/README.md) - Understand modular documentation
+3. **Setup Environment** → [Team Environment Setup](cross-platform/TEAM_ENVIRONMENT_SETUP.md) - Get development environment ready
+4. **Understand Architecture** → [Application Architecture](cross-platform/architecture/APPLICATION_ARCHITECTURE_REVIEW.md) - Learn system design
 
-### **For Developers**
-1. **Current Tasks** → [Master TODO](../MASTER_TODO.md) - Active development items
-2. **Implementation** → [ETL Architecture Plan](etl_architecture_plan.md) - Technical specifications
-3. **Code Structure** → [Project Organization](project_organization.md) - File organization and patterns
-4. **Feature Details** → [Company Analysis Enhancement Summary](company_analysis_enhancement_summary.md) - Specific capabilities
+### **For Module Development**
+1. **Choose Your Module** → [Module Structure](modules/README.md) - See available modules
+2. **Read Module Docs** → Each module has README, product vision, backlog, and tech docs
+3. **Check Dependencies** → Review cross-platform docs for integration points
 
-### **For Stakeholders**
-1. **Project Overview** → [Development Plan](investbyyourself_plan.md) - Goals, timeline, and success metrics
-2. **Progress Tracking** → [Master TODO](../MASTER_TODO.md) - Current status and completion rates
-3. **Technical Strategy** → [Data Source Analysis](data_source_analysis.md) - Technology decisions and rationale
+### **For System Administration**
+1. **DevOps** → [DevOps & Operations](cross-platform/devops/) - Deployment and CI/CD
+2. **Troubleshooting** → [Troubleshooting](cross-platform/troubleshooting/) - Issue resolution
+3. **Monitoring** → [Reports & Analysis](cross-platform/reports/) - System status
 
 ---
 
 ## 📋 **Current Project Status**
 
-### **Phase 1: Foundation & Core CI/CD** ✅ **COMPLETED**
-- GitHub Actions workflow setup
-- Testing infrastructure
-- Code quality checks
-- Project structure reorganization
+### **✅ Portfolio Management MVP - COMPLETED**
+- Portfolio creation from templates
+- Portfolio CRUD operations
+- Template confirmation workflow
+- Asset type support (Cash, Stock, ETF)
+- Direct database integration
 
-### **Phase 2: Core Data & Company Analysis** ✅ **COMPLETED (100%)**
-- Financial data validation framework
-- Company profile collection enhancements
-- Basic analysis tools development
+### **🚧 Current Priority: Portfolio Time Series & Data Structure**
+- Historical portfolio data structure
+- Daily value calculation and tracking
+- Market data integration for real-time pricing
+- Portfolio detail view with analytics
 
-### **Phase 3: ETL & Database Infrastructure** ✅ **COMPLETED (100%)**
-- ✅ **Tech-008: Database Infrastructure Setup** - COMPLETED
-- ✅ **Tech-009: ETL Pipeline Implementation** - COMPLETED
-- Database schema and connection management ready
-- ETL pipeline fully implemented across all phases
+### **📋 Next Priorities**
+- Advanced portfolio analytics and visualizations
+- Portfolio comparison tools
+- Rebalancing system with configurable frequencies
+- AI-powered portfolio optimization
 
-### **Phase 4: Microservices Architecture** ✅ **COMPLETED (100%)**
-- ✅ **Tech-020: Microservices Foundation** - COMPLETED
-- ✅ **Story-015: Investment Strategy Module** - COMPLETED (100%)
-- ✅ **Infrastructure Setup: Docker & Redis** - COMPLETED (100%)
-- ⏳ **Tech-021 to Tech-024**: Service Extraction - PLANNED
+---
 
-### **Phase 6: Design System & Frontend Enhancement** ✅ **COMPLETED (100%)**
-- ✅ **Tech-025: Figma + Supabase Integration & Design System** - COMPLETED (100%)
-- ✅ **Frontend-vite Project** - Clean structure with security best practices
-- ✅ **Component Library** - Professional UI components with design tokens
-- ✅ **Security Implementation** - Environment variables, no hardcoded secrets
+## 🎯 **Module Status Dashboard**
 
-### **Phase 5: Advanced Features & Intelligence** ⏳ **PLANNED**
-- Backtesting engine
-- Risk analysis tools
-- Market intelligence features
+| Module | Status | Next Priority | Owner | Last Updated |
+|--------|--------|---------------|-------|--------------|
+| [Portfolio Management](modules/portfolio-management/) | ✅ MVP Complete | Time Series Data | Dev Team | Current |
+| [Company Analysis](modules/company-analysis/) | ✅ Complete | Advanced Analytics | Dev Team | Current |
+| [ETL Pipeline](modules/etl-pipeline/) | ✅ Complete | Performance Optimization | Dev Team | Current |
+| [API Gateway](modules/api-gateway/) | ✅ Complete | Authentication | Dev Team | Current |
+| [Frontend Core](modules/frontend-core/) | ✅ Complete | Component Library | Dev Team | Current |
+
+---
+
+## 📝 **Documentation Standards**
+
+### **Module Documentation**
+Each module follows this structure:
+- **README.md**: Module overview and current status
+- **product-vision.md**: Product vision, roadmap, and success metrics
+- **backlog.md**: Detailed task breakdown with priorities
+- **tech-docs.md**: Technical implementation details
+
+### **Cross-Platform Documentation**
+- **System-wide concerns**: Architecture, DevOps, troubleshooting
+- **Integration points**: APIs, data flow, dependencies
+- **Project management**: Reports, stories, analysis
+
+### **Maintenance Guidelines**
+- **Keep Current**: Update docs with code changes
+- **Regular Reviews**: Quarterly documentation reviews
+- **Consistent Format**: Follow established templates
+- **Clear Ownership**: Each module owns its documentation
 
 ---
 
 ## 🔗 **Quick Links**
 
 ### **📊 Current Focus**
-- ✅ **[Tech-020: Microservices Foundation](../MASTER_TODO.md#tech-020-microservices-foundation--structure)** - COMPLETED
-- ✅ **[Story-015: Investment Strategy Module](../MASTER_TODO.md#story-015-investment-strategy-module)** - COMPLETED (100%)
-- ✅ **[Infrastructure Setup: Docker & Redis](docker-redis-setup-completion-report.md)** - COMPLETED (100%)
-- ✅ **[Tech-021: ETL Service Extraction](../MASTER_TODO.md#tech-021-etl-service-extraction)** - COMPLETED
-- ✅ **[Tech-025: Figma + Supabase Integration & Design System](../MASTER_TODO.md#tech-025-figma--supabase-integration--design-system)** - COMPLETED (100%)
-- 🚀 **[Story-026: Frontend MVP Development](../MASTER_TODO.md#story-026-frontend-mvp-development)** - IMMEDIATE PRIORITY
+- 🚀 **[Portfolio Time Series & Data Structure](../MASTER_TODO.md#story-038-portfolio-time-series--data-structure)** - IMMEDIATE PRIORITY
+- 📋 **[Portfolio Detail View Implementation](../MASTER_TODO.md#story-037-portfolio-detail-view-implementation)** - PLANNED
+- 📋 **[Advanced Portfolio Analytics](../MASTER_TODO.md#story-040-advanced-portfolio-analytics)** - PLANNED
 
 ### **🎯 Next Milestones**
-- ✅ **Story-015: Investment Strategy Module** - COMPLETED (100%)
-- ✅ **Infrastructure Setup: Docker & Redis** - COMPLETED (100%)
-- ⏳ **Story-005: Enhanced Company Analysis** - Next Priority
-- ⏳ **Story-007: Portfolio Analysis & Risk Tools** - Planned
-- ⏳ **Story-013: Real-time Market Dashboard** - Planned
+- 📋 **Portfolio Detail View** - Individual portfolio analysis
+- 📋 **Advanced Analytics** - Charts, metrics, and insights
+- 📋 **Rebalancing System** - Automated portfolio rebalancing
 
 ### **📈 Success Metrics**
-- Company profile completeness >95%
-- Support 100+ companies simultaneously
-- Real-time data refresh <15 minutes
-- Dashboard load time <3 seconds
-
----
-
-## 📝 **Documentation Maintenance**
-
-### **Update Frequency**
-- **Planning Documents**: Updated weekly with progress and changes
-- **Technical Documents**: Updated when architecture or implementation changes
-- **Reports**: Generated after major analysis or feature completion
-
-### **Contributing**
-- Update relevant documents when making changes
-- Follow the established structure and formatting
-- Link related documents for better navigation
-- Maintain cross-references between planning and implementation
+- Portfolio creation success rate: >95%
+- Data accuracy: >99% for portfolio values
+- API response time: <500ms for portfolio operations
+- User satisfaction: >4.5/5 rating
 
 ---
 
 ## 🎯 **Getting Started**
 
-1. **Read** [Development Plan](investbyyourself_plan.md) for project overview
-2. **Check** [Master TODO](../MASTER_TODO.md) for current priorities
-3. **Review** [Company Analysis Enhancement Summary](company_analysis_enhancement_summary.md) for feature details
-4. **Implement** using [ETL Architecture Plan](etl_architecture_plan.md) as technical guide
+1. **Read** [Master TODO](../MASTER_TODO.md) for current priorities
+2. **Choose Module** → [Module Structure](modules/README.md) for module overview
+3. **Review Architecture** → [Application Architecture](cross-platform/architecture/APPLICATION_ARCHITECTURE_REVIEW.md) for system design
+4. **Start Development** → Use module-specific documentation for implementation
 
 ---
 
-*For questions or updates to this documentation, refer to the [Master TODO](../MASTER_TODO.md) or [Development Plan](investbyyourself_plan.md).*
+*This modular documentation approach ensures each team can focus on their domain while maintaining system-wide visibility through cross-platform documentation.*

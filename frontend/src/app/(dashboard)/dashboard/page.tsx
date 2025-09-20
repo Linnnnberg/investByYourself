@@ -186,17 +186,17 @@ export default function DashboardPage() {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <div className="text-sm text-gray-600">Total Value</div>
-                        <div className="text-xl font-bold">{portfolio.total_value}</div>
+                        <div className="text-xl font-bold">{portfolio.value || '0.00'}</div>
                       </div>
                       <div>
                         <div className="text-sm text-gray-600">Gain/Loss</div>
-                        <div className={`text-xl font-bold ${portfolio.total_gain_loss.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
-                          {portfolio.total_gain_loss} ({portfolio.total_gain_loss_pct})
+                        <div className={`text-xl font-bold ${portfolio.change && portfolio.change.toString().startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
+                          {portfolio.change || '0.00'} ({portfolio.changePercent || '0.00%'})
                         </div>
                       </div>
                     </div>
                     <div className="mt-2 text-sm text-gray-500">
-                      {portfolio.holdings_count} holdings • Risk: {portfolio.risk_profile}
+                      Holdings • Risk: {portfolio.riskLevel || 'Unknown'}
                     </div>
                   </div>
                 ))}

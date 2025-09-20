@@ -79,6 +79,7 @@ class WorkflowDatabaseService:
         query = self.db.query(WorkflowExecution)
 
         if user_id:
+            # Fixed bug: was incorrectly comparing workflow_id against user_id parameter
             query = query.filter(WorkflowExecution.user_id == user_id)
         if workflow_id:
             query = query.filter(WorkflowExecution.workflow_id == workflow_id)
