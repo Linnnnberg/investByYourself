@@ -1,0 +1,165 @@
+# Data Sources Configuration
+# InvestByYourself Financial Platform
+
+data_sources:
+  yahoo_finance:
+    name: "Yahoo Finance"
+    type: "market_data"
+    base_url: "https://query1.finance.yahoo.com"
+    api_key_required: false
+    rate_limit: 1.0
+    timeout: 30
+    retry_attempts: 3
+    data_types:
+      - stock_prices
+      - company_profiles
+      - financials
+      - market_cap
+      - dividends
+    coverage: "global"
+    cost: "free"
+    reliability: "high"
+
+  alpha_vantage:
+    name: "Alpha Vantage"
+    type: "technical_indicators"
+    base_url: "https://www.alphavantage.co/query"
+    api_key_required: true
+    rate_limit: 0.083  # 5 requests per minute
+    timeout: 30
+    retry_attempts: 3
+    daily_limit: 250
+    data_types:
+      - technical_indicators
+      - fundamental_data
+      - news_sentiment
+      - cryptocurrency
+    coverage: "us_focus"
+    cost: "free_tier"
+    reliability: "high"
+
+  fred:
+    name: "Federal Reserve Economic Data"
+    type: "economic_indicators"
+    base_url: "https://api.stlouisfed.org/fred"
+    api_key_required: true
+    rate_limit: 2.0  # 120 requests per minute
+    timeout: 30
+    retry_attempts: 3
+    data_types:
+      - inflation
+      - gdp
+      - interest_rates
+      - employment
+      - monetary_policy
+    coverage: "us"
+    cost: "free"
+    reliability: "very_high"
+
+# Company symbols to track
+companies:
+  # US Large Cap Stocks
+  us_stocks:
+    - "AAPL"  # Apple Inc.
+    - "MSFT"  # Microsoft Corporation
+    - "GOOGL" # Alphabet Inc.
+    - "AMZN"  # Amazon.com Inc.
+    - "TSLA"  # Tesla Inc.
+    - "META"  # Meta Platforms Inc.
+    - "NVDA"  # NVIDIA Corporation
+    - "BRK-B" # Berkshire Hathaway Inc.
+    - "UNH"   # UnitedHealth Group Inc.
+    - "JNJ"   # Johnson & Johnson
+    - "JPM"   # JPMorgan Chase & Co.
+    - "V"     # Visa Inc.
+    - "PG"    # Procter & Gamble Co.
+    - "MA"    # Mastercard Inc.
+    - "HD"    # Home Depot Inc.
+    - "DIS"   # Walt Disney Co.
+    - "PYPL"  # PayPal Holdings Inc.
+    - "ADBE"  # Adobe Inc.
+    - "NFLX"  # Netflix Inc.
+    - "CRM"   # Salesforce Inc.
+
+  # DAX 40 Companies (German Stock Market)
+  dax_40:
+    - "SAP.DE"    # SAP SE
+    - "SIE.DE"    # Siemens AG
+    - "ALV.DE"    # Allianz SE
+    - "BAS.DE"    # BASF SE
+    - "BAYN.DE"   # Bayer AG
+    - "BMW.DE"    # Bayerische Motoren Werke AG
+    - "CON.DE"    # Continental AG
+    - "DAI.DE"    # Daimler Truck Holding AG
+    - "DBK.DE"    # Deutsche Bank AG
+    - "DB1.DE"    # Deutsche Börse AG
+    - "DPW.DE"    # Deutsche Post AG
+    - "DTE.DE"    # Deutsche Telekom AG
+    - "EOAN.DE"   # E.ON SE
+    - "FRE.DE"    # Fresenius SE & Co. KGaA
+    - "HEN3.DE"   # Henkel AG & Co. KGaA
+    - "IFX.DE"    # Infineon Technologies AG
+    - "LIN.DE"    # Linde plc
+    - "MRK.DE"    # Merck KGaA
+    - "MTX.DE"    # MTU Aero Engines AG
+    - "MUV2.DE"   # Münchener Rückversicherungs-Gesellschaft AG
+    - "PUM.DE"    # Puma SE
+    - "QGEN.DE"   # Qiagen N.V.
+    - "RWE.DE"    # RWE AG
+    - "SIE.DE"    # Siemens Energy AG
+    - "VOW3.DE"   # Volkswagen AG
+    - "ZAL.DE"    # Zalando SE
+    - "ADS.DE"    # Adidas AG
+    - "BEI.DE"    # Beiersdorf AG
+    - "CBK.DE"    # Commerzbank AG
+    - "DHER.DE"   # Delivery Hero SE
+    - "ENR.DE"    # Siemens Healthineers AG
+    - "FME.DE"    # Fresenius Medical Care AG & Co. KGaA
+    - "HNR1.DE"   # Hannover Rück SE
+    - "SHL.DE"    # Siemens Healthineers AG
+    - "SY1.DE"    # Symrise AG
+    - "VNA.DE"    # Vonovia SE
+    - "WCH.DE"    # Wacker Chemie AG
+    - "1COV.DE"   # Covestro AG
+
+  # Sector ETFs
+  etfs:
+    - "SPY"   # SPDR S&P 500 ETF
+    - "QQQ"   # Invesco QQQ Trust
+    - "IWM"   # iShares Russell 2000 ETF
+    - "VTI"   # Vanguard Total Stock Market ETF
+    - "VEA"   # Vanguard FTSE Developed Markets ETF
+    - "VWO"   # Vanguard FTSE Emerging Markets ETF
+    - "BND"   # Vanguard Total Bond Market ETF
+    - "GLD"   # SPDR Gold Trust
+    - "SLV"   # iShares Silver Trust
+    - "USO"   # United States Oil Fund
+    - "EWG"   # iShares MSCI Germany ETF
+    - "DAX"   # DAX Index ETF
+
+# Economic indicators to track
+economic_indicators:
+  inflation:
+    - "CPIAUCSL"  # Consumer Price Index
+    - "CPILFESL"  # Core CPI
+    - "PPIACO"    # Producer Price Index
+
+  gdp:
+    - "GDP"       # Gross Domestic Product
+    - "GDPC1"     # Real GDP
+    - "GDPPOT"    # Real Potential GDP
+
+  interest_rates:
+    - "FEDFUNDS"  # Federal Funds Rate
+    - "DGS10"     # 10-Year Treasury Rate
+    - "DGS30"     # 30-Year Treasury Rate
+
+  employment:
+    - "UNRATE"    # Unemployment Rate
+    - "PAYEMS"    # Total Nonfarm Payrolls
+    - "CIVPART"   # Labor Force Participation Rate
+
+  monetary_policy:
+    - "M1SL"      # M1 Money Stock
+    - "M2SL"      # M2 Money Stock
+    - "WALCL"     # Fed Balance Sheet

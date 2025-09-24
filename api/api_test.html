@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InvestByYourself API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .endpoint {
+            background: #ecf0f1;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 4px solid #3498db;
+        }
+        .method {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .url {
+            font-family: monospace;
+            background: #2c3e50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+        .description {
+            margin-top: 10px;
+            color: #555;
+        }
+        .test-button {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .test-button:hover {
+            background: #229954;
+        }
+        .response {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 InvestByYourself API Gateway</h1>
+        <p style="text-align: center; color: #7f8c8d; margin-bottom: 30px;">
+            Tech-028: API Implementation - Basic Server Test
+        </p>
+
+        <div class="endpoint">
+            <span class="method">GET</span>
+            <span class="url">/health</span>
+            <div class="description">Health check endpoint for monitoring</div>
+            <button class="test-button" onclick="testEndpoint('/health', 'GET')">Test Endpoint</button>
+            <div class="response" id="response-health"></div>
+        </div>
+
+        <div class="endpoint">
+            <span class="method">GET</span>
+            <span class="url">/</span>
+            <div class="description">Root endpoint with API information</div>
+            <button class="test-button" onclick="testEndpoint('/', 'GET')">Test Endpoint</button>
+            <div class="response" id="response-root"></div>
+        </div>
+
+        <div class="endpoint">
+            <span class="method">POST</span>
+            <span class="url">/api/v1/auth/register</span>
+            <div class="description">User registration endpoint (placeholder)</div>
+            <button class="test-button" onclick="testEndpoint('/api/v1/auth/register', 'POST')">Test Endpoint</button>
+            <div class="response" id="response-register"></div>
+        </div>
+
+        <div class="endpoint">
+            <span class="method">POST</span>
+            <span class="url">/api/v1/auth/login</span>
+            <div class="description">User login endpoint (placeholder)</div>
+            <button class="test-button" onclick="testEndpoint('/api/v1/auth/login', 'POST')">Test Endpoint</button>
+            <div class="response" id="response-login"></div>
+        </div>
+
+        <div class="endpoint">
+            <span class="method">GET</span>
+            <span class="url">/api/v1/auth/profile</span>
+            <div class="description">User profile endpoint (placeholder)</div>
+            <button class="test-button" onclick="testEndpoint('/api/v1/auth/profile', 'GET')">Test Endpoint</button>
+            <div class="response" id="response-profile"></div>
+        </div>
+
+        <div style="margin-top: 40px; padding: 20px; background: #e8f5e8; border-radius: 5px; border-left: 4px solid #27ae60;">
+            <h3>✅ Server Status</h3>
+            <p><strong>Status:</strong> Running on port 8000</p>
+            <p><strong>Environment:</strong> Development</p>
+            <p><strong>Mode:</strong> Basic HTTP Server (Python built-in)</p>
+            <p><strong>Next Steps:</strong> Implement FastAPI with proper authentication</p>
+        </div>
+    </div>
+
+    <script>
+        async function testEndpoint(path, method) {
+            const responseDiv = document.getElementById(`response-${path.replace(/\//g, '-').replace(/[^a-zA-Z0-9-]/g, '')}`);
+
+            try {
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+
+                if (method === 'POST') {
+                    options.body = JSON.stringify({ test: true });
+                }
+
+                const response = await fetch(`http://localhost:8000${path}`, options);
+                const data = await response.text();
+
+                responseDiv.style.display = 'block';
+                responseDiv.innerHTML = `Status: ${response.status}\nResponse: ${data}`;
+            } catch (error) {
+                responseDiv.style.display = 'block';
+                responseDiv.innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        // Test health endpoint on page load
+        window.onload = function() {
+            testEndpoint('/health', 'GET');
+        };
+    </script>
+</body>
+</html>

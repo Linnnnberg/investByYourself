@@ -1,0 +1,115 @@
+# Pre-commit configuration for investByYourself
+# Ensures code quality and financial code standards before commits
+
+repos:
+  # Python code formatting and quality
+  - repo: https://github.com/psf/black
+    rev: 23.7.0
+    hooks:
+      - id: black
+        language_version: python3
+        args: [--line-length=88, --target-version=py311]
+        types: [python]
+
+  # Import sorting
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        args: [--profile=black, --line-length=88]
+        types: [python]
+
+  # Code linting - Temporarily disabled for legacy scripts
+  # - repo: https://github.com/pycqa/flake8
+  #   rev: 6.0.0
+  #   hooks:
+  #     - id: flake8
+  #       args: [--max-line-length=88, --extend-ignore=E203]
+  #       types: [python]
+
+  # Type checking - Temporarily disabled for legacy codebase
+  # - repo: https://github.com/pre-commit/mirrors-mypy
+  #   rev: v1.5.0
+  #   hooks:
+  #     - id: mypy
+  #       args: [--ignore-missing-imports, --show-error-codes]
+  #       types: [python]
+  #       additional_dependencies: [types-requests, types-PyYAML]
+
+  # Security scanning - Temporarily disabled due to Windows encoding issues
+  # - repo: https://github.com/PyCQA/bandit
+  #   rev: 1.7.5
+  #   hooks:
+  #     - id: bandit
+  #       args: [-r, scripts/]
+  #       types: [python]
+
+  # Custom security scanning hooks
+  - repo: local
+    hooks:
+      - id: security-scan
+        name: Security Scan
+        entry: python scripts/security/security_check.py
+        language: python
+        types: [python, yaml, json]
+        pass_filenames: false
+        always_run: true
+        stages: [commit]
+        description: "Fast security scan for hardcoded credentials"
+
+      - id: env-security-scan
+        name: Environment Security Scan
+        entry: python config/scripts/scan_env_security.py --all
+        language: python
+        files: ^(\.env.*|config/.*\.env\.template|config/environments/.*\.template|config/services/.*\.template)$
+        pass_filenames: false
+        always_run: true
+        stages: [commit]
+        description: "Security scan for environment configuration files"
+
+  # General hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      # Check for merge conflicts
+      - id: check-merge-conflict
+
+      # Check for large files
+      - id: check-added-large-files
+        args: [--maxkb=1000]
+
+      # Check for debugger imports
+      - id: debug-statements
+
+      # Check for private key files
+      - id: detect-private-key
+
+
+
+      # Check file endings
+      - id: end-of-file-fixer
+
+      # Check for trailing whitespace
+      - id: trailing-whitespace
+
+      # Check YAML syntax
+      - id: check-yaml
+
+      # Check JSON syntax
+      - id: check-json
+
+      # Check for broken symlinks
+      - id: check-merge-conflict
+
+      # Check for executable files
+      - id: check-executables-have-shebangs
+
+      # Check for case conflicts
+      - id: check-case-conflict
+
+      # Check for duplicate AST elements
+      - id: check-docstring-first
+
+      # Check for proper line endings
+      - id: mixed-line-ending
+        args: [--fix=lf]

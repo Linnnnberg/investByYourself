@@ -1,0 +1,102 @@
+# ETL Configuration
+# InvestByYourself Financial Platform
+
+etl:
+  mode: development
+  batch_size: 50
+  retry_attempts: 3
+  rate_limit_delay: 1.0
+  log_level: INFO
+
+data_sources:
+  yahoo_finance:
+    enabled: true
+    rate_limit: 1.0  # requests per second
+    timeout: 30
+    retry_attempts: 3
+
+  alpha_vantage:
+    enabled: true
+    rate_limit: 0.083  # 5 requests per minute
+    timeout: 30
+    daily_limit: 250
+    retry_attempts: 3
+
+  fred:
+    enabled: true
+    rate_limit: 2.0  # 120 requests per minute
+    timeout: 30
+    retry_attempts: 3
+
+database:
+  type: sqlite
+  path: /shared_data/investbyyourself_dev.db
+  connection_pool_size: 10
+  timeout: 30
+
+redis:
+  host: redis
+  port: 6379
+  password: ${REDIS_PASSWORD}
+  db: 0
+  timeout: 30
+
+logging:
+  level: INFO
+  file: /app/logs/etl.log
+  max_size: 10MB
+  backup_count: 5
+  format: detailed
+
+  handlers:
+    - console
+    - file
+
+  loggers:
+    etl:
+      level: INFO
+      handlers: [console, file]
+    collectors:
+      level: INFO
+      handlers: [console, file]
+    transformers:
+      level: INFO
+      handlers: [console, file]
+    loaders:
+      level: INFO
+      handlers: [console, file]
+
+scheduling:
+  enabled: true
+  timezone: UTC
+
+  jobs:
+    daily_market_data:
+      schedule: "0 6 * * 1-5"  # Weekdays 6 AM
+      enabled: true
+
+    weekly_company_profiles:
+      schedule: "0 2 * * 1"    # Monday 2 AM
+      enabled: true
+
+    monthly_economic_data:
+      schedule: "0 3 1 * *"    # 1st of month 3 AM
+      enabled: true
+
+    weekly_data_validation:
+      schedule: "0 4 * * 0"    # Sunday 4 AM
+      enabled: true
+
+data_quality:
+  enabled: true
+  validation_rules:
+    - check_completeness
+    - check_accuracy
+    - check_consistency
+    - check_timeliness
+
+  thresholds:
+    completeness: 0.95
+    accuracy: 0.90
+    consistency: 0.85
+    timeliness: 24  # hours

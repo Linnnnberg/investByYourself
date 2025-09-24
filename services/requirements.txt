@@ -1,0 +1,21 @@
+# Main Service Requirements
+# Tech-020: Microservices Foundation
+
+# This file references all service-specific requirements
+# For development, install all services: pip install -r requirements.txt
+# For production, install only needed services individually
+
+# Shared dependencies (common across all services)
+-r shared/requirements.txt
+
+# Individual service dependencies
+-r etl-service/requirements.txt
+-r financial-analysis-service/requirements.txt
+-r data-service/requirements.txt
+
+# Additional development tools
+pre-commit>=3.3.0
+pdoc3>=0.10.0
+
+# Note: Each service can be deployed independently with its own requirements
+# This file is for development and testing all services together

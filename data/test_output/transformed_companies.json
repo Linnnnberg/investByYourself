@@ -1,0 +1,32 @@
+[
+  {
+    "symbol": "AAPL",
+    "price": 150.25,
+    "market_cap": 2500000000000,
+    "pe_ratio": 25.4,
+    "timestamp": "2025-08-21T19:29:53.333311",
+    "market_cap_billions": 2500.0,
+    "price_category": "Medium",
+    "processed_at": "2025-08-21T19:29:53.579469"
+  },
+  {
+    "symbol": "MSFT",
+    "price": 285.76,
+    "market_cap": 2100000000000,
+    "pe_ratio": 28.2,
+    "timestamp": "2025-08-21T19:29:53.333351",
+    "market_cap_billions": 2100.0,
+    "price_category": "High",
+    "processed_at": "2025-08-21T19:29:53.579479"
+  },
+  {
+    "symbol": "GOOGL",
+    "price": 125.33,
+    "market_cap": 1600000000000,
+    "pe_ratio": 22.1,
+    "timestamp": "2025-08-21T19:29:53.333355",
+    "market_cap_billions": 1600.0,
+    "price_category": "Medium",
+    "processed_at": "2025-08-21T19:29:53.579483"
+  }
+]

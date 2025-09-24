@@ -1,0 +1,30 @@
+Cross-Sectional Momentum Backtest Report
+===============================================
+
+Strategy: 12-1 momentum strategy: monthly rebalancing to strongest momentum asset
+Assets: NVDA, QQQ
+Benchmark: SPY
+Period: 2020-01-01 to 2024-12-31
+Initial Investment: $10,000.00
+
+Strategy Rules:
+12-1 momentum strategy: monthly rebalancing to strongest momentum asset
+
+Key Results:
+- Total Return: 548.31%
+- Annualized Return: 45.46%
+- Annualized Volatility: 43.38%
+- Sharpe Ratio: 1.05
+- Maximum Drawdown: -59.80%
+- Calmar Ratio: 0.76
+
+Files Generated:
+- portfolio_values.csv: Daily portfolio and benchmark values
+- portfolio_weights.csv: Daily portfolio weights
+- strategy_returns.csv: Daily strategy and benchmark returns
+- performance_metrics.csv: Key performance metrics
+- equity_curve_comparison.png: Strategy vs benchmark performance
+- portfolio_weights.png: Weight evolution over time
+- drawdown_comparison.png: Drawdown analysis
+
+Generated on: 2025-08-25 18:27:10

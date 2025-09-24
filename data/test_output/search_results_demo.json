@@ -1,0 +1,67 @@
+{
+  "search_queries": [
+    {
+      "query": "Apple",
+      "results": [
+        {
+          "symbol": "AAPL",
+          "name": "Apple Inc.",
+          "sector": "Technology",
+          "match_score": 0.95
+        }
+      ]
+    },
+    {
+      "query": "Tech",
+      "results": [
+        {
+          "symbol": "AAPL",
+          "name": "Apple Inc.",
+          "sector": "Technology",
+          "match_score": 0.85
+        },
+        {
+          "symbol": "MSFT",
+          "name": "Microsoft Corporation",
+          "sector": "Technology",
+          "match_score": 0.85
+        },
+        {
+          "symbol": "GOOGL",
+          "name": "Alphabet Inc.",
+          "sector": "Technology",
+          "match_score": 0.85
+        },
+        {
+          "symbol": "NVDA",
+          "name": "NVIDIA Corporation",
+          "sector": "Technology",
+          "match_score": 0.85
+        }
+      ]
+    },
+    {
+      "query": "Financial",
+      "results": [
+        {
+          "symbol": "JPM",
+          "name": "JPMorgan Chase & Co.",
+          "sector": "Financial Services",
+          "match_score": 0.9
+        },
+        {
+          "symbol": "BAC",
+          "name": "Bank of America Corporation",
+          "sector": "Financial Services",
+          "match_score": 0.9
+        },
+        {
+          "symbol": "WFC",
+          "name": "Wells Fargo & Company",
+          "sector": "Financial Services",
+          "match_score": 0.9
+        }
+      ]
+    }
+  ]
+}

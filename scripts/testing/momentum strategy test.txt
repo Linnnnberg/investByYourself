@@ -1,0 +1,256 @@
+# Create a ready-to-run momentum backtest script comparing NVDA vs NASDAQ-100 ETF proxy vs SPY.
+# The script fetches data (yfinance), computes 12-1 momentum monthly, allocates 100% to the
+# stronger of NVDA or the NASDAQ-100 ETF (default: QQQ as proxy for WKN A0AE1X), and compares
+# performance to SPY buy & hold. It outputs a multi-page PDF with charts and CSVs.
+#
+# NOTE: This environment has no internet, so I'm only writing the file for you to download
+# and run locally.
+
+
+script = r'''#!/usr/bin/env python3
+"""
+Momentum Strategy Example: NVDA vs NASDAQ-100 ETF (A0AE1X proxy) vs SPY
+
+- Strategy: Cross-sectional momentum (12-1). Each month, pick the asset with the higher
+  trailing 12-month return excluding the most recent month (aka 12-1 momentum).
+- Universe: NVDA (stock) and NASDAQ-100 ETF proxy (default QQQ). Benchmarks: SPY buy & hold.
+- Rebalance: Monthly (use last business day). Apply weight at next period open (approximated
+  using next month's close for simplicity in daily data context).
+- Data: Yahoo Finance via `yfinance`, using Adjusted Close (total-return approximation).
+- Outputs:
+  - charts: a 3-page PDF with cumulative returns, drawdowns, and rolling 12m return
+  - CSVs: strategy & benchmark series, monthly signal, summary stats
+  - Console: clean summary table
+
+Usage:
+    python momentum_nvda_nasdaq_vs_spy.py --start 2010-01-01 --end 2025-08-25 \
+        --nasdaq_etf QQQ --tcost_bps 5 --outdir ./momentum_out
+
+Tips:
+- WKN A0AE1X refers to the Nasdaq-100 **index** (ISIN US6311011026). For ETF data, use a
+  tradable proxy such as QQQ (US) or UCITS tickers like CNDX.L / EQQQ.L on LSE, or EXXT.DE
+  (in Germany). Choose the one that matches your brokerage/data availability.
+"""
+
+import argparse
+import os
+from datetime import datetime
+import numpy as np
+import pandas as pd
+
+try:
+    import yfinance as yf
+except ImportError as e:
+    raise SystemExit("Please install dependencies first: pip install yfinance pandas numpy matplotlib tabulate")
+
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
+from tabulate import tabulate
+
+
+def fetch_prices(tickers, start, end):
+    data = yf.download(tickers, start=start, end=end, auto_adjust=False, progress=False)
+    # Use Adjusted Close for total-return approximation
+    adj = data["Adj Close"].copy()
+    # Basic cleaning
+    adj = adj.sort_index().ffill().dropna(how="all")
+    # Single column if one ticker
+    if isinstance(adj, pd.Series):
+        adj = adj.to_frame()
+    return adj
+
+
+def last_business_day_monthly(df: pd.DataFrame) -> pd.DataFrame:
+    """Resample to month-end (business day)."""
+    return df.resample("BMS").last().shift(-1).dropna()
+
+
+def compute_12_1_momentum(monthly_prices: pd.DataFrame) -> pd.DataFrame:
+    """
+    12-1 momentum = total return from t-12 to t-1 (exclude current month).
+    Assumes monthly_prices at business month START (BMS aligned, see last_business_day_monthly())
+    """
+    # Compute monthly returns based on monthly_prices
+    mret = monthly_prices.pct_change()
+    # 12-1 momentum: rolling 12m sum of log returns excluding current month
+    log_ret = np.log1p(mret)
+    mom_12_1 = (log_ret.rolling(12).sum() - log_ret).apply(np.expm1)
+    return mom_12_1
+
+
+def build_strategy(monthly_prices: pd.DataFrame, tcost_bps: float = 0.0) -> pd.DataFrame:
+    """
+    Cross-sectional momentum between the two columns in monthly_prices.
+    Allocate 100% to the asset with higher 12-1 momentum each month.
+    Apply transaction costs (bps) on weight changes.
+    """
+    assert monthly_prices.shape[1] >= 2, "Need at least two assets for cross-sectional momentum."
+    tickers = list(monthly_prices.columns)
+
+    mom = compute_12_1_momentum(monthly_prices)
+    # Signal at time t chooses asset for month t+1
+    choice = mom.idxmax(axis=1)
+
+    # Monthly returns
+    mret = monthly_prices.pct_change()
+
+    # Strategy monthly return (apply with 1 month delay)
+    choice_next = choice.shift(1)
+    strat_ret = pd.Series(0.0, index=mret.index, name="momentum_strategy")
+    for dt in mret.index:
+        pick = choice_next.get(dt, None)
+        if pd.isna(pick):
+            strat_ret.loc[dt] = 0.0
+        else:
+            strat_ret.loc[dt] = mret.loc[dt, pick]
+
+    # Transaction costs on switches
+    pos = pd.get_dummies(choice_next).reindex(mret.index).fillna(0.0)
+    trades = pos.diff().abs().sum(axis=1) * 0.5  # 1 switch = +1 on one col and -1 on other => sum=2; /2 => weight turnover
+    tcost = trades * (tcost_bps / 10000.0)
+    strat_ret_after_cost = strat_ret - tcost
+    out = pd.DataFrame({
+        "strategy_ret": strat_ret_after_cost,
+        "raw_strategy_ret": strat_ret,
+        "turnover": trades,
+        "tcost": tcost,
+        "pick": choice_next
+    })
+    return out, mom, mret
+
+
+def perf_stats(returns: pd.Series, freq: int = 12) -> dict:
+    r = returns.dropna()
+    if r.empty:
+        return {"CAGR": np.nan, "Vol": np.nan, "Sharpe": np.nan, "MaxDD": np.nan}
+    cum = (1 + r).prod()
+    years = len(r) / freq
+    cagr = cum ** (1 / years) - 1 if years > 0 else np.nan
+    vol = r.std() * np.sqrt(freq)
+    sharpe = r.mean() / r.std() * np.sqrt(freq) if r.std() > 0 else np.nan
+    # Max drawdown on cumulative curve
+    eq = (1 + r).cumprod()
+    peak = eq.cummax()
+    dd = eq / peak - 1
+    maxdd = dd.min()
+    return {"CAGR": cagr, "Vol": vol, "Sharpe": sharpe, "MaxDD": maxdd}
+
+
+def to_pdf(outdir, title, cum_df, dd_df, roll12_df):
+    pdf_path = os.path.join(outdir, "momentum_nvda_nasdaq_vs_spy.pdf")
+    with PdfPages(pdf_path) as pdf:
+        # Page 1: Cumulative returns
+        plt.figure(figsize=(10,6))
+        for col in cum_df.columns:
+            plt.plot(cum_df.index, cum_df[col], label=col)
+        plt.title(f"{title} – Cumulative Growth of $1")
+        plt.ylabel("Growth of $1")
+        plt.xlabel("Date")
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        pdf.savefig(bbox_inches="tight")
+        plt.close()
+
+        # Page 2: Drawdowns
+        plt.figure(figsize=(10,6))
+        for col in dd_df.columns:
+            plt.plot(dd_df.index, dd_df[col], label=col)
+        plt.title(f"{title} – Drawdowns")
+        plt.ylabel("Drawdown")
+        plt.xlabel("Date")
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        pdf.savefig(bbox_inches="tight")
+        plt.close()
+
+        # Page 3: Rolling 12m return
+        plt.figure(figsize=(10,6))
+        for col in roll12_df.columns:
+            plt.plot(roll12_df.index, roll12_df[col], label=col)
+        plt.title(f"{title} – Rolling 12-month Return")
+        plt.ylabel("Return (12m)")
+        plt.xlabel("Date")
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        pdf.savefig(bbox_inches="tight")
+        plt.close()
+    return pdf_path
+
+
+def main():
+    p = argparse.ArgumentParser(description="NVDA vs NASDAQ-100 ETF momentum strategy vs SPY benchmark")
+    p.add_argument("--start", type=str, default="2010-01-01")
+    p.add_argument("--end", type=str, default=datetime.today().strftime("%Y-%m-%d"))
+    p.add_argument("--nvda", type=str, default="NVDA")
+    p.add_argument("--nasdaq_etf", type=str, default="QQQ", help="ETF proxy for WKN A0AE1X (Nasdaq-100). Examples: QQQ, CNDX.L, EQQQ.L, EXXT.DE")
+    p.add_argument("--spy", type=str, default="SPY")
+    p.add_argument("--tcost_bps", type=float, default=5.0, help="Round-trip transaction costs in basis points per monthly switch (approx)")
+    p.add_argument("--outdir", type=str, default="./momentum_out")
+    args = p.parse_args()
+
+    os.makedirs(args.outdir, exist_ok=True)
+
+    tickers = [args.nvda, args.nasdaq_etf, args.spy]
+    print(f"Fetching: {tickers} from {args.start} to {args.end}")
+    prices = fetch_prices(tickers, args.start, args.end)
+
+    # Align to month cycle: use business-month start values for lookback math and next-month application
+    mpx = last_business_day_monthly(prices[[args.nvda, args.nasdaq_etf]])
+    spy_m = last_business_day_monthly(prices[[args.spy]])
+
+    # Build strategy
+    strat_df, mom_df, mret_df = build_strategy(mpx, tcost_bps=args.tcost_bps)
+
+    # Benchmarks monthly returns
+    nvda_m = mpx[args.nvda].pct_change().rename("NVDA")
+    nas_m  = mpx[args.nasdaq_etf].pct_change().rename(args.nasdaq_etf)
+    spy_mr = spy_m[args.spy].pct_change().rename("SPY")
+
+    # Cumulative curves
+    strat_eq = (1 + strat_df["strategy_ret"].fillna(0)).cumprod().rename("Momentum (NVDA vs NASDAQ100)")
+    nvda_eq  = (1 + nvda_m.fillna(0)).cumprod().rename("NVDA (B&H)")
+    nas_eq   = (1 + nas_m.fillna(0)).cumprod().rename(f"{args.nasdaq_etf} (B&H)")
+    spy_eq   = (1 + spy_mr.fillna(0)).cumprod().rename("SPY (B&H)")
+
+    cum_df = pd.concat([strat_eq, nvda_eq, nas_eq, spy_eq], axis=1).dropna()
+
+    # Drawdowns
+    dd_df = cum_df / cum_df.cummax() - 1
+
+    # Rolling 12m return
+    roll12_df = cum_df.pct_change(12)
+
+    # Stats
+    s_strat = perf_stats(strat_df["strategy_ret"])
+    s_nvda  = perf_stats(nvda_m)
+    s_nas   = perf_stats(nas_m)
+    s_spy   = perf_stats(spy_mr)
+    stats_tbl = pd.DataFrame([s_strat, s_nvda, s_nas, s_spy],
+                             index=["Momentum (NVDA vs NASDAQ100)", "NVDA (B&H)", f"{args.nasdaq_etf} (B&H)", "SPY (B&H)"])
+
+    # Save artifacts
+    cum_df.to_csv(os.path.join(args.outdir, "cumulative_growth.csv"))
+    dd_df.to_csv(os.path.join(args.outdir, "drawdowns.csv"))
+    roll12_df.to_csv(os.path.join(args.outdir, "rolling_12m_return.csv"))
+    strat_df.to_csv(os.path.join(args.outdir, "strategy_monthly_details.csv"))
+    stats_tbl.to_csv(os.path.join(args.outdir, "summary_stats.csv"))
+
+    title = f"Momentum: NVDA vs {args.nasdaq_etf} (proxy for A0AE1X) vs SPY"
+    pdf_path = to_pdf(args.outdir, title, cum_df, dd_df, roll12_df)
+
+    print("\nSummary (annualized stats):")
+    print(tabulate(stats_tbl.reset_index().rename(columns={"index": "Series"}),
+                   headers="keys", floatfmt=".4f", tablefmt="github"))
+    print(f"\nSaved PDF: {pdf_path}")
+    print(f"CSV outputs in: {args.outdir}")
+
+
+if __name__ == "__main__":
+    main()
+'''
+
+path = "/mnt/data/momentum_nvda_nasdaq_vs_spy.py"
+with open(path, "w") as f:
+    f.write(script)
+
+path

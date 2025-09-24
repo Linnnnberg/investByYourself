@@ -1,0 +1,30 @@
+# Shared Service Requirements
+# Tech-020: Microservices Foundation
+
+# Common Dependencies (used by multiple services)
+python-dotenv>=1.0.0
+structlog>=23.1.0
+pydantic>=2.5.2
+
+# HTTP and API (common across services)
+requests>=2.31.0
+httpx>=0.24.0
+
+# Data Processing (common)
+pandas>=1.5.0
+numpy>=1.21.0
+
+# Testing (Development only)
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-mock>=3.11.0
+
+# Code Quality (Development only)
+black>=23.7.0
+flake8>=6.0.0
+mypy>=1.5.0
+isort>=5.12.0
+
+# Security
+bandit>=1.7.5
+safety>=2.3.0
