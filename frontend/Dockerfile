@@ -1,29 +1,18 @@
-# Multi-stage Dockerfile for InvestByYourself Frontend
+# Optimized Dockerfile for InvestByYourself Frontend
 # Next.js React Application
 
-# Base stage with Node.js
-FROM node:18-alpine as base
-
-# Set working directory
-WORKDIR /app
-
-# Copy package files
-COPY package*.json ./
-
-# Install dependencies
-RUN npm ci --only=production && npm cache clean --force
-
-# Development stage
+# Development stage (optimized for speed)
 FROM node:18-alpine as development
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files
+# Copy package files first for better caching
 COPY package*.json ./
 
-# Install all dependencies (including dev dependencies)
-RUN npm ci
+# Install dependencies with cache mount
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --include=dev
 
 # Copy source code
 COPY . .
@@ -34,22 +23,23 @@ EXPOSE 3000
 # Development command - start the Next.js dev server
 CMD ["npm", "run", "dev"]
 
-# Build stage
+# Build stage (optimized)
 FROM node:18-alpine as build
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files
+# Copy package files first for better caching
 COPY package*.json ./
 
-# Install all dependencies
-RUN npm ci
+# Install dependencies with cache mount
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --include=dev
 
 # Copy source code
 COPY . .
 
-# Build the application
+# Build the application with optimizations
 RUN npm run build
 
 # Production stage

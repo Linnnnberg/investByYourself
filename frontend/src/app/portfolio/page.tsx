@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useApiClient, useApiCall } from '@/hooks/useApiClient';
 import { Portfolio } from '@/lib/api-client';
 import AppLayout from '@/components/layouts/AppLayout';
+import { toast } from 'sonner';
 
 // Enhanced Portfolio Construction & Analysis Page
 export default function PortfolioPage() {
@@ -17,6 +18,9 @@ export default function PortfolioPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('overview');
+  const [selectedPortfolio, setSelectedPortfolio] = useState<Portfolio | null>(null);
+  const [isCreatingPortfolio, setIsCreatingPortfolio] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   // Load portfolios using FastAPI
   const { data: portfoliosData, loading: portfoliosLoading, error: portfoliosError } = useApiCall(
@@ -36,6 +40,65 @@ export default function PortfolioPage() {
     setLoading(portfoliosLoading || authLoading);
     setError(portfoliosError);
   }, [portfoliosLoading, authLoading, portfoliosError]);
+
+  // Functional handlers
+  const handleCreatePortfolio = async () => {
+    try {
+      setIsCreatingPortfolio(true);
+      const newPortfolio = await client.createPortfolio({
+        name: `New Portfolio - ${new Date().toLocaleTimeString()}`,
+        description: 'Portfolio created via UI',
+        risk_profile: 'Medium'
+      });
+
+      setPortfolios(prev => [...prev, newPortfolio]);
+      toast.success('Portfolio created successfully!');
+      setShowCreateModal(false);
+    } catch (error) {
+      toast.error('Failed to create portfolio');
+      console.error('Error creating portfolio:', error);
+    } finally {
+      setIsCreatingPortfolio(false);
+    }
+  };
+
+  const handleViewPortfolio = (portfolio: Portfolio) => {
+    setSelectedPortfolio(portfolio);
+    setActiveTab('analysis');
+    toast.info(`Viewing ${portfolio.name}`);
+  };
+
+  const handleAnalyzePortfolio = async (portfolio: Portfolio) => {
+    try {
+      setSelectedPortfolio(portfolio);
+      setActiveTab('analysis');
+      toast.info(`Analyzing ${portfolio.name}...`);
+      // Here you would call the analysis API
+    } catch (error) {
+      toast.error('Failed to analyze portfolio');
+      console.error('Error analyzing portfolio:', error);
+    }
+  };
+
+  const handleOptimizePortfolio = (portfolio: Portfolio) => {
+    setSelectedPortfolio(portfolio);
+    setActiveTab('optimization');
+    toast.info(`Optimizing ${portfolio.name}...`);
+  };
+
+  const handleSelectTemplate = (templateId: string) => {
+    toast.info(`Selected template: ${templateId}`);
+    setActiveTab('construction');
+  };
+
+  const handleBuildCustom = () => {
+    toast.info('Opening custom framework builder...');
+    setActiveTab('construction');
+  };
+
+  const handleImportFramework = () => {
+    toast.info('Framework import feature coming soon!');
+  };
 
   if (loading) {
     return (
@@ -73,13 +136,19 @@ export default function PortfolioPage() {
             </p>
           </div>
           <div className="flex space-x-3">
-            <Button variant="outline">
+            <Button
+              variant="outline"
+              onClick={() => setActiveTab('analysis')}
+            >
               <span className="mr-2">📊</span>
               Portfolio Analysis
             </Button>
-            <Button>
+            <Button
+              onClick={() => setShowCreateModal(true)}
+              disabled={isCreatingPortfolio}
+            >
               <span className="mr-2">➕</span>
-              Create Portfolio
+              {isCreatingPortfolio ? 'Creating...' : 'Create Portfolio'}
             </Button>
           </div>
         </div>
@@ -133,8 +202,19 @@ export default function PortfolioPage() {
                           </div>
                         </div>
                         <div className="pt-2 space-y-2">
-                          <Button className="w-full">View Details</Button>
-                          <Button variant="outline" className="w-full">Analyze</Button>
+                          <Button
+                            className="w-full"
+                            onClick={() => handleViewPortfolio(portfolio)}
+                          >
+                            View Details
+                          </Button>
+                          <Button
+                            variant="outline"
+                            className="w-full"
+                            onClick={() => handleAnalyzePortfolio(portfolio)}
+                          >
+                            Analyze
+                          </Button>
                         </div>
                       </div>
                     </CardContent>
@@ -149,8 +229,21 @@ export default function PortfolioPage() {
                   Create your first portfolio to start tracking your investments and building wealth.
                 </p>
                 <div className="space-y-4">
-                  <Button size="lg" className="mr-4">Create Portfolio</Button>
-                  <Button variant="outline" size="lg">Learn More</Button>
+                  <Button
+                    size="lg"
+                    className="mr-4"
+                    onClick={() => setShowCreateModal(true)}
+                    disabled={isCreatingPortfolio}
+                  >
+                    {isCreatingPortfolio ? 'Creating...' : 'Create Portfolio'}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={() => setActiveTab('construction')}
+                  >
+                    Learn More
+                  </Button>
                 </div>
               </div>
             )}
@@ -162,19 +255,35 @@ export default function PortfolioPage() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <Button className="h-20 flex flex-col items-center justify-center">
+                  <Button
+                    className="h-20 flex flex-col items-center justify-center"
+                    onClick={() => setShowCreateModal(true)}
+                    disabled={isCreatingPortfolio}
+                  >
                     <div className="text-2xl mb-2">➕</div>
-                    <div>Create Portfolio</div>
+                    <div>{isCreatingPortfolio ? 'Creating...' : 'Create Portfolio'}</div>
                   </Button>
-                  <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
+                  <Button
+                    variant="outline"
+                    className="h-20 flex flex-col items-center justify-center"
+                    onClick={() => setActiveTab('analysis')}
+                  >
                     <div className="text-2xl mb-2">📊</div>
                     <div>Portfolio Analysis</div>
                   </Button>
-                  <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
+                  <Button
+                    variant="outline"
+                    className="h-20 flex flex-col items-center justify-center"
+                    onClick={() => setActiveTab('analysis')}
+                  >
                     <div className="text-2xl mb-2">⚖️</div>
                     <div>Risk Assessment</div>
                   </Button>
-                  <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
+                  <Button
+                    variant="outline"
+                    className="h-20 flex flex-col items-center justify-center"
+                    onClick={() => setActiveTab('optimization')}
+                  >
                     <div className="text-2xl mb-2">🎯</div>
                     <div>Optimization</div>
                   </Button>
@@ -200,7 +309,13 @@ export default function PortfolioPage() {
                       <p className="text-sm text-gray-600 mb-4">
                         Choose from pre-built allocation frameworks (Conservative, Balanced, Growth)
                       </p>
-                      <Button variant="outline" size="sm">Select Template</Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleSelectTemplate('conservative')}
+                      >
+                        Select Template
+                      </Button>
                     </CardContent>
                   </Card>
 
@@ -212,7 +327,13 @@ export default function PortfolioPage() {
                       <p className="text-sm text-gray-600 mb-4">
                         Build your own allocation framework with custom asset classes and weights
                       </p>
-                      <Button variant="outline" size="sm">Build Custom</Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleBuildCustom}
+                      >
+                        Build Custom
+                      </Button>
                     </CardContent>
                   </Card>
 
@@ -224,7 +345,13 @@ export default function PortfolioPage() {
                       <p className="text-sm text-gray-600 mb-4">
                         Import allocation frameworks from JSON/CSV files
                       </p>
-                      <Button variant="outline" size="sm">Import File</Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleImportFramework}
+                      >
+                        Import File
+                      </Button>
                     </CardContent>
                   </Card>
                 </div>
@@ -288,7 +415,13 @@ export default function PortfolioPage() {
                       <p className="text-sm text-gray-600 mb-4">
                         Track returns, volatility, and risk-adjusted performance metrics
                       </p>
-                      <Button variant="outline" size="sm">Analyze Performance</Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => toast.info('Performance analysis feature coming soon!')}
+                      >
+                        Analyze Performance
+                      </Button>
                     </CardContent>
                   </Card>
 
@@ -300,7 +433,13 @@ export default function PortfolioPage() {
                       <p className="text-sm text-gray-600 mb-4">
                         Assess portfolio risk, VaR, and stress testing scenarios
                       </p>
-                      <Button variant="outline" size="sm">Analyze Risk</Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => toast.info('Risk analysis feature coming soon!')}
+                      >
+                        Analyze Risk
+                      </Button>
                     </CardContent>
                   </Card>
 
@@ -312,7 +451,13 @@ export default function PortfolioPage() {
                       <p className="text-sm text-gray-600 mb-4">
                         Analyze sector, geographic, and asset class diversification
                       </p>
-                      <Button variant="outline" size="sm">Analyze Diversification</Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => toast.info('Diversification analysis feature coming soon!')}
+                      >
+                        Analyze Diversification
+                      </Button>
                     </CardContent>
                   </Card>
                 </div>
@@ -392,7 +537,13 @@ export default function PortfolioPage() {
                       <p className="text-sm text-gray-600 mb-4">
                         Optimize portfolio weights and rebalancing strategies
                       </p>
-                      <Button variant="outline" size="sm">Optimize Rebalancing</Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => toast.info('Rebalancing optimization feature coming soon!')}
+                      >
+                        Optimize Rebalancing
+                      </Button>
                     </CardContent>
                   </Card>
 
@@ -404,7 +555,13 @@ export default function PortfolioPage() {
                       <p className="text-sm text-gray-600 mb-4">
                         Minimize tax impact with tax-loss harvesting and optimization
                       </p>
-                      <Button variant="outline" size="sm">Optimize Taxes</Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => toast.info('Tax optimization feature coming soon!')}
+                      >
+                        Optimize Taxes
+                      </Button>
                     </CardContent>
                   </Card>
 
@@ -416,7 +573,13 @@ export default function PortfolioPage() {
                       <p className="text-sm text-gray-600 mb-4">
                         Analyze factor exposures and optimize factor tilts
                       </p>
-                      <Button variant="outline" size="sm">Analyze Factors</Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => toast.info('Factor analysis feature coming soon!')}
+                      >
+                        Analyze Factors
+                      </Button>
                     </CardContent>
                   </Card>
                 </div>
@@ -462,6 +625,34 @@ export default function PortfolioPage() {
             </Card>
           </TabsContent>
         </Tabs>
+
+        {/* Create Portfolio Modal */}
+        {showCreateModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+              <h3 className="text-lg font-semibold mb-4">Create New Portfolio</h3>
+              <p className="text-gray-600 mb-6">
+                Create a new portfolio to start tracking your investments.
+              </p>
+              <div className="flex space-x-3">
+                <Button
+                  onClick={handleCreatePortfolio}
+                  disabled={isCreatingPortfolio}
+                  className="flex-1"
+                >
+                  {isCreatingPortfolio ? 'Creating...' : 'Create Portfolio'}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowCreateModal(false)}
+                  disabled={isCreatingPortfolio}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </AppLayout>
   );

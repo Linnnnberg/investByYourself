@@ -1,0 +1,501 @@
+{
+  "start_time": "2025-09-24T21:56:38.237331",
+  "steps": [
+    {
+      "step": "Health Check",
+      "success": true,
+      "message": "API is healthy",
+      "data": {
+        "status": "healthy",
+        "service": "InvestByYourself API",
+        "version": "1.0.0",
+        "environment": "development"
+      },
+      "timestamp": "2025-09-24T21:56:38.253115"
+    },
+    {
+      "step": "Get Workflows",
+      "success": true,
+      "message": "Retrieved 3 workflow templates",
+      "data": {
+        "workflows": [
+          {
+            "id": "portfolio_creation_basic",
+            "name": "Portfolio Creation with Allocation Framework",
+            "description": "Basic portfolio creation workflow with allocation framework support",
+            "steps": [
+              {
+                "id": "profile_assessment",
+                "name": "Investment Profile Assessment",
+                "step_type": "data_collection",
+                "description": "Collect user investment profile data",
+                "config": {
+                  "questions": "investment_profile_questions",
+                  "validation": "risk_profile_validation",
+                  "required_fields": [
+                    "risk_tolerance",
+                    "time_horizon",
+                    "investment_goals"
+                  ]
+                },
+                "dependencies": []
+              },
+              {
+                "id": "allocation_method_choice",
+                "name": "Allocation Method Selection",
+                "step_type": "decision",
+                "description": "Choose between framework, manual, or hybrid allocation",
+                "config": {
+                  "options": [
+                    "framework",
+                    "manual",
+                    "hybrid"
+                  ],
+                  "default": "framework",
+                  "description": "How would you like to allocate your portfolio?",
+                  "help_text": "Framework: Use pre-built allocation templates. Manual: Pick products directly. Hybrid: Start manual, add framework later."
+                },
+                "dependencies": [
+                  "profile_assessment"
+                ]
+              },
+              {
+                "id": "framework_selection",
+                "name": "Framework Selection",
+                "step_type": "decision",
+                "description": "Select allocation framework template",
+                "config": {
+                  "condition": "allocation_method == 'framework'",
+                  "templates": [
+                    {
+                      "id": "conservative",
+                      "name": "Conservative",
+                      "description": "60% Bonds, 35% Equity, 5% Alternatives",
+                      "risk_level": "low"
+                    },
+                    {
+                      "id": "balanced",
+                      "name": "Balanced",
+                      "description": "60% Equity, 35% Bonds, 5% Alternatives",
+                      "risk_level": "medium"
+                    },
+                    {
+                      "id": "growth",
+                      "name": "Growth",
+                      "description": "80% Equity, 15% Bonds, 5% Alternatives",
+                      "risk_level": "high"
+                    },
+                    {
+                      "id": "custom",
+                      "name": "Custom Framework",
+                      "description": "Build your own allocation framework",
+                      "risk_level": "custom"
+                    }
+                  ]
+                },
+                "dependencies": [
+                  "allocation_method_choice"
+                ]
+              },
+              {
+                "id": "custom_framework_builder",
+                "name": "Custom Framework Builder",
+                "step_type": "user_interaction",
+                "description": "Build custom allocation framework",
+                "config": {
+                  "condition": "framework_selection == 'custom'",
+                  "drag_drop_enabled": true,
+                  "weight_validation": true,
+                  "bucket_types": [
+                    "asset_class",
+                    "sector",
+                    "geographic",
+                    "market_cap"
+                  ]
+                },
+                "dependencies": [
+                  "framework_selection"
+                ]
+              },
+              {
+                "id": "product_selection",
+                "name": "Product Selection",
+                "step_type": "user_interaction",
+                "description": "Select investment products",
+                "config": {
+                  "condition": "allocation_method in ['manual', 'hybrid']",
+                  "search_enabled": true,
+                  "filters": [
+                    "asset_class",
+                    "sector",
+                    "region",
+                    "market_cap"
+                  ],
+                  "max_products": 50,
+                  "min_products": 1
+                },
+                "dependencies": [
+                  "allocation_method_choice"
+                ]
+              },
+              {
+                "id": "product_mapping",
+                "name": "Product Mapping",
+                "step_type": "user_interaction",
+                "description": "Map products to framework buckets",
+                "config": {
+                  "condition": "allocation_method == 'framework'",
+                  "auto_suggest": true,
+                  "manual_override": true,
+                  "data_health_indicators": true
+                },
+                "dependencies": [
+                  "framework_selection",
+                  "product_selection"
+                ]
+              },
+              {
+                "id": "weight_adjustment",
+                "name": "Weight Adjustment",
+                "step_type": "user_interaction",
+                "description": "Adjust portfolio weights",
+                "config": {
+                  "slider_interface": true,
+                  "weight_validation": true,
+                  "rebalance_suggestions": true
+                },
+                "dependencies": [
+                  "product_mapping",
+                  "product_selection"
+                ]
+              },
+              {
+                "id": "portfolio_validation",
+                "name": "Portfolio Validation",
+                "step_type": "validation",
+                "description": "Validate final portfolio configuration",
+                "config": {
+                  "rules": "portfolio_validation_rules",
+                  "weight_validation": true,
+                  "constraint_validation": true,
+                  "diversification_check": true
+                },
+                "dependencies": [
+                  "weight_adjustment"
+                ]
+              }
+            ],
+            "entry_points": [
+              "profile_assessment"
+            ],
+            "exit_points": [
+              "portfolio_validation"
+            ],
+            "created_at": "2025-09-24T19:46:58.191863"
+          },
+          {
+            "id": "framework_builder",
+            "name": "Custom Framework Builder",
+            "description": "Build custom allocation frameworks",
+            "steps": [
+              {
+                "id": "framework_type_selection",
+                "name": "Framework Type Selection",
+                "step_type": "decision",
+                "description": "Choose framework type (asset class, sector, geographic, etc.)",
+                "config": {
+                  "types": [
+                    {
+                      "id": "asset_class",
+                      "name": "Asset Class",
+                      "description": "Allocate by asset classes (Equity, Bonds, Alternatives)"
+                    },
+                    {
+                      "id": "sector",
+                      "name": "Sector",
+                      "description": "Allocate by economic sectors"
+                    },
+                    {
+                      "id": "geographic",
+                      "name": "Geographic",
+                      "description": "Allocate by regions/countries"
+                    },
+                    {
+                      "id": "market_cap",
+                      "name": "Market Cap",
+                      "description": "Allocate by company size"
+                    },
+                    {
+                      "id": "hybrid",
+                      "name": "Hybrid",
+                      "description": "Combine multiple allocation methods"
+                    }
+                  ]
+                },
+                "dependencies": []
+              },
+              {
+                "id": "bucket_definition",
+                "name": "Bucket Definition",
+                "step_type": "user_interaction",
+                "description": "Define allocation buckets and weights",
+                "config": {
+                  "drag_drop_enabled": true,
+                  "weight_validation": true,
+                  "hierarchical_structure": true,
+                  "max_depth": 3
+                },
+                "dependencies": [
+                  "framework_type_selection"
+                ]
+              },
+              {
+                "id": "constraint_setup",
+                "name": "Constraint Setup",
+                "step_type": "user_interaction",
+                "description": "Set up framework constraints",
+                "config": {
+                  "constraint_types": [
+                    "min_weight",
+                    "max_weight",
+                    "sector_caps",
+                    "liquidity_requirements",
+                    "rebalancing_bands"
+                  ],
+                  "default_constraints": true
+                },
+                "dependencies": [
+                  "bucket_definition"
+                ]
+              },
+              {
+                "id": "rebalancing_setup",
+                "name": "Rebalancing Setup",
+                "step_type": "decision",
+                "description": "Configure rebalancing rules",
+                "config": {
+                  "rebalancing_methods": [
+                    "time_based",
+                    "drift_based",
+                    "hybrid"
+                  ],
+                  "default_cadence": "quarterly",
+                  "default_drift_threshold": 5.0
+                },
+                "dependencies": [
+                  "constraint_setup"
+                ]
+              },
+              {
+                "id": "framework_validation",
+                "name": "Framework Validation",
+                "step_type": "validation",
+                "description": "Validate framework configuration",
+                "config": {
+                  "weight_sum_validation": true,
+                  "constraint_validation": true,
+                  "rebalancing_validation": true,
+                  "coverage_validation": true
+                },
+                "dependencies": [
+                  "rebalancing_setup"
+                ]
+              }
+            ],
+            "entry_points": [
+              "framework_type_selection"
+            ],
+            "exit_points": [
+              "framework_validation"
+            ],
+            "created_at": "2025-09-24T19:46:58.191886"
+          },
+          {
+            "id": "portfolio_rebalancing",
+            "name": "Portfolio Rebalancing",
+            "description": "Rebalance existing portfolio based on framework",
+            "steps": [
+              {
+                "id": "drift_analysis",
+                "name": "Drift Analysis",
+                "step_type": "data_collection",
+                "description": "Analyze current portfolio drift from target allocation",
+                "config": {
+                  "drift_threshold": 5.0,
+                  "analysis_period": "30d"
+                },
+                "dependencies": []
+              },
+              {
+                "id": "rebalance_decision",
+                "name": "Rebalance Decision",
+                "step_type": "decision",
+                "description": "Decide whether to rebalance",
+                "config": {
+                  "auto_rebalance": false,
+                  "drift_threshold": 5.0,
+                  "user_confirmation": true
+                },
+                "dependencies": [
+                  "drift_analysis"
+                ]
+              },
+              {
+                "id": "rebalance_execution",
+                "name": "Rebalance Execution",
+                "step_type": "user_interaction",
+                "description": "Execute rebalancing trades",
+                "config": {
+                  "simulation_mode": true,
+                  "transaction_costs": true,
+                  "tax_considerations": true
+                },
+                "dependencies": [
+                  "rebalance_decision"
+                ]
+              },
+              {
+                "id": "rebalance_validation",
+                "name": "Rebalance Validation",
+                "step_type": "validation",
+                "description": "Validate rebalancing results",
+                "config": {
+                  "target_validation": true,
+                  "constraint_validation": true,
+                  "cost_validation": true
+                },
+                "dependencies": [
+                  "rebalance_execution"
+                ]
+              }
+            ],
+            "entry_points": [
+              "drift_analysis"
+            ],
+            "exit_points": [
+              "rebalance_validation"
+            ],
+            "created_at": "2025-09-24T19:46:58.191897"
+          }
+        ],
+        "total": 3
+      },
+      "timestamp": "2025-09-24T21:56:38.268490"
+    },
+    {
+      "step": "Create Portfolio",
+      "success": true,
+      "message": "Portfolio created with template",
+      "data": {
+        "id": "new_portfolio_id",
+        "name": "API Test Portfolio - 2025-09-24 21:56",
+        "description": "Portfolio created via API testing script with allocation framework",
+        "total_value": "$0",
+        "total_gain_loss": "$0",
+        "total_gain_loss_pct": "0%",
+        "holdings_count": 0,
+        "risk_profile": "Medium",
+        "created_at": "2025-09-24T19:56:38.317526",
+        "updated_at": "2025-09-24T19:56:38.317533"
+      },
+      "timestamp": "2025-09-24T21:56:38.322501"
+    },
+    {
+      "step": "Add Stock",
+      "success": true,
+      "message": "Stock added to portfolio",
+      "data": {
+        "symbol": "AAPL",
+        "company_name": "Apple Inc.",
+        "shares": 10,
+        "purchase_price": 175.5,
+        "current_price": 180.25,
+        "sector": "Technology",
+        "allocation_percentage": 15.0
+      },
+      "timestamp": "2025-09-24T21:56:38.369341"
+    },
+    {
+      "step": "Get Portfolio",
+      "success": true,
+      "message": "Portfolio retrieved successfully",
+      "data": {
+        "id": "new_portfolio_id",
+        "name": "Portfolio new_portfolio_id",
+        "description": "Description for portfolio new_portfolio_id",
+        "total_value": "$100,000",
+        "total_gain_loss": "+$5,000",
+        "total_gain_loss_pct": "+5.0%",
+        "holdings_count": 10,
+        "risk_profile": "Medium",
+        "created_at": "2025-09-24T19:56:38.373411",
+        "updated_at": "2025-09-24T19:56:38.373414"
+      },
+      "timestamp": "2025-09-24T21:56:38.378758"
+    },
+    {
+      "step": "List Portfolios",
+      "success": true,
+      "message": "Portfolio list retrieved",
+      "data": [
+        {
+          "id": "1",
+          "name": "Growth Portfolio",
+          "description": "Aggressive growth strategy focused on tech stocks",
+          "total_value": "$125,000",
+          "total_gain_loss": "+$12,500",
+          "total_gain_loss_pct": "+11.1%",
+          "holdings_count": 8,
+          "risk_profile": "High",
+          "created_at": "2025-09-24T19:56:38.381859",
+          "updated_at": "2025-09-24T19:56:38.381862"
+        },
+        {
+          "id": "2",
+          "name": "Conservative Portfolio",
+          "description": "Stable income focus with dividend stocks",
+          "total_value": "$85,000",
+          "total_gain_loss": "+$2,100",
+          "total_gain_loss_pct": "+2.5%",
+          "holdings_count": 12,
+          "risk_profile": "Low",
+          "created_at": "2025-09-24T19:56:38.381864",
+          "updated_at": "2025-09-24T19:56:38.381865"
+        },
+        {
+          "id": "3",
+          "name": "Balanced Portfolio",
+          "description": "Mix of growth and value stocks",
+          "total_value": "$95,000",
+          "total_gain_loss": "+$4,200",
+          "total_gain_loss_pct": "+4.6%",
+          "holdings_count": 15,
+          "risk_profile": "Medium",
+          "created_at": "2025-09-24T19:56:38.381866",
+          "updated_at": "2025-09-24T19:56:38.381867"
+        }
+      ],
+      "timestamp": "2025-09-24T21:56:38.385943"
+    },
+    {
+      "step": "Portfolio Analysis",
+      "success": true,
+      "message": "Portfolio analysis completed",
+      "data": {
+        "portfolio_id": "new_portfolio_id",
+        "analysis_type": "performance",
+        "metrics": [
+          "return",
+          "volatility",
+          "sharpe_ratio",
+          "max_drawdown"
+        ]
+      },
+      "timestamp": "2025-09-24T21:56:38.386636"
+    }
+  ],
+  "success": true,
+  "created_portfolio_id": "new_portfolio_id",
+  "end_time": "2025-09-24T21:56:38.387092",
+  "duration_seconds": 0.149761
+}
