@@ -67,6 +67,8 @@ services:
     volumes:
       - ./api:/app
       - /app/__pycache__
+      - /app/.pytest_cache
+      - /app/.mypy_cache
     networks:
       - investbyyourself-dev
     depends_on:
@@ -124,6 +126,8 @@ services:
     volumes:
       - ./etl:/app
       - /app/__pycache__
+      - /app/.pytest_cache
+      - /app/.mypy_cache
     networks:
       - investbyyourself-dev
     depends_on:

@@ -102,6 +102,7 @@ services:
       - ./etl-service:/app
       - /app/__pycache__
       - /app/.pytest_cache
+      - /app/.mypy_cache
     networks:
       - investbyyourself-network
     depends_on:
@@ -145,6 +146,7 @@ services:
       - ./financial-analysis-service:/app
       - /app/__pycache__
       - /app/.pytest_cache
+      - /app/.mypy_cache
     networks:
       - investbyyourself-network
     depends_on:
@@ -190,6 +192,7 @@ services:
       - ./data-service:/app
       - /app/__pycache__
       - /app/.pytest_cache
+      - /app/.mypy_cache
     networks:
       - investbyyourself-network
     depends_on:
