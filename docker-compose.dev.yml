@@ -40,7 +40,7 @@ services:
     networks:
       - investbyyourself-dev
     healthcheck:
-      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      test: ["CMD-SHELL", "redis-cli -a $${REDIS_PASSWORD:-dev_redis_123} ping || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
