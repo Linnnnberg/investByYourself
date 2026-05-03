@@ -68,8 +68,9 @@ The development environment uses these default values:
 POSTGRES_PASSWORD=dev_password_123
 REDIS_PASSWORD=dev_redis_123
 
-# JWT
-JWT_SECRET_KEY=dev_jwt_secret_key_change_in_production_123456789
+# JWT - SECURITY WARNING: Never use default JWT secrets, even in development!
+# Generate a secure key with: python -c "import secrets; print(secrets.token_urlsafe(32))"
+JWT_SECRET_KEY=<your_generated_jwt_secret_key_here>
 
 # API Keys (Optional)
 ALPHA_VANTAGE_API_KEY=your_api_key_here

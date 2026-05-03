@@ -93,7 +93,8 @@ FMP_API_KEY=your_fmp_key
 FRED_API_KEY=your_fred_key
 
 # Security
-JWT_SECRET_KEY=your_jwt_secret_key
+# Generate with: python -c "import secrets; print(secrets.token_urlsafe(32))"
+JWT_SECRET_KEY=your_secure_jwt_secret_key_here
 ```
 
 ## 🚀 **Starting Services with Redis**

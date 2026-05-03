@@ -59,7 +59,8 @@ services:
       - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD:-dev_password_123}@postgres:5432/investbyyourself
       - REDIS_URL=redis://:${REDIS_PASSWORD:-dev_redis_123}@redis:6379/0
       - REDIS_HOSTS=local:redis:6379:0:${REDIS_PASSWORD:-dev_redis_123}
-      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-dev_jwt_secret_key}
+      # WARNING: JWT_SECRET_KEY is REQUIRED for security. Generate with: python -c "import secrets; print(secrets.token_urlsafe(32))"
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:?JWT_SECRET_KEY is required - set it in .env file}
       - ALPHA_VANTAGE_API_KEY=${ALPHA_VANTAGE_API_KEY:-your_alpha_vantage_api_key}
       - FRED_API_KEY=${FRED_API_KEY:-your_fred_api_key}
     ports:

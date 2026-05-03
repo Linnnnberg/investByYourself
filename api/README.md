@@ -116,7 +116,8 @@ The API uses environment variables for configuration. See `src/core/config.py` f
 ```bash
 # Security
 SECRET_KEY=your_secret_key_here
-JWT_SECRET_KEY=your_jwt_secret_here
+# REQUIRED: Generate with: python -c "import secrets; print(secrets.token_urlsafe(32))"
+JWT_SECRET_KEY=your_secure_jwt_secret_key_here
 
 # Database
 POSTGRES_HOST=localhost
