@@ -1,4 +1,8 @@
+# syntax=docker/dockerfile:1.7
 # Multi-stage Dockerfile for investByYourself Financial Platform
+#
+# Build with BuildKit enabled (default in Docker 23+):
+#   DOCKER_BUILDKIT=1 docker build -f docker/Dockerfile.main -t ibyy-main .
 
 # Base stage with common dependencies
 FROM python:3.11-slim as base
@@ -8,8 +12,10 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV FINANCIAL_CI=true
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+# Install system dependencies (cache APT layers across rebuilds)
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     g++ \
     curl \
@@ -21,15 +27,17 @@ WORKDIR /app
 # Copy requirements file
 COPY requirements.txt ./
 
-# Install Python dependencies
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies (cached pip wheels)
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked \
+    pip install --upgrade pip && \
+    pip install -r requirements.txt
 
 # Development stage
 FROM base as development
 
 # Install development tools
-RUN pip install --no-cache-dir \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked \
+    pip install \
     black \
     flake8 \
     mypy \
@@ -53,7 +61,8 @@ CMD ["python", "-m", "pytest", "tests/", "-v"]
 FROM base as testing
 
 # Install testing dependencies
-RUN pip install --no-cache-dir \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked \
+    pip install \
     pytest \
     pytest-cov \
     pytest-mock \

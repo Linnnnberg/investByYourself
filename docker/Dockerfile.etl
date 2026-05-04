@@ -1,5 +1,9 @@
+# syntax=docker/dockerfile:1.7
 # ETL Worker Dockerfile for investByYourself
 # Story-005: ETL & Database Architecture Design
+#
+# Build with BuildKit enabled (default in Docker 23+):
+#   DOCKER_BUILDKIT=1 docker build -f docker/Dockerfile.etl -t ibyy-etl-worker .
 
 FROM python:3.11-slim
 
@@ -8,8 +12,10 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONPATH=/app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+# Install system dependencies (cache APT layers across rebuilds)
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     g++ \
     curl \
@@ -23,12 +29,14 @@ WORKDIR /app
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies (cached pip wheels)
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked \
+    pip install --upgrade pip && \
+    pip install -r requirements.txt
 
 # Install additional ETL-specific packages
-RUN pip install --no-cache-dir \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked \
+    pip install \
     asyncpg \
     redis \
     minio \

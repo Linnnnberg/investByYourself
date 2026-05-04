@@ -1,17 +1,24 @@
+# syntax=docker/dockerfile:1.7
 # Financial Analysis Service Dockerfile
 # Tech-020: Microservices Foundation
+#
+# Build with BuildKit enabled (default in Docker 23+):
+#   DOCKER_BUILDKIT=1 docker build -t ibyy-analysis .
 
 # Multi-stage build for optimization
 FROM python:3.11-slim as base
 
-# Set environment variables
+# Note: PIP_NO_CACHE_DIR is intentionally NOT set so the cache mount below
+# can persist wheels between builds. The cache lives in BuildKit storage,
+# not in image layers, so the final image stays slim.
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+# Install system dependencies (cache APT layers across rebuilds)
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     g++ \
     libpq-dev \
@@ -26,14 +33,16 @@ WORKDIR /app
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies (cached pip wheels)
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked \
+    pip install -r requirements.txt
 
 # Development stage
 FROM base as development
 
 # Install development dependencies
-RUN pip install --no-cache-dir \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked \
+    pip install \
     pytest \
     pytest-asyncio \
     pytest-mock \

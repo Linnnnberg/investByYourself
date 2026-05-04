@@ -1,18 +1,24 @@
+# syntax=docker/dockerfile:1.7
 # Shared Base Dockerfile
 # Tech-020: Microservices Foundation
+#
+# Build with BuildKit enabled (default in Docker 23+):
+#   DOCKER_BUILDKIT=1 docker build -t ibyy-base -f Dockerfile.base .
 
 # Base image for all services
 FROM python:3.11-slim as base
 
-# Set common environment variables
+# Note: PIP_NO_CACHE_DIR is intentionally NOT set so the cache mount below
+# can persist wheels between builds. The cache lives in BuildKit storage.
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PYTHONPATH=/app
 
-# Install common system dependencies
-RUN apt-get update && apt-get install -y \
+# Install common system dependencies (cache APT layers across rebuilds)
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     g++ \
     libpq-dev \
@@ -23,15 +29,17 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 RUN adduser --disabled-password --gecos '' appuser
 
-# Copy requirements and install dependencies
+# Copy requirements and install dependencies (cached pip wheels)
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked \
+    pip install -r requirements.txt
 
 # Development stage
 FROM base as development
 
 # Install development dependencies
-RUN pip install --no-cache-dir \
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked \
+    pip install \
     pytest \
     pytest-asyncio \
     pytest-mock \

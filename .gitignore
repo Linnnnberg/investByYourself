@@ -276,6 +276,21 @@ env.bak/
 venv.bak/
 config/backups/
 
+# TLS certificates and private keys - NEVER commit these
+services/nginx/ssl/*
+!services/nginx/ssl/.gitkeep
+*.pem
+*.key
+*.crt
+*.csr
+!**/test/**/*.pem
+!**/fixtures/**/*.pem
+
+# Backup artifacts - contain production data
+backups/
+*.dump
+*.rdb
+
 # Spyder project settings
 .spyderproject
 .spyproject

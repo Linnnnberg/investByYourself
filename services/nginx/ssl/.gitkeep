@@ -1,0 +1,9 @@
+# Placeholder so the ssl/ directory exists in the repo.
+# Place TLS certificates here for the production API gateway.
+# See ../README.md for setup instructions.
+#
+# Expected files (when SSL is enabled):
+#   fullchain.pem  - certificate chain
+#   privkey.pem    - private key (chmod 600)
+#
+# NEVER commit real certificates or private keys to the repo.

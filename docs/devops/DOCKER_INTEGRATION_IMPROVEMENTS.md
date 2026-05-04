@@ -1,7 +1,18 @@
 # Docker Integration Improvements
 **Feature Branch**: `feature/docker-integration-improvements`
 **Created**: May 2, 2026
-**Status**: Planning & Documentation Phase
+**Last Updated**: May 4, 2026
+**Status**: Phases 1, 2 & 3 Complete - Ready for Production Hardening Validation
+
+## Phase Status Snapshot
+
+| Phase                                       | Status      | Notes |
+| ------------------------------------------- | ----------- | ----- |
+| Phase 1: Critical Fixes (Week 1)            | Complete    | Health checks, .dockerignore, JWT security, env templates |
+| Phase 2: Quality Improvements (Week 2)      | Complete    | Cache volumes, frontend health endpoint, Docker setup guide |
+| Phase 3: Production Readiness (Week 3)      | Complete    | Resource limits, nginx configs + SSL docs, backup strategy + scripts, BuildKit cache mounts |
+
+See [Implementation Plan](#implementation-plan) for per-day breakdown.
 
 ---
 
@@ -759,28 +770,52 @@ RUN --mount=type=cache,target=/root/.cache/pip \
    - Peer review documentation
    - Address feedback
 
-### Phase 3: Production Readiness (Week 3)
+### Phase 3: Production Readiness (Week 3) - Complete
 **Goal**: Prepare for production deployment
 
-1. **Day 1-2**: Resource limits
-   - Add limits to production compose
-   - Test with realistic load
-   - Tune based on results
+1. **Day 1-2**: Resource limits - Done
+   - Added `deploy.resources.limits` and `reservations` for every service in
+     `services/docker-compose.prod.yml` (postgres, redis, minio, etl-service,
+     financial-analysis-service, data-service, api-gateway, prometheus, grafana).
+   - Run with `docker-compose --compatibility` for Compose v2 to honor limits.
+   - Pending: tune values against realistic load once available.
 
-2. **Day 3**: Nginx configuration
-   - Verify or create nginx configs
-   - Test API gateway routing
-   - Document SSL setup
+2. **Day 3**: Nginx configuration - Done
+   - Created `services/nginx/nginx.prod.conf` (worker tuning, JSON logs, gzip,
+     rate-limit zones).
+   - Created `services/nginx/conf.d/upstreams.conf`,
+     `services/nginx/conf.d/default.conf`, and reusable
+     `services/nginx/conf.d/_locations.inc` for routing
+     `/api/etl/`, `/api/analysis/`, `/api/data/`.
+   - Documented SSL setup, Let's Encrypt flow, and renewal in
+     `services/nginx/README.md`. Added `services/nginx/ssl/.gitkeep`
+     placeholder; `.gitignore` now blocks `*.pem`, `*.key`, `*.crt`.
 
-3. **Day 4**: Backup strategy
-   - Create backup documentation
-   - Write backup scripts
-   - Test restore procedures
+3. **Day 4**: Backup strategy - Done
+   - Created `docs/devops/BACKUP_STRATEGY.md` covering RPO/RTO,
+     hot/warm/cold tiers, restore procedure, off-site replication.
+   - Added scripts in `scripts/backup/`:
+     - `backup_all.sh`, `backup_postgres.sh`, `backup_redis.sh`, `backup_minio.sh`
+     - `restore_postgres.sh`, `restore_redis.sh`, `restore_minio.sh`
+     - `README.md` quick reference
+   - Postgres uses `pg_dump -Fc`; Redis triggers `BGSAVE` and copies
+     `dump.rdb`; MinIO uses `mc mirror`. Each script self-verifies output.
+   - `.gitignore` blocks `backups/`, `*.dump`, `*.rdb`.
 
-4. **Day 5**: BuildKit optimization
-   - Add cache mounts to Dockerfiles
-   - Measure build time improvements
-   - Document usage
+4. **Day 5**: BuildKit optimization - Done
+   - Added `# syntax=docker/dockerfile:1.7` directive and pip/apt cache mounts
+     to:
+     - `api/Dockerfile`
+     - `etl/Dockerfile`
+     - `services/financial-analysis-service/Dockerfile`
+     - `services/shared/Dockerfile.base`
+     - `docker/Dockerfile.main`
+     - `docker/Dockerfile.etl`
+   - Removed `--no-cache-dir` and `PIP_NO_CACHE_DIR=1` so the cache mount
+     actually persists wheels (cache lives in BuildKit storage, not image
+     layers - images stay slim).
+   - Frontend Dockerfile already had npm cache mounts (no change needed).
+   - Pending: measure cold vs warm build times and document the delta.
 
 ---
 

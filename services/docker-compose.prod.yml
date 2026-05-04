@@ -1,8 +1,14 @@
 # Production Docker Compose
 # Tech-020: Microservices Foundation
-
-# This file is for production deployment
-# Run with: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#
+# This file is for production deployment.
+# Run with:
+#   docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#
+# Resource limits use the `deploy.resources` syntax (Compose v3+).
+# When running with `docker-compose` (not Swarm), pass `--compatibility`
+# so limits are translated to v2 `cpus`/`mem_limit` directives:
+#   docker-compose --compatibility -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 version: '3.8'
 
@@ -16,13 +22,29 @@ services:
       - postgres_data:/var/lib/postgresql/data
       # Remove development volumes in production
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
 
   redis:
-    command: redis-server --requirepass ${REDIS_PASSWORD}
+    command: redis-server --requirepass ${REDIS_PASSWORD} --maxmemory 384mb --maxmemory-policy allkeys-lru
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
     ports: []  # Don't expose Redis ports in production
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
 
   minio:
     environment:
@@ -30,6 +52,14 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     ports: []  # Don't expose MinIO ports in production
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
 
   etl-service:
     build:
@@ -41,6 +71,14 @@ services:
       - ETL_RETRY_ATTEMPTS=${ETL_RETRY_ATTEMPTS:-5}
     volumes: []  # No development volumes in production
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
 
   financial-analysis-service:
     build:
@@ -52,6 +90,14 @@ services:
       - ANALYSIS_MAX_WORKERS=${ANALYSIS_MAX_WORKERS:-8}
     volumes: []  # No development volumes in production
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
 
   data-service:
     build:
@@ -63,6 +109,14 @@ services:
       - DB_CONNECTION_TIMEOUT=${DB_CONNECTION_TIMEOUT:-60}
     volumes: []  # No development volumes in production
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 1536M
+        reservations:
+          cpus: '0.25'
+          memory: 384M
 
   # Production API Gateway
   api-gateway:
@@ -82,6 +136,14 @@ services:
       - financial-analysis-service
       - data-service
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
 
   # Production monitoring
   prometheus:
@@ -102,6 +164,14 @@ services:
     networks:
       - investbyyourself-network
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: 768M
+        reservations:
+          cpus: '0.1'
+          memory: 192M
 
   grafana:
     image: grafana/grafana:latest
@@ -118,6 +188,14 @@ services:
     depends_on:
       - prometheus
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
 
 volumes:
   prometheus_data:

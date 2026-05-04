@@ -1,13 +1,19 @@
+# syntax=docker/dockerfile:1.7
 # ETL Service Dockerfile
 # InvestByYourself Financial Platform
+#
+# Build with BuildKit enabled (default in Docker 23+):
+#   DOCKER_BUILDKIT=1 docker build -t ibyy-etl .
 
 FROM python:3.11-slim
 
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+# Install system dependencies (cache APT layers across rebuilds)
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     g++ \
     curl \
@@ -15,9 +21,11 @@ RUN apt-get update && apt-get install -y \
     cron \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements and install Python dependencies
+# Copy requirements and install Python dependencies (cached pip wheels)
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked \
+    pip install --upgrade pip && \
+    pip install -r requirements.txt
 
 # Copy ETL source code
 COPY src/ ./src/
