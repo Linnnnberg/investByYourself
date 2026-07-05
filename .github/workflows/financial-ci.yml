@@ -160,7 +160,7 @@ jobs:
           echo "ALPHA_VANTAGE_API_KEY=test-key" >> $GITHUB_ENV
           echo "FRED_API_KEY=test-key" >> $GITHUB_ENV
           echo "DATABASE_URL=sqlite:///./test_financial.db" >> $GITHUB_ENV
-          echo "SECRET_KEY=test-secret-key-for-financial-ci-12345" >> $GITHUB_ENV
+          echo "SECRET_KEY=ci-test-secret" >> $GITHUB_ENV
           echo "MARKET_DATA_CACHE_DIR=.cache/market_data" >> $GITHUB_ENV
           echo "FINANCIAL_CALCULATION_PRECISION=0.01" >> $GITHUB_ENV
 

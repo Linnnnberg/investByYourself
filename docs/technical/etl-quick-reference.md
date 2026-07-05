@@ -9,42 +9,53 @@
 ## 🚀 **Quick Start Commands**
 
 ### **Start ETL Service**
+
+The `etl` service uses Compose **profile `etl`**. It does not start with a plain `docker compose up` unless you name it or enable the profile.
+
 ```bash
-# Start all services including ETL
-docker-compose -f docker-compose.dev.yml up
+# Recommended: Postgres + Redis + ETL (ETL stays up and logs to Docker Desktop)
+docker compose -f docker-compose.dev.yml --profile etl up -d postgres redis etl
 
-# Start only ETL service
-docker-compose -f docker-compose.dev.yml up etl
+# Enable the profile for the whole session, then start only what you need (api needs JWT_SECRET_KEY in .env)
+# CMD: set COMPOSE_PROFILES=etl
+# PowerShell: $env:COMPOSE_PROFILES="etl"
+docker compose -f docker-compose.dev.yml up -d postgres redis etl
 
-# Start ETL in background
-docker-compose -f docker-compose.dev.yml up -d etl
+# Start only ETL (Compose starts postgres + redis because of depends_on)
+docker compose -f docker-compose.dev.yml up -d etl
+
+# Start ETL in the foreground (see logs immediately)
+docker compose -f docker-compose.dev.yml up etl
 ```
 
 ### **Run Data Import**
 ```bash
-# Full data import
-docker-compose -f docker-compose.dev.yml exec etl python scripts/etl_orchestrator.py --mode=full
+# Full data import (one-shot; use while the etl container is running)
+docker compose -f docker-compose.dev.yml exec etl python scripts/etl_orchestrator.py --mode=full
 
 # Historical data only
-docker-compose -f docker-compose.dev.yml exec etl python scripts/collect_historical_data.py
+docker compose -f docker-compose.dev.yml exec etl python scripts/collect_historical_data.py
 
 # Company profiles only
-docker-compose -f docker-compose.dev.yml exec etl python scripts/collect_company_profiles.py
+docker compose -f docker-compose.dev.yml exec etl python scripts/collect_company_profiles.py
 
 # Economic data only
-docker-compose -f docker-compose.dev.yml exec etl python scripts/collect_economic_data.py
+docker compose -f docker-compose.dev.yml exec etl python scripts/collect_economic_data.py
+
+# One-shot import without a long-running etl container
+docker compose -f docker-compose.dev.yml run --rm etl python scripts/etl_orchestrator.py --mode=full
 ```
 
 ### **Monitor ETL Operations**
 ```bash
 # View ETL logs
-docker-compose -f docker-compose.dev.yml logs -f etl
+docker compose -f docker-compose.dev.yml logs -f etl
 
 # Check ETL status
-docker-compose -f docker-compose.dev.yml exec etl python scripts/health_check.py
+docker compose -f docker-compose.dev.yml exec etl python scripts/health_check.py
 
 # Check container status
-docker-compose -f docker-compose.dev.yml ps etl
+docker compose -f docker-compose.dev.yml ps etl
 ```
 
 ---
@@ -87,7 +98,7 @@ SQLITE_DATABASE=investbyyourself_dev.db
 DATABASE_URL=sqlite+aiosqlite:////shared_data/investbyyourself_dev.db
 
 # Redis Configuration
-REDIS_URL=redis://:dev_redis_123@redis:6379/0
+REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/0
 
 # ETL Configuration
 ETL_MODE=development
