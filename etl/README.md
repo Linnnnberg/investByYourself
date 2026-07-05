@@ -70,7 +70,7 @@ docker-compose -f docker-compose.dev.yml exec etl python scripts/scheduler.py
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `DATABASE_URL` | SQLite database URL | `sqlite+aiosqlite:////shared_data/investbyyourself_dev.db` |
-| `REDIS_URL` | Redis cache URL | `redis://:dev_redis_123@redis:6379/0` |
+| `REDIS_URL` | Redis cache URL | `redis://:${REDIS_PASSWORD}@redis:6379/0` |
 | `ALPHA_VANTAGE_API_KEY` | Alpha Vantage API key | (optional) |
 | `FRED_API_KEY` | FRED API key | (optional) |
 | `ETL_MODE` | ETL operation mode | `development` |

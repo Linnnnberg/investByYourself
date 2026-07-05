@@ -65,8 +65,8 @@ The development environment uses these default values:
 
 ```env
 # Database
-POSTGRES_PASSWORD=dev_password_123
-REDIS_PASSWORD=dev_redis_123
+POSTGRES_PASSWORD=<set_in_.env>
+REDIS_PASSWORD=<set_in_.env>
 
 # JWT - SECURITY WARNING: Never use default JWT secrets, even in development!
 # Generate a secure key with: python -c "import secrets; print(secrets.token_urlsafe(32))"
@@ -150,7 +150,7 @@ docker-compose -f docker-compose.dev.yml up --build api
 
 ### Access Redis
 - **Redis Commander**: http://localhost:8081
-  - Password: `dev_redis_123`
+  - Password: `<set_in_.env>`
 
 ## File Structure
 

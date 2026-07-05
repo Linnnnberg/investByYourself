@@ -98,7 +98,7 @@ SQLITE_DATABASE=investbyyourself_dev.db
 DATABASE_URL=sqlite+aiosqlite:////shared_data/investbyyourself_dev.db
 
 # Redis Configuration
-REDIS_URL=redis://:dev_redis_123@redis:6379/0
+REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/0
 
 # ETL Configuration
 ETL_MODE=development

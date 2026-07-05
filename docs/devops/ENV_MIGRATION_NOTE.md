@@ -16,7 +16,7 @@ Docker Compose automatically loads `.env` from the current directory, but does N
 **Previous behavior**:
 ```bash
 docker-compose -f docker-compose.dev.yml up
-# Would use fallback values: dev_password_123, dev_redis_123
+# Would use values from .env instead of hard-coded defaults
 ```
 
 **New behavior**:
