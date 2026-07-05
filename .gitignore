@@ -325,3 +325,6 @@ Thumbs.db
 
 # Data files
 *.csv
+
+# Added by ggshield
+.cache_ggshield
